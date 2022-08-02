@@ -1,0 +1,29 @@
+<main>
+  <mat-card>
+    <h1>ログイン</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <mat-form-field class="field">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" name="email" />
+      </mat-form-field>
+      <mat-form-field class="field">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          name="password"
+        />
+      </mat-form-field>
+      <button
+        class="submit"
+        type="submit"
+        [disabled]="!form.valid"
+        mat-raised-button
+        color="primary"
+      >
+        Submit
+      </button>
+    </form>
+  </mat-card>
+</main>

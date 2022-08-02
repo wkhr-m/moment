@@ -1,0 +1,53 @@
+<section class="content">
+  <mat-card class="word-viewer">
+    <div class="card-content first-sentense">
+      <app-en-sentense
+        [sentense]="sentenses[activeSentenseNumber].en"
+        [pronanciation]="sentenses[activeSentenseNumber].pronanciation"
+        (wordClick)="onClickWord($event)"
+      ></app-en-sentense>
+    </div>
+    <div class="card-content second-sentense">
+      <div class="second-sentense-text">
+        {{ sentenses[activeSentenseNumber].ja }}
+      </div>
+      <div class="hide" *ngIf="isSecondHide" (click)="onClickHide()">
+        🫣 Please Click HERE!!🫣
+      </div>
+    </div>
+    <div class="card-content note" *ngIf="sentenses[activeSentenseNumber].note">
+      <div class="note-title">NOTE</div>
+      <div class="note-body">{{ sentenses[activeSentenseNumber].note }}</div>
+    </div>
+  </mat-card>
+  <mat-card class="action-buttons">
+    <button mat-mini-fab aria-label="Slowly play" (click)="onPlay(0.7)">
+      <mat-icon
+        ><img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAADVklEQVRoge3YbahlUxgH8N+943Ivc8cMZkrXaOZq0siHUYRPSmGKlDGS8lKKpFBDZBQfhITCJx9GSXkbER8kKaIxmJLXTCMUQ4xr5o7xcl3muj48+8zsezr7nP1yzj3zYf/r6ezW2uv/rP9z1lrPszY1atSoUaNGjUMe6/A2fsckPsStOLqfkyqKxzCbYb/ggv5NLT9ulC2iYTO4sl8TzIOl+E1nIbP4G2dWdTiKtbgPb+FLTIhITeALPCWiNlKA956cIhr2fpnJD+IivITpAs724HYc3oH/CPxUUMgszi8i4jx8XMJJ2rbhhDY+1uXguBNHYWOq7ek8AkbwREUBafsWYxm+ns8xfmHy7miq7etOIhbhvS6KaNi7WNDkayH+yDF2Y/LuXam26XYihvBOD0Q07Bmcm/J3eQWuqXZCHuqhiLQ9mPgbx78lOT7PEnFqBdKiNoOVid8PSnI8MJgh5BYclqWyyxjEmuR5Z4nx+/BoKyGjuKLsrEpid/J7fIu+2TbjprAeu1p1rjU/S6ph34mDZVgkzub+m3GpqBwabX/hOaxqI3JOoum1TYtECze06L+3aW5LsVzOZf/IPIn40cHjdyV+bup/Xeyf0nh4HkS8iuMSf8uxval/r+zsnxs39VDAN2K9N3CJ2OjN791WVQSc3gMBe3GHqG5hsez67VdRFFbG5i4K2CmiuyjhXoDrxVU1a8zj3RCxWGTaKpP/TxSFVzt4/xjAhfJdA9L1V2ksSSZSRsBX4nY3nuIbwlX4rEAQRrshBF7I6XQf3sAGnNzEsQJ3i2RXJBi7lUQ6sawWx+C12CGWwpiI0h5xBd0uMuw2fCqWYQPH4GJcg3PEciqKtuV4JwyIDwgzuK7AuCGcJa6eW7Bf9cPhT+UCYEBk8g2pti3YhI9E9h0We2eZWEKrcRrOUOzrSF6cIv75wpgQ0difPO/SneiWtSKrYg5W4WxzozuCF/skZHNZIa0wJrJxP4RMKfGRulU5PIAnc5BtEtXpSUL4Ehwp/s1J/CP22Pf4RHxJn8RW7avaYVyW8FfCep2j9nIF/mdz8L9Zgf8A7u/gZAeOrcC/DD908LG1Av8BjItk13xyTeE1nNgFHyvwisgbaR/T4thfkz20Ro0aNWocQvgf9SQagNC4mkgAAAAASUVORK5CYII="
+      /></mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      aria-label="Previous"
+      [disabled]="activeSentenseNumber === 0"
+      (click)="onChangePage(-1)"
+    >
+      <mat-icon>skip_previous</mat-icon>
+    </button>
+    <button mat-fab color="primary" aria-label="Play" (click)="onPlay(1)">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      aria-label="Next"
+      [disabled]="activeSentenseNumber === sentenses.length - 1"
+      (click)="onChangePage(1)"
+    >
+      <mat-icon>skip_next</mat-icon>
+    </button>
+    <button mat-mini-fab aria-label="Recording">
+      <mat-icon>mic</mat-icon>
+    </button>
+  </mat-card>
+</section>

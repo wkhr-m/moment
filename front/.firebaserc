@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "wk-moment": {
+      "hosting": {
+        "moment": [
+          "wk-moment"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "wk-moment"
+  }
+}

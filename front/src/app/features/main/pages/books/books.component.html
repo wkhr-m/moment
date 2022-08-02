@@ -1,0 +1,15 @@
+<section class="all-books">
+  <h2 class="all-books-header">全てのコンテンツ</h2>
+  <div class="books">
+    <a
+      class="book-link"
+      *ngFor="let book of books"
+      routerLink="/book/{{ book.id }}"
+    >
+      <mat-card class="book">
+        <h3 class="book-title">{{ book.title }}</h3>
+        <span class="book-sub">{{ book.count }}文</span>
+      </mat-card></a
+    >
+  </div>
+</section>
