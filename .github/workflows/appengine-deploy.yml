@@ -8,7 +8,7 @@ jobs:
         node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
-      - name: Prepare Back
+      - name: Use node
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
@@ -30,10 +30,13 @@ jobs:
         node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
-      - name: Prepare front
+      - name: Use node
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+      - name: mkdir environment
+        run: mkdir src/environments
+        working-directory: ./front
       - name: Save the environment
         run: echo env.SECRET_FILE > src/environments/environment.prod.ts
         env:
