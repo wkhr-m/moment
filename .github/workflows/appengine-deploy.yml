@@ -1,17 +1,60 @@
-name: GitHub Actions Demo
+name: GAE deploy
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  back-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare Back
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Save the api key
+        run: envsubst < api_key_envsubst.json > api_key.json
+        env:
+          SECRET_FILE: ${{ secrets.API_KEY_FOR_BACK }}
+      - name: Save the sa key
+        run: envsubst < sa_key_envsubst.json > credential.json
+        env:
+          SECRET_FILE: ${{ secrets.SA_KEY_FOR_BACK }}
+      - run: npm ci
+        working-directory: ./back
+
+  fron-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare front
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Save the environment
+        run: envsubst < envsubst > src/environments/environment.prod.ts
+        env:
+          SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
+        working-directory: ./front
+      - run: npm ci
+        working-directory: ./front
+      - run: npm run build
+        working-directory: ./front
+
+  deplay-staging:
+    name: GAE deplay
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - uses: actions/checkout@v2
+
+      - name: Deploy an App Engine app
+        id: deploy-app
+        uses: google-github-actions/deploy-appengine@v0.3.1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          deliverables: app.yaml
+          credentials: ${{ secrets.GCP_SA_KEY }}
+          version: v1
