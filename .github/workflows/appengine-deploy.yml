@@ -13,11 +13,11 @@ jobs:
         with:
           node-version: '16.x'
       - name: Save the api key
-        run: envsubst < api_key_envsubst.json > api_key.json
+        run: envsubst < ${{ secrets.API_KEY_FOR_BACK }} > api_key.json
         env:
           SECRET_FILE: ${{ secrets.API_KEY_FOR_BACK }}
       - name: Save the sa key
-        run: envsubst < sa_key_envsubst.json > credential.json
+        run: envsubst < ${{ secrets.SA_KEY_FOR_BACK }} > credential.json
         env:
           SECRET_FILE: ${{ secrets.SA_KEY_FOR_BACK }}
       - run: npm ci
@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: Save the environment
-        run: envsubst < envsubst > src/environments/environment.prod.ts
+        run: envsubst < ${{ secrets.ENV_FOR_FRONT }} > src/environments/environment.prod.ts
         env:
           SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
         working-directory: ./front
