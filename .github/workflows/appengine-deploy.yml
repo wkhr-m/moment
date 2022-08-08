@@ -13,13 +13,21 @@ jobs:
         with:
           node-version: '16.x'
       - name: Save the api key
-        run: echo env.SECRET_FILE > api_key.json
+        run: 'echo "$SECRET_FILE" > api_key.json'
+        shell: bash
         env:
           SECRET_FILE: ${{ secrets.API_KEY_FOR_BACK }}
+        working-directory: ./back
       - name: Save the sa key
-        run: echo env.SECRET_FILE > credential.json
+        run: 'echo "$SECRET_FILE" > credential.json'
+        shell: bash
         env:
           SECRET_FILE: ${{ secrets.SA_KEY_FOR_BACK }}
+        working-directory: ./back
+      - name: cat
+        shell: bash
+        run: cat api_key.json
+        working-directory: ./back
       - run: npm ci
         working-directory: ./back
 
@@ -38,16 +46,19 @@ jobs:
         run: mkdir src/environments
         working-directory: ./front
       - name: Save the environment
-        run: echo env.SECRET_FILE > src/environments/environment.prod.ts
+        run: 'echo "$SECRET_FILE" > src/environments/environment.prod.ts'
+        shell: bash
         env:
           SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
         working-directory: ./front
       - name: Save the environment
-        run: echo env.SECRET_FILE > src/environments/environment.ts
+        run: 'echo "$SECRET_FILE" > src/environments/environment.ts'
+        shell: bash
         env:
           SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
         working-directory: ./front
       - name: cat
+        shell: bash
         run: cat src/environments/environment.ts
         working-directory: ./front
       - run: npm ci
