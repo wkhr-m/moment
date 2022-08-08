@@ -24,10 +24,6 @@ jobs:
         env:
           SECRET_FILE: ${{ secrets.SA_KEY_FOR_BACK }}
         working-directory: ./back
-      - name: cat
-        shell: bash
-        run: cat api_key.json
-        working-directory: ./back
       - run: npm ci
         working-directory: ./back
 
@@ -56,10 +52,6 @@ jobs:
         shell: bash
         env:
           SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
-        working-directory: ./front
-      - name: cat
-        shell: bash
-        run: cat src/environments/environment.ts
         working-directory: ./front
       - run: npm ci
         working-directory: ./front
