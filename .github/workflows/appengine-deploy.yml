@@ -1,7 +1,7 @@
 name: GAE deploy
 on: [push]
 jobs:
-  back-build:
+  deploy:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,17 +27,6 @@ jobs:
       - run: npm ci
         working-directory: ./back
 
-  fron-build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
       - name: mkdir environment
         run: mkdir src/environments
         working-directory: ./front
@@ -57,14 +46,6 @@ jobs:
         working-directory: ./front
       - run: npm run build
         working-directory: ./front
-
-  deplay-staging:
-    name: GAE deplay
-    needs: [fron-build, back-build]
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
       - name: Deploy an App Engine app
         id: deploy-app
