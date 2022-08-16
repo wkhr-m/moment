@@ -1,6 +1,8 @@
 runtime: nodejs14
 entrypoint: node back/app.js
 handlers:
+  - url: /api/.*
+    script: auto
   - url: /
     static_files: front/build/index.html
     upload: front/build/index.html
@@ -8,9 +10,6 @@ handlers:
   - url: /(.*\.(json|ico|js|css|txt))$
     static_files: front/build/\1
     upload: front/build/.*\.(json|ico|js|css|txt)$
-
-  - url: /api/.*
-    script: auto
 
   - url: /.*
     static_files: front/build/index.html
