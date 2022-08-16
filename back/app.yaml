@@ -4,16 +4,12 @@ handlers:
   - url: /api/.*
     script: auto
 
-  - url: /
-    static_files: /front/index.html
-    upload: /front/index.html
-
-  - url: /(.*\.(json|ico|js|css|txt))$
-    static_files: /front/\1
-    upload: /front/.*\.(json|ico|js|css|txt)$
+  - url: /(.*\..+)$
+    static_files: front/\1
+    upload: front/(.*\..+)$
   - url: .*
-    static_files: /front/index.html
-    upload: /front/index.html
+    static_files: front/index.html
+    upload: front/index.html
 automatic_scaling:
   min_idle_instances: automatic
   max_idle_instances: 1
