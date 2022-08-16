@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": "front",
             "outputPath": "../back/front",
             "index": "src/index.html",
             "main": "src/main.ts",

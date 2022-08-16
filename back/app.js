@@ -19,11 +19,11 @@ const allowCrossDomain = function (req, res, next) {
 };
 app.use(allowCrossDomain);
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Hello from App Engine!');
 });
 
-app.get('/read-sheet', (req, res) => {
+app.get('/api/read-sheet', (req, res) => {
   readSheet.main(req, res);
 });
 
