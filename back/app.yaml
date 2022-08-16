@@ -1,18 +1,7 @@
 runtime: nodejs14
 entrypoint: node app.js
 handlers:
-  - url: /
-    static_files: /front/index.html
-    upload: /front/index.html
-
-  - url: /(.*\.(json|ico|js|css|txt))$
-    static_files: /front/\1
-    upload: /front/.*\.(json|ico|js|css|txt)$
-
-  - url: .*
-    static_files: /front/index.html
-    upload: /front/index.html
-  - url: /api/.*
+  - url: /.*
     script: auto
 
 automatic_scaling:
