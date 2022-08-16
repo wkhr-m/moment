@@ -27,8 +27,6 @@ jobs:
         env:
           SECRET_FILE: ${{ secrets.SA_KEY_FOR_BACK }}
         working-directory: ./back
-      - run: npm ci
-        working-directory: ./back
 
       - name: mkdir environment
         run: mkdir src/environments
@@ -55,5 +53,5 @@ jobs:
         uses: google-github-actions/deploy-appengine@v0.3.1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          deliverables: app.yaml
+          deliverables: back/app.yaml
           credentials: ${{ secrets.GCP_SA_KEY }}
