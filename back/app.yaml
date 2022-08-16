@@ -13,7 +13,7 @@ handlers:
     static_files: /front/index.html
     upload: /front/index.html
   - url: /api/.*
-    script: app.js
+    script: auto
 
 automatic_scaling:
   min_idle_instances: automatic
