@@ -5,7 +5,14 @@ import type { Book, DetailBook, Sentense } from '../types/books';
 import { MOCK } from './mock';
 
 const FUNCTION_URL = 'https://asia-northeast1-wk-moment.cloudfunctions.net/';
-const URL = 'http://localhost:8080/';
+const LOCAL_URL = 'http://localhost:8080/';
+const PROD_URL = '/api/';
+
+const LOCAL_HEADER = {
+  'Access-Control-Allow-Origin': FUNCTION_URL,
+  mode: 'cors',
+  credentials: 'include',
+};
 
 @Injectable()
 export class BookService {
@@ -19,18 +26,16 @@ export class BookService {
   }
 
   getBookAndChapters(id: string): Observable<DetailBook> {
-    this.http
-      .get(
-        `/api/read-sheet?sheetId=1eIcJQJgV1DnrLucqpuqbo3sWoYJZtJnDqerCwJdSbAg&sheetName=シート1`
-        // {
-        //   headers: {
-        //     'Access-Control-Allow-Origin': FUNCTION_URL,
-        //     mode: 'cors',
-        //     credentials: 'include',
-        //   },
-        // }
-      )
-      .subscribe((res) => console.log(res));
+    // this.http
+    //   .get(
+    //     `${
+    //       isDevMode() ? LOCAL_URL : PROD_URL
+    //     }read-sheet?sheetId=1eIcJQJgV1DnrLucqpuqbo3sWoYJZtJnDqerCwJdSbAg&sheetName=シート1`,
+    //     {
+    //       headers: isDevMode() ? LOCAL_HEADER : {},
+    //     }
+    //   )
+    //   .subscribe((res) => console.log(res));
     return of({
       id: 'target1100',
       title: '英単語1100',
