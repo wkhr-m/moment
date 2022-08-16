@@ -3,6 +3,8 @@ entrypoint: node app.js
 handlers:
   - url: /.*
     script: auto
+  - url: /api/.*
+    script: auto
 
 automatic_scaling:
   min_idle_instances: automatic
