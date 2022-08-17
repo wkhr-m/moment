@@ -1,5 +1,19 @@
 <section class="all-books">
-  <h2 class="all-books-header">全てのコンテンツ</h2>
+  <h2 class="all-books-header">
+    全てのコンテンツ
+    <button
+      mat-raised-button
+      [ngStyle]="{
+        'background-color': '#937DC2',
+        color: '#fff',
+        'font-weight': 'bold'
+      }"
+      (click)="onOpenDialog()"
+    >
+      インポート
+    </button>
+  </h2>
+
   <div class="books">
     <a
       class="book-link"

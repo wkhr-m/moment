@@ -74,3 +74,13 @@ body {
 .cdk-global-overlay-wrapper {
   align-items: flex-end !important;
 }
+
+.mat-raised-button {
+  background-color: rgb(147, 125, 194) !important;
+  color: rgb(255, 255, 255) !important;
+  font-weight: bold !important;
+}
+.mat-button-disabled {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+  color: rgba(0, 0, 0, 0.26) !important;
+}

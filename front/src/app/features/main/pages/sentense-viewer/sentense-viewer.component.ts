@@ -17,6 +17,7 @@ export class SentenseViewerComponent implements OnInit {
   sentenses: Sentense[] = [];
   activeSentenseNumber: number = 0;
   isSecondHide: boolean = true;
+  isLoaded = false;
 
   constructor(
     private bookService: BookService,
@@ -34,15 +35,16 @@ export class SentenseViewerComponent implements OnInit {
       this.setHeader(book);
     });
 
-    this.bookService.getBookSentences(bookId).subscribe((sentenses) => {
+    this.bookService.getBookSentences(bookId).subscribe((book) => {
       if (section) {
-        this.sentenses = sentenses.filter(
+        this.sentenses = book.sentenses.filter(
           (sentense) => sentense.section === section
         );
       } else {
-        this.sentenses = sentenses;
+        this.sentenses = book.sentenses;
       }
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
+      this.isLoaded = true;
     });
   }
 
@@ -78,7 +80,5 @@ export class SentenseViewerComponent implements OnInit {
   // headerにタイトルや色を設定する
   private setHeader(book: DetailBook): void {
     this.headerService.setBackURL(`book/${book.id}`);
-    this.headerService.setBgColor(book.bgColor);
-    this.headerService.setColor(book.color);
   }
 }

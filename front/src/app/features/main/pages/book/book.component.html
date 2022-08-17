@@ -1,8 +1,7 @@
 <div
   class="sub-header"
   [ngStyle]="{
-    'background-color': book?.bgColor,
-    color: book?.color || '#937DC2'
+    color: '#937DC2'
   }"
 >
   <div class="sub-header-actions">
@@ -10,8 +9,7 @@
       mat-raised-button
       routerLink="/book/{{ book?.id }}/sentense"
       [ngStyle]="{
-        'background-color': book?.color || '#937DC2',
-        color: book?.bgColor,
+        'background-color': '#937DC2',
         'font-weight': 'bold'
       }"
     >

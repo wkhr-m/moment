@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, isDevMode } from '@angular/core';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { map, merge, Observable } from 'rxjs';
 import type { Book, DetailBook, Sentense } from '../types/books';
-import { MOCK } from './mock';
+import { STORE_BOOK, STORE_SENTENSES } from './../../../utils/db-config';
 
 const FUNCTION_URL = 'https://asia-northeast1-wk-moment.cloudfunctions.net/';
-const LOCAL_URL = 'http://localhost:8080/';
+const LOCAL_URL = 'http://localhost:8080/api/';
 const PROD_URL = '/api/';
+const TARGET = '12nsZvVLWOfwdhfcazo3av6NlQYOWuXoN82lwRt8s3ME';
+const DUO = '1eIcJQJgV1DnrLucqpuqbo3sWoYJZtJnDqerCwJdSbAg';
 
 const LOCAL_HEADER = {
   'Access-Control-Allow-Origin': FUNCTION_URL,
@@ -14,49 +17,72 @@ const LOCAL_HEADER = {
   credentials: 'include',
 };
 
+type Response = {
+  id: string;
+  title: string;
+  sentenses: Sentense[];
+};
+
 @Injectable()
 export class BookService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private dbService: NgxIndexedDBService
+  ) {}
+
+  downloadBook(id: string): Observable<Sentense[]> {
+    return this.http
+      .get<Response>(
+        `${
+          isDevMode() ? LOCAL_URL : PROD_URL
+        }read-sheet?sheetId=${id}&sheetName=シート1`,
+        {
+          headers: isDevMode() ? LOCAL_HEADER : {},
+        }
+      )
+      .pipe(
+        map((book) => {
+          const section: { [key: string]: number } = {};
+          book.sentenses.forEach((row) => {
+            section[row.section] = section[row.section]
+              ? ++section[row.section]
+              : 1;
+          });
+          merge(
+            this.dbService.update(STORE_SENTENSES, {
+              id: id,
+              sentenses: book.sentenses,
+            }),
+            this.dbService.update(STORE_BOOK, {
+              id: id,
+              title: book.title,
+              count: book.sentenses.length,
+              section: Object.keys({ section1: 560 }).map((id) => ({
+                id,
+                count: section[id],
+              })),
+            })
+          ).subscribe((res) => console.log(res));
+
+          return book.sentenses;
+        })
+      );
+  }
 
   getAllBooks(): Observable<Book[]> {
-    return of([
-      { id: 'target1100', title: '英単語1100', count: 1000 },
-      { id: 'duo3.0', title: 'Duo3.0', count: 560 },
-    ]);
+    return this.dbService.getAll<Book>(STORE_BOOK);
   }
 
   getBookAndChapters(id: string): Observable<DetailBook> {
-    // this.http
-    //   .get(
-    //     `${
-    //       isDevMode() ? LOCAL_URL : PROD_URL
-    //     }read-sheet?sheetId=1eIcJQJgV1DnrLucqpuqbo3sWoYJZtJnDqerCwJdSbAg&sheetName=シート1`,
-    //     {
-    //       headers: isDevMode() ? LOCAL_HEADER : {},
-    //     }
-    //   )
-    //   .subscribe((res) => console.log(res));
-    return of({
-      id: 'target1100',
-      title: '英単語1100',
-      count: 1100,
-      section: [
-        { id: 'section1', count: 100 },
-        { id: 'section2', count: 100 },
-        { id: 'section3', count: 100 },
-        { id: 'section4', count: 100 },
-        { id: 'section5', count: 100 },
-        { id: 'section6', count: 100 },
-        { id: 'section7', count: 100 },
-        { id: 'section8', count: 100 },
-        { id: 'section9', count: 100 },
-        { id: 'section10', count: 100 },
-        { id: 'section11', count: 100 },
-      ],
-    });
+    return this.dbService.getByKey<DetailBook>(STORE_BOOK, id);
   }
 
-  getBookSentences(id: string): Observable<Sentense[]> {
-    return of(MOCK);
+  getBookSentences(
+    id: string
+  ): Observable<{ id: string; sentenses: Sentense[] }> {
+    return this.dbService.getByKey<{ id: string; sentenses: Sentense[] }>(
+      STORE_SENTENSES,
+      id
+    );
   }
 }

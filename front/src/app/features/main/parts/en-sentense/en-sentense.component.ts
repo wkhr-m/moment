@@ -13,7 +13,7 @@ import {
   styleUrls: ['./en-sentense.component.scss'],
 })
 export class EnSentenseComponent implements OnChanges {
-  @Input() sentense: string = '';
+  @Input() sentense?: string = '';
   @Input() pronanciation?: string = '';
   @Output() wordClick = new EventEmitter<string>();
   splitedSentense: string[] = [];

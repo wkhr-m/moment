@@ -9,8 +9,6 @@ export type DetailBook = {
   title: string;
   count: number;
   section: Section[];
-  color?: string;
-  bgColor?: string;
 };
 
 export type Section = {

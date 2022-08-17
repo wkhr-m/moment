@@ -7,14 +7,30 @@ exports.main = async (req, res) => {
   var spreadsheetId = req.query.sheetId;
   var range = req.query.sheetName;
   const sheets = google.sheets({ version: 'v4' });
-  const request = {
-    spreadsheetId: spreadsheetId,
-    range: range,
-    auth: jwt,
-    key: apiKey,
-  };
-  const response = (await sheets.spreadsheets.values.get(request)).data;
-  const result = JSON.stringify(parseValue(response.values));
+
+  const title = (
+    await sheets.spreadsheets.get({
+      includeGridData: false,
+      spreadsheetId,
+      auth: jwt,
+      key: apiKey,
+    })
+  ).data.properties.title;
+
+  const response = (
+    await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range,
+      auth: jwt,
+      key: apiKey,
+    })
+  ).data;
+
+  const result = JSON.stringify({
+    id: spreadsheetId,
+    title,
+    sentenses: parseValue(response.values),
+  });
   res.status(200).type('application/json').end(result);
 };
 
