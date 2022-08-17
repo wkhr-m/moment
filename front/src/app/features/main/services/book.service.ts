@@ -8,8 +8,6 @@ import { STORE_BOOK, STORE_SENTENSES } from './../../../utils/db-config';
 const FUNCTION_URL = 'https://asia-northeast1-wk-moment.cloudfunctions.net/';
 const LOCAL_URL = 'http://localhost:8080/api/';
 const PROD_URL = '/api/';
-const TARGET = '12nsZvVLWOfwdhfcazo3av6NlQYOWuXoN82lwRt8s3ME';
-const DUO = '1eIcJQJgV1DnrLucqpuqbo3sWoYJZtJnDqerCwJdSbAg';
 
 const LOCAL_HEADER = {
   'Access-Control-Allow-Origin': FUNCTION_URL,

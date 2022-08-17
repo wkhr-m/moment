@@ -35,18 +35,24 @@ export class DownloadBookComponent implements OnInit {
       /^https?:\/{2,}docs.google.com\/spreadsheets\/d\/.*?(.*)\/edit/
     )?.[1];
     if (!id) {
-      this._snackBar.open('値が不正です');
+      this._snackBar.open('値が不正です', '', {
+        duration: 5000,
+      });
     } else {
-      this.bookService.downloadBook(id).subscribe(
-        (book) => {
-          this._snackBar.open('成功しました。');
+      this.bookService.downloadBook(id).subscribe({
+        next: (book) => {
+          this._snackBar.open('成功しました。', '', {
+            duration: 5000,
+          });
           this.data = { needLoad: true };
           this.onClose();
         },
-        (error) => {
-          this._snackBar.open('失敗しました。');
-        }
-      );
+        error: (error) => {
+          this._snackBar.open('失敗しました。', '', {
+            duration: 5000,
+          });
+        },
+      });
     }
   }
 }
