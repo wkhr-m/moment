@@ -29,7 +29,12 @@
         <mat-label>スプレッドシートのURL</mat-label>
         <input matInput [formControl]="form" />
       </mat-form-field>
-      <button [disabled]="form.invalid" (click)="onSubmit()" mat-raised-button>
+      <button
+        [disabled]="form.invalid"
+        color="primary"
+        (click)="onSubmit()"
+        mat-raised-button
+      >
         読み込む
       </button>
     </section>

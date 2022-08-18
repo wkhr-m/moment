@@ -1,9 +1,4 @@
-<header
-  [ngStyle]="{
-    'background-color': bgColor || '#fcfbfb',
-    color: color || '#937DC2'
-  }"
->
+<header>
   <a mat-icon-button *ngIf="url" [routerLink]="url">
     <mat-icon>arrow_back</mat-icon>
   </a>

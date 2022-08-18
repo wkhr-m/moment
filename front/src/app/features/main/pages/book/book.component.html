@@ -1,20 +1,13 @@
-<div
-  class="sub-header"
-  [ngStyle]="{
-    color: '#937DC2'
-  }"
->
+<div class="sub-header">
   <div class="sub-header-actions">
     <a
       mat-raised-button
+      color="primary"
       routerLink="/book/{{ book?.id }}/sentense"
-      [ngStyle]="{
-        'background-color': '#937DC2',
-        'font-weight': 'bold'
-      }"
     >
       全再生
     </a>
+    <button mat-raised-button>再同期</button>
   </div>
 </div>
 

@@ -1,3 +1,5 @@
+@use "./../../../../../style/color.scss" as color;
+
 .sub-header {
   padding: 0.7rem 0.7rem 0.7rem 3.2rem;
   box-sizing: border-box;
@@ -22,7 +24,7 @@
 .chapter-title {
   margin: 0;
   font-weight: bold;
-  color: #6d8b74;
+  color: color.$text-title-color;
 }
 .action-buttons {
   display: flex;
