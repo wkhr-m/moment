@@ -1,27 +1,34 @@
-<div class="sub-header">
-  <div class="sub-header-actions">
-    <a
-      mat-raised-button
-      color="primary"
-      routerLink="/book/{{ book?.id }}/sentense"
-    >
-      全再生
-    </a>
-    <button mat-raised-button>再同期</button>
+<ng-container *ngIf="isResync; else elseTemplate">
+  <div class="loading">
+    <mat-spinner></mat-spinner>
   </div>
-</div>
+</ng-container>
+<ng-template #elseTemplate>
+  <div class="sub-header">
+    <div class="sub-header-actions">
+      <a
+        mat-raised-button
+        color="primary"
+        routerLink="/book/{{ book?.id }}/sentense"
+      >
+        全再生
+      </a>
+      <button mat-raised-button (click)="onResync()">再同期</button>
+    </div>
+  </div>
 
-<div class="chapters">
-  <a
-    class="chapter"
-    routerLink="/book/{{ book?.id }}/sentense"
-    [queryParams]="{ section: section.id }"
-    *ngFor="let section of book?.section"
-  >
-    <mat-card>
-      <h3 class="chapter-title">{{ section.id }}</h3>
-      <span class="chapter-sub">{{ section.count }}文</span>
-      <div class="action-buttons"></div>
-    </mat-card>
-  </a>
-</div>
+  <div class="chapters">
+    <a
+      class="chapter"
+      routerLink="/book/{{ book?.id }}/sentense"
+      [queryParams]="{ section: section.id }"
+      *ngFor="let section of book?.section"
+    >
+      <mat-card>
+        <h3 class="chapter-title">{{ section.id }}</h3>
+        <span class="chapter-sub">{{ section.count }}文</span>
+        <div class="action-buttons"></div>
+      </mat-card>
+    </a>
+  </div>
+</ng-template>

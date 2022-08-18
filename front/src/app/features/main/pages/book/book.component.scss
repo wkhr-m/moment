@@ -1,5 +1,10 @@
 @use "./../../../../../style/color.scss" as color;
 
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .sub-header {
   padding: 0.7rem 0.7rem 0.7rem 3.2rem;
   box-sizing: border-box;
