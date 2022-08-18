@@ -7,7 +7,7 @@ GoogleスプレッドシートとGoogleDriveから単語帳の情報をインポ
     - 英単語の意味を調べるAPI
 
 ## デプロイ
-GitHub ActionsからGAEにデプロイをできるようにする。
+GitHub ActionsからGAEにデプロイ
 
 ## 作成したサービスアカウント
 - github-actions@サービスアカウント
@@ -36,3 +36,6 @@ Repository > Settings > secrets > Actions
   - spreadsheet-reader@サービスアカウントのJSONキー
 - ENV_FOR_FRONT
   - firebaseのキーとWordsAPIのキー
+
+## アイコン
+[FLAT ICON DESIGN](http://flat-icon-design.com/)を利用
