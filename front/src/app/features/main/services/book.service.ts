@@ -60,7 +60,7 @@ export class BookService {
                 count: section[id],
               })),
             })
-          ).subscribe((res) => console.log(res));
+          ).subscribe((res) => console.log('import sucess'));
 
           return book.sentenses;
         })
