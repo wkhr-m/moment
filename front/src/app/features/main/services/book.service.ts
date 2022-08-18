@@ -40,12 +40,6 @@ export class BookService {
       )
       .pipe(
         map((book) => {
-          const section: { [key: string]: number } = {};
-          book.sentenses.forEach((row) => {
-            section[row.section] = section[row.section]
-              ? ++section[row.section]
-              : 1;
-          });
           merge(
             this.dbService.update(STORE_SENTENSES, {
               id: id,
@@ -55,16 +49,24 @@ export class BookService {
               id: id,
               title: book.title,
               count: book.sentenses.length,
-              section: Object.keys({ section1: 560 }).map((id) => ({
-                id,
-                count: section[id],
-              })),
+              section: this.setSection(book.sentenses),
             })
-          ).subscribe((res) => console.log('import sucess'));
+          ).subscribe(() => console.log('import sucess'));
 
           return book.sentenses;
         })
       );
+  }
+
+  private setSection(sentenses: Sentense[]) {
+    const section: { [key: string]: number } = {};
+    sentenses.forEach((row) => {
+      section[row.section] = section[row.section] ? ++section[row.section] : 1;
+    });
+    return Object.keys(section).map((id) => ({
+      id,
+      count: section[id],
+    }));
   }
 
   getAllBooks(): Observable<Book[]> {
