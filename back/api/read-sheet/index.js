@@ -1,6 +1,11 @@
 const { google } = require('googleapis');
 const { JWT } = require('google-auth-library');
 
+// ヘッダーの種類
+const HEADER = ['ja', 'en', 'pronanciation', 'section', 'audio', 'note'];
+// 最低限必要なヘッダー
+const NEED_HEADER = ['ja', 'en', 'section'];
+
 exports.main = async (req, res) => {
   var jwt = getJwt();
   var apiKey = getApiKey();
@@ -35,12 +40,24 @@ exports.main = async (req, res) => {
 };
 
 function parseValue(data) {
-  const header = data[0];
+  const header = data[0].map((item) => item.trim());
+  // ヘッダーが最低限のもの(NEED_HEADER)を含むかどうか確認
+  if (header.map((item) => NEED_HEADER.includes(item)).includes(false)) {
+    new Error('Lack header item!');
+  }
+  const headerIndexMap = {};
+  for (const item of HEADER) {
+    const index = header.findIndex((i) => i === item);
+    if (index >= 0) {
+      headerIndexMap[index] = item;
+    }
+  }
+
   const resultList = [];
   for (let index = 1; index < data.length; index++) {
     const item = data[index];
     const result = {};
-    for (const clomnIndex in header) {
+    for (const clomnIndex in headerIndexMap) {
       result[header[clomnIndex]] = item[clomnIndex];
     }
     resultList.push(result);
