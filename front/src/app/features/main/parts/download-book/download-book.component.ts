@@ -32,7 +32,7 @@ export class DownloadBookComponent implements OnInit {
 
   onSubmit(): void {
     const id = this.form.value?.match(
-      /^https?:\/{2,}docs.google.com\/spreadsheets\/d\/.*?(.*)\/edit/
+      /^https?:\/{2,}docs.google.com\/spreadsheets[\/u\/0]*?\/d\/.*?(.*)\/.*?/
     )?.[1];
     if (!id) {
       this._snackBar.open('値が不正です', '', {
