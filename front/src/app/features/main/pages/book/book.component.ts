@@ -20,12 +20,12 @@ export class BookComponent implements OnInit {
 
   ngOnInit(): void {
     const bookId = this.route.snapshot.paramMap.get('bookId') || '';
-    this.bookService.getBookAndChapters(bookId).subscribe((book) => {
-      console.log(book);
-      this.book = book;
-
-      this.setHeader(book);
-    });
+    this.bookService
+      .getBookAndChapters(bookId)
+      .subscribe((book: DetailBook) => {
+        this.book = book;
+        this.setHeader(book);
+      });
   }
 
   // headerにタイトルや色を設定する

@@ -1,3 +1,5 @@
+@use "./../../../../../style/color.scss" as color;
+
 .all-books {
   padding: 1rem;
   box-sizing: border-box;
@@ -5,7 +7,7 @@
 .all-books-header {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #c689c6;
+  color: color.$text-title-color;
 }
 .books {
   grid-column-gap: 0.75rem;
@@ -22,5 +24,6 @@
 }
 .book-title {
   font-weight: bolder;
+  color: color.$darker-color;
   margin: 0;
 }

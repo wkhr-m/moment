@@ -1,5 +1,7 @@
+@use "./../../../../../style/color.scss" as color;
+
 header {
-  height: 5rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   padding: 0 1rem;
@@ -8,4 +10,5 @@ header {
 .title {
   font-size: 1.4rem;
   font-weight: bold;
+  color: color.$darker-color;
 }
