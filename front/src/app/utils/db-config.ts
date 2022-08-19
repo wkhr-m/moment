@@ -1,7 +1,7 @@
 import { DBConfig } from 'ngx-indexed-db';
 
 export const STORE_TYPE = {
-  STORE_AUDIO_URL: 'audio-url',
+  STORE_DRIVE_URL: 'driveUrl',
   STORE_SENTENSES: 'sentenses',
   STORE_BOOK: 'book',
 };
@@ -27,10 +27,10 @@ export const dbConfig: DBConfig = {
       ],
     },
     {
-      store: STORE_TYPE.STORE_AUDIO_URL,
+      store: STORE_TYPE.STORE_DRIVE_URL,
       storeConfig: { keyPath: 'id', autoIncrement: false },
       storeSchema: [
-        { name: 'url', keypath: 'url', options: { unique: false } },
+        { name: 'driveId', keypath: 'driveUrl', options: { unique: false } },
       ],
     },
   ],

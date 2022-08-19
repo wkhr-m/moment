@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const readSheet = require('./api/read-sheet');
+const getAudioUrl = require('./api/get-audio-url');
 
 const allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -25,6 +26,10 @@ app.get('/api', (req, res) => {
 
 app.get('/api/read-sheet', (req, res) => {
   readSheet.main(req, res);
+});
+
+app.get('/api/get-audio-url', (req, res) => {
+  getAudioUrl.main(req, res);
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise

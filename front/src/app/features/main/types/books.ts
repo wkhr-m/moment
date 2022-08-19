@@ -23,4 +23,5 @@ export type Sentense = {
   number: number;
   note: string;
   pronanciation?: string;
+  audio?: string;
 };

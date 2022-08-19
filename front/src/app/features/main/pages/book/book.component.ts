@@ -19,7 +19,7 @@ import { HeaderService } from './../../services/header.service';
 export class BookComponent implements OnInit {
   book?: DetailBook;
   bookId: string;
-  audioUrl: string = '';
+  driveUrl: string = '';
   isLoading: boolean = false;
 
   constructor(
@@ -40,13 +40,13 @@ export class BookComponent implements OnInit {
         this.book = book;
         this.setHeader(book);
       });
-    this.updateAudioUrl();
+    this.updateDriveUrl();
   }
 
-  private updateAudioUrl() {
+  private updateDriveUrl() {
     this.bookService
-      .getAudioUrl(this.bookId)
-      .subscribe((audioUrl) => (this.audioUrl = audioUrl));
+      .getDriveUrl(this.bookId)
+      .subscribe((driveUrl) => (this.driveUrl = driveUrl));
   }
 
   openSettings() {
@@ -54,12 +54,12 @@ export class BookComponent implements OnInit {
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
       data: {
         title: this.book?.title,
-        audioUrl: this.audioUrl,
+        driveUrl: this.driveUrl,
         bookId: this.bookId,
       },
     });
     dialogRef.closed.subscribe((result?: SettingOutput) => {
-      this.updateAudioUrl();
+      this.updateDriveUrl();
       if (result) {
         for (const setting of result) {
           switch (setting.key) {

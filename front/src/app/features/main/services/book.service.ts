@@ -28,6 +28,20 @@ export class BookService {
     private dbService: NgxIndexedDBService
   ) {}
 
+  getAudioUrl(driveUrl: string, fileName: string): Observable<{ url: string }> {
+    const driveId = driveUrl
+      .match(/^https?:\/{2,}drive.google.com\/drive\/folders\/(.*).*?/)?.[1]
+      .split('?')[0];
+    return this.http.get<{ url: string }>(
+      `${
+        isDevMode() ? LOCAL_URL : PROD_URL
+      }get-audio-url?folderId=${driveId}&fileName=${fileName}`,
+      {
+        headers: isDevMode() ? LOCAL_HEADER : {},
+      }
+    );
+  }
+
   downloadBook(id: string): Observable<Sentense[]> {
     return this.http
       .get<Response>(
@@ -62,7 +76,7 @@ export class BookService {
     return merge(
       this.dbService.deleteByKey(STORE_TYPE.STORE_SENTENSES, id),
       this.dbService.deleteByKey(STORE_TYPE.STORE_BOOK, id),
-      this.dbService.deleteByKey(STORE_TYPE.STORE_AUDIO_URL, id)
+      this.dbService.deleteByKey(STORE_TYPE.STORE_DRIVE_URL, id)
     );
   }
 
@@ -77,17 +91,20 @@ export class BookService {
     }));
   }
 
-  setAudioUrl(id: string, url?: string): Observable<any> {
-    return this.dbService.update(STORE_TYPE.STORE_AUDIO_URL, {
+  setDriveUrl(id: string, driveUrl?: string): Observable<any> {
+    return this.dbService.update(STORE_TYPE.STORE_DRIVE_URL, {
       id,
-      url,
+      driveUrl,
     });
   }
 
-  getAudioUrl(id: string): Observable<string> {
+  getDriveUrl(id: string): Observable<string> {
     return this.dbService
-      .getByKey<{ id: string; url: string }>(STORE_TYPE.STORE_AUDIO_URL, id)
-      .pipe(map((item) => item.url));
+      .getByKey<{ id: string; driveUrl: string }>(
+        STORE_TYPE.STORE_DRIVE_URL,
+        id
+      )
+      .pipe(map((item) => item?.driveUrl));
   }
 
   getAllBooks(): Observable<Book[]> {

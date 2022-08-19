@@ -15,7 +15,7 @@ export type SettingOutput = Array<{ key: SettingOutputType; value?: string }>;
 type Setting = {
   bookId: string;
   title: string;
-  audioUrl: string;
+  driveUrl: string;
 };
 @Component({
   selector: 'app-settings-dialog',
@@ -30,7 +30,7 @@ export class SettingsDialogComponent {
     @Inject(DIALOG_DATA) public data: Setting,
     private bookService: BookService
   ) {
-    this.form = new FormControl<string>(this.data.audioUrl);
+    this.form = new FormControl<string>(this.data.driveUrl);
   }
 
   onClose(key?: SettingOutputType): void {
@@ -39,8 +39,9 @@ export class SettingsDialogComponent {
 
   onBlur() {
     if (this.form.dirty) {
+      const driveUrl = this.form.value || '';
       this.bookService
-        .setAudioUrl(this.data.bookId, this.form.value)
+        .setDriveUrl(this.data.bookId, driveUrl)
         .subscribe(() => console.log('Success: save audio url'));
     }
   }
