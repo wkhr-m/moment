@@ -2,7 +2,6 @@ import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BookService } from '../../services/book.service';
 import { REGEXP_SPREADSHEET_URL } from './../../../../utils/regexp';
 
 export interface DialogData {
@@ -20,7 +19,6 @@ export class DownloadBookComponent implements OnInit {
   constructor(
     public dialogRef: DialogRef,
     @Optional() @Inject(DIALOG_DATA) public data: DialogData,
-    private bookService: BookService,
     private _snackBar: MatSnackBar
   ) {}
 
