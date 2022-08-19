@@ -1,4 +1,4 @@
-<ng-container *ngIf="isResync; else elseTemplate">
+<ng-container *ngIf="isLoading; else elseTemplate">
   <div class="loading">
     <mat-spinner></mat-spinner>
   </div>
@@ -14,6 +14,9 @@
         全再生
       </a>
       <button mat-raised-button (click)="onResync()">再同期</button>
+      <button mat-raised-button color="accent" (click)="onDelete()">
+        削除する
+      </button>
     </div>
   </div>
 

@@ -1,0 +1,9 @@
+<section class="word-dialog">
+  <div class="dialog-header">「{{ data.title }}」を削除しますか</div>
+  <div class="dialog-content">
+    <div mat-dialog-actions>
+      <button mat-button cdkFocusInitial (click)="onNoClick()">いいえ</button>
+      <button mat-button color="warn" (click)="onDelete()">削除する</button>
+    </div>
+  </div>
+</section>

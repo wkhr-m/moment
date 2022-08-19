@@ -58,6 +58,13 @@ export class BookService {
       );
   }
 
+  deleteBook(id: string) {
+    return merge(
+      this.dbService.deleteByKey(STORE_SENTENSES, id),
+      this.dbService.deleteByKey(STORE_BOOK, id)
+    );
+  }
+
   private setSection(sentenses: Sentense[]) {
     const section: { [key: string]: number } = {};
     sentenses.forEach((row) => {
