@@ -34,3 +34,20 @@
   height: calc(100% - 5rem);
   overflow-y: scroll;
 }
+
+@mixin not-exist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+@mixin not-exist-icon {
+  font-size: 48px;
+  height: auto;
+  width: auto;
+}
+@mixin not-exist-content {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}

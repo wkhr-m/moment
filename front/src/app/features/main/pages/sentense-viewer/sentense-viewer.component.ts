@@ -18,6 +18,7 @@ export class SentenseViewerComponent implements OnInit {
   activeSentenseNumber: number = 0;
   isSecondHide: boolean = true;
   isLoaded = false;
+  isExist: boolean = true;
   driveUrl?: string;
   audioUrl?: string;
 
@@ -33,6 +34,7 @@ export class SentenseViewerComponent implements OnInit {
     const section = this.route.snapshot.queryParams['section'];
 
     this.bookService.getBookAndChapters(bookId).subscribe((book) => {
+      this.isExist = !!book;
       this.book = book;
       this.setHeader(book);
     });
@@ -48,6 +50,13 @@ export class SentenseViewerComponent implements OnInit {
         );
       } else {
         this.sentenses = book.sentenses;
+      }
+      // 文章がない場合
+      if (this.sentenses.length === 0) {
+        this.isExist = false;
+        this.headerService.setBackURL('books');
+        this.isLoaded = true;
+        return;
       }
       this.getDriveUrl(this.activeSentenseNumber);
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
@@ -104,6 +113,6 @@ export class SentenseViewerComponent implements OnInit {
   }
   // headerにタイトルや色を設定する
   private setHeader(book: DetailBook): void {
-    this.headerService.setBackURL(`book/${book.id}`);
+    this.headerService.setBackURL(book ? `book/${book.id}` : 'books');
   }
 }

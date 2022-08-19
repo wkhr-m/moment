@@ -1,4 +1,5 @@
 @use "./../../../../../style/color.scss" as color;
+@use "./../../../../../style/variable.scss" as variable;
 
 .loading {
   display: flex;
@@ -35,4 +36,14 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+}
+
+.not-exist {
+  @include variable.not-exist;
+}
+.not-exist-icon {
+  @include variable.not-exist-icon;
+}
+.not-exist-content {
+  @include variable.not-exist-content;
 }

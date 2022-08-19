@@ -19,7 +19,13 @@ export class LoginComponent implements OnInit {
   });
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.getAuthState().subscribe((user) => {
+      if (user) {
+        this.router.navigateByUrl('/books');
+      }
+    });
+  }
 
   onSubmit() {
     const { email, password } = this.form.value;
