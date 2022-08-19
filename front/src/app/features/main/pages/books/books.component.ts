@@ -1,8 +1,10 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DownloadBookComponent } from '../../parts/download-book/download-book.component';
 import { BookService } from '../../services/book.service';
 import type { Book } from '../../types/books';
+import { REGEXP_SPREADSHEET_URL } from './../../../../utils/regexp';
 import { HeaderService } from './../../services/header.service';
 
 @Component({
@@ -12,12 +14,13 @@ import { HeaderService } from './../../services/header.service';
 })
 export class BooksComponent implements OnInit {
   books: Book[] = [];
-  isReady: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private bookService: BookService,
     private headerService: HeaderService,
-    public dialog: Dialog
+    public dialog: Dialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -28,17 +31,40 @@ export class BooksComponent implements OnInit {
   private loadBooks(): void {
     this.bookService.getAllBooks().subscribe((res) => {
       this.books = res;
-      this.isReady = true;
     });
   }
 
   onOpenDialog(): void {
-    const dialogRef = this.dialog.open(DownloadBookComponent, {
+    const dialogRef = this.dialog.open<string>(DownloadBookComponent, {
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
       data: {},
     });
-    dialogRef.closed.subscribe((result: any) => {
-      this.loadBooks();
+    dialogRef.closed.subscribe((url?: string) => {
+      if (url) {
+        this.downloadBook(url);
+      }
     });
+  }
+
+  private downloadBook(url: string) {
+    const id = url.trim().match(REGEXP_SPREADSHEET_URL)?.[1];
+    if (id) {
+      this.isLoading = true;
+      this.bookService.downloadBook(id).subscribe({
+        next: (book) => {
+          this._snackBar.open('読み込みに成功しました。', '', {
+            duration: 5000,
+          });
+          this.loadBooks();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this._snackBar.open('読み込みに失敗しました。', '', {
+            duration: 5000,
+          });
+          this.isLoading = false;
+        },
+      });
+    }
   }
 }

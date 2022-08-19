@@ -3,6 +3,7 @@ import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BookService } from '../../services/book.service';
+import { REGEXP_SPREADSHEET_URL } from './../../../../utils/regexp';
 
 export interface DialogData {
   needLoad: boolean;
@@ -30,28 +31,17 @@ export class DownloadBookComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const id = this.form.value?.match(
-      /^https?:\/{2,}docs.google.com\/spreadsheets[\/u\/0]*?\/d\/.*?(.*)\/.*?/
-    )?.[1];
-    if (!id) {
-      this._snackBar.open('値が不正です', '', {
+    if (!this.form.value) {
+      this._snackBar.open('何も入力されていません。', '', {
         duration: 5000,
       });
-    } else {
-      this.bookService.downloadBook(id).subscribe({
-        next: (book) => {
-          this._snackBar.open('成功しました。', '', {
-            duration: 5000,
-          });
-          this.data = { needLoad: true };
-          this.onClose();
-        },
-        error: (error) => {
-          this._snackBar.open('失敗しました。', '', {
-            duration: 5000,
-          });
-        },
-      });
     }
+    if (REGEXP_SPREADSHEET_URL.test(this.form.value?.trim() || '')) {
+      this.dialogRef.close(this.form.value);
+      return;
+    }
+    this._snackBar.open('入力されたURLが不正です。', '', {
+      duration: 5000,
+    });
   }
 }
