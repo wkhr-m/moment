@@ -10,6 +10,7 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
     children: [
+      { path: '', pathMatch: 'full', redirectTo: '/books' },
       {
         path: 'books',
         pathMatch: 'full',
@@ -25,13 +26,9 @@ const routes: Routes = [
         pathMatch: 'full',
         component: BookComponent,
       },
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'books',
-      },
     ],
   },
+  { path: '**', redirectTo: '/books' },
 ];
 
 @NgModule({
