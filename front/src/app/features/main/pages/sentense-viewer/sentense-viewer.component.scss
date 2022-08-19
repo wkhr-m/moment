@@ -1,3 +1,5 @@
+@use "./../../../../../style/variable.scss" as variable;
+
 .content {
   display: grid;
   row-gap: 0.6rem;
@@ -64,4 +66,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.not-exist {
+  @include variable.not-exist;
+}
+.not-exist-icon {
+  @include variable.not-exist-icon;
+}
+.not-exist-content {
+  @include variable.not-exist-content;
 }
