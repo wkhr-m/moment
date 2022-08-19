@@ -63,6 +63,7 @@ export class SentenseViewerComponent implements OnInit {
     const newActiveNumber = this.activeSentenseNumber + page;
     this.activeSentenseNumber = newActiveNumber;
     this.isSecondHide = true;
+    this.audioUrl = '';
     this.getDriveUrl(newActiveNumber);
     this.setSentenseNumberAtHeader(newActiveNumber);
   }
