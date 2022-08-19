@@ -3,7 +3,7 @@
 :host {
   @include variable.dialog-host;
 }
-.dialog {
+.word-dialog {
   @include variable.dialog-wrapper;
 }
 .dialog-header {
@@ -11,11 +11,4 @@
 }
 .dialog-content {
   @include variable.dialog-content;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  margin: 2rem 0;
 }

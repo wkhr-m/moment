@@ -1,10 +1,10 @@
+import { DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -16,6 +16,7 @@ import { BookComponent } from './pages/book/book.component';
 import { BooksComponent } from './pages/books/books.component';
 import { HomeComponent } from './pages/home/home.component';
 import { SentenseViewerComponent } from './pages/sentense-viewer/sentense-viewer.component';
+import { DeleteBookDialogComponent } from './parts/delete-book-dialog/delete-book-dialog.component';
 import { DownloadBookComponent } from './parts/download-book/download-book.component';
 import { EnSentenseComponent } from './parts/en-sentense/en-sentense.component';
 import { HeaderComponent } from './parts/header/header.component';
@@ -34,6 +35,7 @@ import { WordService } from './services/word.service';
     EnSentenseComponent,
     MeanWordComponent,
     DownloadBookComponent,
+    DeleteBookDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,7 @@ import { WordService } from './services/word.service';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatDialogModule,
+    DialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,

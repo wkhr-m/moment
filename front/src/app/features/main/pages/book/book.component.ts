@@ -1,6 +1,8 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DeleteBookDialogComponent } from '../../parts/delete-book-dialog/delete-book-dialog.component';
 import type { DetailBook } from '../../types/books';
 import { BookService } from './../../services/book.service';
 import { HeaderService } from './../../services/header.service';
@@ -13,13 +15,15 @@ import { HeaderService } from './../../services/header.service';
 export class BookComponent implements OnInit {
   book?: DetailBook;
   bookId: string;
-  isResync: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private headerService: HeaderService,
     private bookService: BookService,
     private route: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    public dialog: Dialog
   ) {
     this.bookId = this.route.snapshot.paramMap.get('bookId') || '';
   }
@@ -34,16 +38,16 @@ export class BookComponent implements OnInit {
   }
 
   onResync() {
-    this.isResync = true;
+    this.isLoading = true;
     this.bookService.downloadBook(this.bookId).subscribe({
       next: () => {
-        this.isResync = false;
+        this.isLoading = false;
         this._snackBar.open('再同期完了しました。', '', {
           duration: 5000,
         });
       },
       error: () => {
-        this.isResync = false;
+        this.isLoading = false;
         this._snackBar.open(
           '失敗しました。時間を置いてから再度お試しください。',
           '',
@@ -52,6 +56,19 @@ export class BookComponent implements OnInit {
           }
         );
       },
+    });
+  }
+
+  onDelete() {
+    this.dialog.open(DeleteBookDialogComponent, {
+      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
+      data: { title: this.book?.title, deleteBook: this.deleteBook },
+    });
+  }
+
+  private deleteBook() {
+    this.bookService.deleteBook(this.bookId).subscribe(() => {
+      this.router.navigateByUrl('/books');
     });
   }
 
