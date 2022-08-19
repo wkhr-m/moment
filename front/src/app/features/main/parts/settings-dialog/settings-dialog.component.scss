@@ -11,4 +11,10 @@
 }
 .dialog-content {
   @include variable.dialog-content;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.audio-form {
+  width: 80%;
 }

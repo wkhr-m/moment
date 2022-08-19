@@ -2,8 +2,12 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DeleteBookDialogComponent } from '../../parts/delete-book-dialog/delete-book-dialog.component';
+import {
+  SettingsDialogComponent,
+  SETTING_OUTPUT_TYPE,
+} from '../../parts/settings-dialog/settings-dialog.component';
 import type { DetailBook } from '../../types/books';
+import { SettingOutput } from './../../parts/settings-dialog/settings-dialog.component';
 import { BookService } from './../../services/book.service';
 import { HeaderService } from './../../services/header.service';
 
@@ -15,6 +19,7 @@ import { HeaderService } from './../../services/header.service';
 export class BookComponent implements OnInit {
   book?: DetailBook;
   bookId: string;
+  audioUrl: string = '';
   isLoading: boolean = false;
 
   constructor(
@@ -35,9 +40,42 @@ export class BookComponent implements OnInit {
         this.book = book;
         this.setHeader(book);
       });
+    this.updateAudioUrl();
   }
 
-  onResync() {
+  private updateAudioUrl() {
+    this.bookService
+      .getAudioUrl(this.bookId)
+      .subscribe((audioUrl) => (this.audioUrl = audioUrl));
+  }
+
+  openSettings() {
+    const dialogRef = this.dialog.open<SettingOutput>(SettingsDialogComponent, {
+      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
+      data: {
+        title: this.book?.title,
+        audioUrl: this.audioUrl,
+        bookId: this.bookId,
+      },
+    });
+    dialogRef.closed.subscribe((result?: SettingOutput) => {
+      this.updateAudioUrl();
+      if (result) {
+        for (const setting of result) {
+          switch (setting.key) {
+            case SETTING_OUTPUT_TYPE.DELETE:
+              this.deleteBook();
+              break;
+            case SETTING_OUTPUT_TYPE.RESYNC:
+              this.resyncBook();
+              break;
+          }
+        }
+      }
+    });
+  }
+
+  private resyncBook() {
     this.isLoading = true;
     this.bookService.downloadBook(this.bookId).subscribe({
       next: () => {
@@ -56,13 +94,6 @@ export class BookComponent implements OnInit {
           }
         );
       },
-    });
-  }
-
-  onDelete() {
-    this.dialog.open(DeleteBookDialogComponent, {
-      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
-      data: { title: this.book?.title, deleteBook: this.deleteBook },
     });
   }
 

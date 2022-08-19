@@ -3,7 +3,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { map, merge, Observable } from 'rxjs';
 import type { Book, DetailBook, Sentense } from '../types/books';
-import { STORE_BOOK, STORE_SENTENSES } from './../../../utils/db-config';
+import { STORE_TYPE } from './../../../utils/db-config';
 
 const FUNCTION_URL = 'https://asia-northeast1-wk-moment.cloudfunctions.net/';
 const LOCAL_URL = 'http://localhost:8080/api/';
@@ -41,11 +41,11 @@ export class BookService {
       .pipe(
         map((book) => {
           merge(
-            this.dbService.update(STORE_SENTENSES, {
+            this.dbService.update(STORE_TYPE.STORE_SENTENSES, {
               id: id,
               sentenses: book.sentenses,
             }),
-            this.dbService.update(STORE_BOOK, {
+            this.dbService.update(STORE_TYPE.STORE_BOOK, {
               id: id,
               title: book.title,
               count: book.sentenses.length,
@@ -60,8 +60,9 @@ export class BookService {
 
   deleteBook(id: string) {
     return merge(
-      this.dbService.deleteByKey(STORE_SENTENSES, id),
-      this.dbService.deleteByKey(STORE_BOOK, id)
+      this.dbService.deleteByKey(STORE_TYPE.STORE_SENTENSES, id),
+      this.dbService.deleteByKey(STORE_TYPE.STORE_BOOK, id),
+      this.dbService.deleteByKey(STORE_TYPE.STORE_AUDIO_URL, id)
     );
   }
 
@@ -76,19 +77,32 @@ export class BookService {
     }));
   }
 
+  setAudioUrl(id: string, url?: string): Observable<any> {
+    return this.dbService.update(STORE_TYPE.STORE_AUDIO_URL, {
+      id,
+      url,
+    });
+  }
+
+  getAudioUrl(id: string): Observable<string> {
+    return this.dbService
+      .getByKey<{ id: string; url: string }>(STORE_TYPE.STORE_AUDIO_URL, id)
+      .pipe(map((item) => item.url));
+  }
+
   getAllBooks(): Observable<Book[]> {
-    return this.dbService.getAll<Book>(STORE_BOOK);
+    return this.dbService.getAll<Book>(STORE_TYPE.STORE_BOOK);
   }
 
   getBookAndChapters(id: string): Observable<DetailBook> {
-    return this.dbService.getByKey<DetailBook>(STORE_BOOK, id);
+    return this.dbService.getByKey<DetailBook>(STORE_TYPE.STORE_BOOK, id);
   }
 
   getBookSentences(
     id: string
   ): Observable<{ id: string; sentenses: Sentense[] }> {
     return this.dbService.getByKey<{ id: string; sentenses: Sentense[] }>(
-      STORE_SENTENSES,
+      STORE_TYPE.STORE_SENTENSES,
       id
     );
   }
