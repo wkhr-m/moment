@@ -4,31 +4,41 @@
   </div>
 </ng-container>
 <ng-template #elseTemplate>
-  <div class="sub-header">
-    <div class="sub-header-actions">
-      <a
-        mat-raised-button
-        color="primary"
-        routerLink="/book/{{ book?.id }}/sentense"
-      >
-        全再生
-      </a>
-      <button mat-raised-button (click)="openSettings()">設定</button>
+  <ng-container *ngIf="isExist; else notExistTemplate">
+    <div class="sub-header">
+      <div class="sub-header-actions">
+        <a
+          mat-raised-button
+          color="primary"
+          routerLink="/book/{{ book?.id }}/sentense"
+        >
+          全再生
+        </a>
+        <button mat-raised-button (click)="openSettings()">設定</button>
+      </div>
     </div>
-  </div>
 
-  <div class="chapters">
-    <a
-      class="chapter"
-      routerLink="/book/{{ book?.id }}/sentense"
-      [queryParams]="{ section: section.id }"
-      *ngFor="let section of book?.section"
-    >
-      <mat-card>
-        <h3 class="chapter-title">{{ section.id }}</h3>
-        <span class="chapter-sub">{{ section.count }}文</span>
-        <div class="action-buttons"></div>
-      </mat-card>
-    </a>
-  </div>
+    <div class="chapters">
+      <a
+        class="chapter"
+        routerLink="/book/{{ book?.id }}/sentense"
+        [queryParams]="{ section: section.id }"
+        *ngFor="let section of book?.section"
+      >
+        <mat-card>
+          <h3 class="chapter-title">{{ section.id }}</h3>
+          <span class="chapter-sub">{{ section.count }}文</span>
+          <div class="action-buttons"></div>
+        </mat-card>
+      </a>
+    </div>
+  </ng-container>
+  <ng-template #notExistTemplate>
+    <section class="not-exist">
+      <div>
+        <mat-icon class="not-exist-icon">sentiment_very_dissatisfied</mat-icon>
+      </div>
+      <div class="not-exist-content">この単語帳は存在しません</div>
+    </section>
+  </ng-template>
 </ng-template>

@@ -21,6 +21,7 @@ export class BookComponent implements OnInit {
   bookId: string;
   driveUrl: string = '';
   isLoading: boolean = false;
+  isExist: boolean = true;
 
   constructor(
     private headerService: HeaderService,
@@ -37,6 +38,7 @@ export class BookComponent implements OnInit {
     this.bookService
       .getBookAndChapters(this.bookId)
       .subscribe((book: DetailBook) => {
+        this.isExist = !!book;
         this.book = book;
         this.setHeader(book);
       });
