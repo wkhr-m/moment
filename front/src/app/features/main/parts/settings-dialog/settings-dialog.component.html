@@ -1,0 +1,33 @@
+<section class="word-dialog">
+  <div class="dialog-header">
+    設定
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content" mat-dialog-content>
+    <section>
+      <h2>音声ファイルのGoogle Driveを設定する</h2>
+      <div>
+        GoogleDriveに新しいフォルダを作成し、そこに使用する音声を入れてください。
+      </div>
+      <div>
+        ※GoogleDriveのフォルダの一般的なアクセスの設定を「リンクを知っている全員」にしてください。
+      </div>
+      <mat-form-field class="audio-form">
+        <mat-label>Google DriveのURL</mat-label>
+        <input matInput [formControl]="form" (blur)="onBlur()" />
+      </mat-form-field>
+    </section>
+    <section>
+      <button mat-raised-button color="primary" (click)="onDelete()">
+        単語帳の内容を再同期する
+      </button>
+    </section>
+    <section>
+      <button mat-raised-button color="warn" (click)="onDelete()">
+        {{ data.title }}を削除する
+      </button>
+    </section>
+  </div>
+</section>
