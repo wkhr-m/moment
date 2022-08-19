@@ -30,11 +30,6 @@ const routes: Routes = [
         pathMatch: 'full',
         redirectTo: 'books',
       },
-      {
-        path: 'login',
-        pathMatch: 'full',
-        redirectTo: 'books',
-      },
     ],
   },
 ];
