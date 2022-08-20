@@ -2,7 +2,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import type { DetailBook } from '@m-types/books';
+import type { Book } from '@m-types/books';
 import {
   SettingsDialogComponent,
   SETTING_OUTPUT_TYPE,
@@ -17,7 +17,7 @@ import { HeaderService } from './../../services/header.service';
   styleUrls: ['./book.component.scss'],
 })
 export class BookComponent implements OnInit {
-  book?: DetailBook;
+  book?: Book;
   bookId: string;
   driveUrl: string = '';
   isLoading: boolean = false;
@@ -35,13 +35,11 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.bookService
-      .getBookAndChapters(this.bookId)
-      .subscribe((book: DetailBook) => {
-        this.isExist = !!book;
-        this.book = book;
-        this.setHeader(book);
-      });
+    this.bookService.getBookAndChapters(this.bookId).subscribe((book: Book) => {
+      this.isExist = !!book;
+      this.book = book;
+      this.setHeader(book);
+    });
   }
 
   openSettings() {
@@ -98,7 +96,7 @@ export class BookComponent implements OnInit {
   }
 
   // headerにタイトルや色を設定する
-  private setHeader(book: DetailBook): void {
+  private setHeader(book: Book): void {
     this.headerService.setBackURL('books');
     this.headerService.setTitle(book.title);
   }

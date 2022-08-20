@@ -2,12 +2,7 @@ export type Book = {
   id: string;
   title: string;
   count: number;
-};
-
-export type DetailBook = {
-  id: string;
-  title: string;
-  count: number;
+  updatedAt: string;
   section: Section[];
 };
 

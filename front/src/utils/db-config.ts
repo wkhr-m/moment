@@ -13,6 +13,7 @@ export const dbConfig: DBConfig = {
       store: STORE_TYPE.STORE_BOOK,
       storeConfig: { keyPath: 'id', autoIncrement: false },
       storeSchema: [
+        { name: 'updatedAt', keypath: 'updatedAt', options: { unique: false } },
         { name: 'title', keypath: 'title', options: { unique: false } },
         { name: 'count', keypath: 'count', options: { unique: false } },
         { name: 'section', keypath: 'section', options: { unique: false } },
