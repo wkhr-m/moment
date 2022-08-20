@@ -1,0 +1,48 @@
+<section class="dialog">
+  <div class="dialog-header">
+    <div>本を読み込む</div>
+    <button
+      mat-icon-button
+      color="primary"
+      aria-label="Close"
+      (click)="onClose()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content">
+    <section>
+      <h3>読み込む方法</h3>
+      <ol>
+        <li>Googleスプレッドシートを作成する</li>
+        <li>1行目に「ja」「en」「section」をそれぞれの列に追加</li>
+        <li>2行目以降に列に対応する英文や日本文を追加</li>
+        <li>
+          spreadsheet-reader@wk-moment.iam.gserviceaccount.comを閲覧者として共有する
+        </li>
+        <li>下記の入力欄にスプレッドシートのURLを書き込む</li>
+        <li>読み込みボタンを押す</li>
+      </ol>
+    </section>
+    <section>
+      <form [formGroup]="form" class="form">
+        <mat-form-field appearance="fill">
+          <mat-label>スプレッドシートのURL</mat-label>
+          <input matInput formControlName="url" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>シート名</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+      </form>
+      <button
+        [disabled]="form.invalid"
+        color="primary"
+        (click)="onSubmit()"
+        mat-raised-button
+      >
+        スプレッドシートを読み込む
+      </button>
+    </section>
+  </div>
+</section>
