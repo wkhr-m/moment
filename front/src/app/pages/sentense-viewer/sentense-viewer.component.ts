@@ -19,8 +19,6 @@ export class SentenseViewerComponent implements OnInit {
   isSecondHide: boolean = true;
   isLoaded = false;
   isExist: boolean = true;
-  driveUrl?: string;
-  audioUrl?: string;
 
   constructor(
     private bookService: BookService,
@@ -39,10 +37,6 @@ export class SentenseViewerComponent implements OnInit {
       this.setHeader(book);
     });
 
-    this.bookService
-      .getDriveUrl(bookId)
-      .subscribe((driveUrl) => (this.driveUrl = driveUrl));
-
     this.bookService.getBookSentences(bookId).subscribe((book) => {
       if (section) {
         this.sentenses = book.sentenses.filter(
@@ -58,7 +52,6 @@ export class SentenseViewerComponent implements OnInit {
         this.isLoaded = true;
         return;
       }
-      this.getDriveUrl(this.activeSentenseNumber);
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
       this.isLoaded = true;
     });
@@ -72,14 +65,14 @@ export class SentenseViewerComponent implements OnInit {
     const newActiveNumber = this.activeSentenseNumber + page;
     this.activeSentenseNumber = newActiveNumber;
     this.isSecondHide = true;
-    this.audioUrl = '';
-    this.getDriveUrl(newActiveNumber);
     this.setSentenseNumberAtHeader(newActiveNumber);
   }
 
   onPlay(rate: number) {
-    if (this.audioUrl) {
-      const music = new Audio(this.audioUrl);
+    if (!!this.sentenses[this.activeSentenseNumber].audioUrl) {
+      const music = new Audio(
+        this.sentenses[this.activeSentenseNumber].audioUrl
+      );
       music.play();
     } else {
       speechWord(this.sentenses[this.activeSentenseNumber].en, rate);
@@ -93,17 +86,6 @@ export class SentenseViewerComponent implements OnInit {
       },
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
     });
-  }
-
-  private getDriveUrl(activeNumber: number) {
-    const fileName = this.sentenses[activeNumber].audio;
-    if (!this.driveUrl || !fileName) {
-      this.audioUrl = '';
-      return;
-    }
-    this.bookService
-      .getAudioUrl(this.driveUrl, fileName)
-      .subscribe((res) => (this.audioUrl = res.url));
   }
 
   private setSentenseNumberAtHeader(activeSentenseNumber: number) {

@@ -42,13 +42,6 @@ export class BookComponent implements OnInit {
         this.book = book;
         this.setHeader(book);
       });
-    this.updateDriveUrl();
-  }
-
-  private updateDriveUrl() {
-    this.bookService
-      .getDriveUrl(this.bookId)
-      .subscribe((driveUrl) => (this.driveUrl = driveUrl));
   }
 
   openSettings() {
@@ -61,7 +54,6 @@ export class BookComponent implements OnInit {
       },
     });
     dialogRef.closed.subscribe((result?: SettingOutput) => {
-      this.updateDriveUrl();
       if (result) {
         for (const setting of result) {
           switch (setting.key) {

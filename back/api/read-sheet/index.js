@@ -2,7 +2,7 @@ const { google } = require('googleapis');
 const { JWT } = require('google-auth-library');
 
 // ヘッダーの種類
-const HEADER = ['ja', 'en', 'pronanciation', 'section', 'audio', 'note'];
+const HEADER = ['ja', 'en', 'pronanciation', 'section', 'audioUrl', 'note'];
 // 最低限必要なヘッダー
 const NEED_HEADER = ['ja', 'en', 'section'];
 
