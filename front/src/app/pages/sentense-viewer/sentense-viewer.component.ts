@@ -73,6 +73,7 @@ export class SentenseViewerComponent implements OnInit {
       const music = new Audio(
         this.sentenses[this.activeSentenseNumber].audioUrl
       );
+      music.playbackRate = rate;
       music.play();
     } else {
       speechWord(this.sentenses[this.activeSentenseNumber].en, rate);
