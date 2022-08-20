@@ -6,6 +6,7 @@
 <ng-template #elseTemplate>
   <ng-container *ngIf="isExist; else notExistTemplate">
     <div class="sub-header">
+      <div class="sub-header-content">更新日: {{ book?.updatedAt }}</div>
       <div class="sub-header-actions">
         <a
           mat-raised-button

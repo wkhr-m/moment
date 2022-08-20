@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, isDevMode } from '@angular/core';
-import type { Book, DetailBook, Sentense } from '@m-types/books';
+import type { Book, Sentense } from '@m-types/books';
 import { STORE_TYPE } from '@utils/db-config';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { map, merge, Observable } from 'rxjs';
@@ -44,6 +44,7 @@ export class BookService {
               sentenses: book.sentenses,
             }),
             this.dbService.update(STORE_TYPE.STORE_BOOK, {
+              updatedAt: this.updatedAt(),
               id: id,
               title: book.title,
               count: book.sentenses.length,
@@ -54,6 +55,13 @@ export class BookService {
           return book.sentenses;
         })
       );
+  }
+
+  private updatedAt() {
+    const now = new Date();
+    return `${now.getFullYear()}年${
+      now.getMonth() + 1
+    }月${now.getDate()}日 ${now.getHours()}:${now.getMinutes()}`;
   }
 
   deleteBook(id: string) {
@@ -78,8 +86,8 @@ export class BookService {
     return this.dbService.getAll<Book>(STORE_TYPE.STORE_BOOK);
   }
 
-  getBookAndChapters(id: string): Observable<DetailBook> {
-    return this.dbService.getByKey<DetailBook>(STORE_TYPE.STORE_BOOK, id);
+  getBookAndChapters(id: string): Observable<Book> {
+    return this.dbService.getByKey<Book>(STORE_TYPE.STORE_BOOK, id);
   }
 
   getBookSentences(

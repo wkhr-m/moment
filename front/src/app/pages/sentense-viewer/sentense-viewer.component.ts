@@ -1,7 +1,7 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import type { DetailBook, Sentense } from '@m-types/books';
+import type { Book, Sentense } from '@m-types/books';
 import { speechWord } from '@utils/speech';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
@@ -13,7 +13,7 @@ import { HeaderService } from './../../services/header.service';
   styleUrls: ['./sentense-viewer.component.scss'],
 })
 export class SentenseViewerComponent implements OnInit {
-  book?: DetailBook;
+  book?: Book;
   sentenses: Sentense[] = [];
   activeSentenseNumber: number = 0;
   isSecondHide: boolean = true;
@@ -94,7 +94,7 @@ export class SentenseViewerComponent implements OnInit {
     );
   }
   // headerにタイトルや色を設定する
-  private setHeader(book: DetailBook): void {
+  private setHeader(book: Book): void {
     this.headerService.setBackURL(book ? `book/${book.id}` : 'books');
   }
 }
