@@ -1,24 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './features/login/login.component';
-import { AuthGuard } from './guard/auth.guard';
+import { BookComponent } from './pages/book/book.component';
+import { BooksComponent } from './pages/books/books.component';
+import { SentenseViewerComponent } from './pages/sentense-viewer/sentense-viewer.component';
 
 const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
     path: '',
-    loadChildren: () =>
-      import('./features/main/main.module').then((m) => m.MainModule),
-    canActivate: [AuthGuard],
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: '/books' },
+      {
+        path: 'books',
+        pathMatch: 'full',
+        component: BooksComponent,
+      },
+      {
+        path: 'book/:bookId/sentense',
+        pathMatch: 'full',
+        component: SentenseViewerComponent,
+      },
+      {
+        path: 'book/:bookId',
+        pathMatch: 'full',
+        component: BookComponent,
+      },
+    ],
   },
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'login',
-  },
+  { path: '**', redirectTo: '/books' },
 ];
 
 @NgModule({
