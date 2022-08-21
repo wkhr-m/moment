@@ -38,19 +38,24 @@ exports.main = async (req, res) => {
       sentenses: parseValue(response.values),
     });
   } catch (error) {
-    let msg = '読み込みに失敗しました';
-    switch (error.errors[0].reason) {
-      case 'badRequest':
-        msg =
-          '読み込みに失敗しました。シート名が間違っている可能性があります。';
-        break;
-      case 'notFound':
-        msg = '読み込みに失敗しました。スプレッドシートのURLが間違っています。';
-        break;
-      case 'forbidden':
-        msg =
-          '読み込みに失敗しました。スプレッドシートがspreadsheet-reader@wk-moment.iam.gserviceaccount.comに共有されていません。';
-        break;
+    let msg = '読み込みに失敗しました。';
+    if (!!error.message) {
+      msg = msg + error.message;
+    } else {
+      switch (error.errors[0].reason) {
+        case 'badRequest':
+          msg =
+            '読み込みに失敗しました。シート名が間違っている可能性があります。';
+          break;
+        case 'notFound':
+          msg =
+            '読み込みに失敗しました。スプレッドシートのURLが間違っています。';
+          break;
+        case 'forbidden':
+          msg =
+            '読み込みに失敗しました。スプレッドシートがspreadsheet-reader@wk-moment.iam.gserviceaccount.comに共有されていません。';
+          break;
+      }
     }
     res.status(500).send(msg);
     return;
@@ -61,8 +66,8 @@ exports.main = async (req, res) => {
 function parseValue(data) {
   const header = data[0].map((item) => item.trim());
   // ヘッダーが最低限のもの(NEED_HEADER)を含むかどうか確認
-  if (header.map((item) => NEED_HEADER.includes(item)).includes(false)) {
-    new Error('Lack header item!');
+  if (NEED_HEADER.map((item) => header.includes(item)).includes(false)) {
+    throw new Error('必須の列名が足りません。');
   }
   const headerIndexMap = {};
   for (const item of HEADER) {
