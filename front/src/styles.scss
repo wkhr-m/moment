@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @use "./style/theme.scss";
+@import "swiper/scss";
+@import "swiper/scss/navigation";
+@import "swiper/scss/pagination";
 /*
   Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
