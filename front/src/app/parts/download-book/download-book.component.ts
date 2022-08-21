@@ -34,6 +34,7 @@ export class DownloadBookComponent {
         '入力されたスプレッドシートのURLかシート名が不正です。',
         '',
         {
+          panelClass: ['warn-snackbar'],
           duration: 5000,
         }
       );

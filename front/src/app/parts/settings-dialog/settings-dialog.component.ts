@@ -40,6 +40,7 @@ export class SettingsDialogComponent {
     } else {
       this._snackBar.open('シート名を入力してください', '', {
         duration: 5000,
+        panelClass: ['warn-snackbar'],
       });
     }
   }

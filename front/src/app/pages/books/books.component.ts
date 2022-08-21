@@ -1,4 +1,5 @@
 import { Dialog } from '@angular/cdk/dialog';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import type { Book } from '@m-types/books';
@@ -64,9 +65,17 @@ export class BooksComponent implements OnInit {
           this.loadBooks();
           this.isLoading = false;
         },
-        error: (error) => {
-          this._snackBar.open('読み込みに失敗しました。', '', {
+        error: (error: HttpErrorResponse) => {
+          let msg = '読み込みに失敗しました。';
+          if (error.status === 0) {
+            msg =
+              'インターネットに接続されていないため、読み込みに失敗しました。';
+          } else if (error.status === HttpStatusCode.InternalServerError) {
+            msg = error.error;
+          }
+          this._snackBar.open(msg, '', {
             duration: 5000,
+            panelClass: ['warn-snackbar'],
           });
           this.isLoading = false;
         },

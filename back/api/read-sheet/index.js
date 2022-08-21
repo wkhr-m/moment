@@ -7,35 +7,54 @@ const HEADER = ['ja', 'en', 'pronanciation', 'section', 'audioUrl', 'note'];
 const NEED_HEADER = ['ja', 'en', 'section'];
 
 exports.main = async (req, res) => {
-  var jwt = getJwt();
-  var apiKey = getApiKey();
-  var spreadsheetId = req.query.sheetId;
-  var range = req.query.sheetName;
+  const jwt = getJwt();
+  const apiKey = getApiKey();
+  const spreadsheetId = req.query.sheetId;
+  const range = req.query.sheetName;
   const sheets = google.sheets({ version: 'v4' });
+  let result = '';
+  try {
+    const title = (
+      await sheets.spreadsheets.get({
+        includeGridData: false,
+        spreadsheetId,
+        auth: jwt,
+        key: apiKey,
+      })
+    ).data.properties.title;
 
-  const title = (
-    await sheets.spreadsheets.get({
-      includeGridData: false,
-      spreadsheetId,
-      auth: jwt,
-      key: apiKey,
-    })
-  ).data.properties.title;
+    const response = (
+      await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range,
+        auth: jwt,
+        key: apiKey,
+      })
+    ).data;
 
-  const response = (
-    await sheets.spreadsheets.values.get({
-      spreadsheetId,
-      range,
-      auth: jwt,
-      key: apiKey,
-    })
-  ).data;
-
-  const result = JSON.stringify({
-    id: spreadsheetId,
-    title,
-    sentenses: parseValue(response.values),
-  });
+    result = JSON.stringify({
+      id: spreadsheetId,
+      title,
+      sentenses: parseValue(response.values),
+    });
+  } catch (error) {
+    let msg = '読み込みに失敗しました';
+    switch (error.errors[0].reason) {
+      case 'badRequest':
+        msg =
+          '読み込みに失敗しました。シート名が間違っている可能性があります。';
+        break;
+      case 'notFound':
+        msg = '読み込みに失敗しました。スプレッドシートのURLが間違っています。';
+        break;
+      case 'forbidden':
+        msg =
+          '読み込みに失敗しました。スプレッドシートがspreadsheet-reader@wk-moment.iam.gserviceaccount.comに共有されていません。';
+        break;
+    }
+    res.status(500).send(msg);
+    return;
+  }
   res.status(200).type('application/json').end(result);
 };
 
