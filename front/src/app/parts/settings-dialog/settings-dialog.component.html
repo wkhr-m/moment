@@ -7,7 +7,8 @@
   </div>
   <div class="dialog-content" mat-dialog-content>
     <section class="resync">
-      <h2>単語帳の内容を再同期する</h2>
+      <h2 class="title">単語帳の内容を再同期する</h2>
+      <span class="updatedAt">(最終更新日: {{ data.updatedAt }})</span>
       <mat-form-field class="audio-form">
         <mat-label>シート名</mat-label>
         <input matInput [formControl]="sheetName" />

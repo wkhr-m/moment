@@ -19,7 +19,6 @@ import { HeaderService } from './../../services/header.service';
 export class BookComponent implements OnInit {
   book?: Book;
   bookId: string;
-  driveUrl: string = '';
   isLoading: boolean = false;
   isExist: boolean = true;
 
@@ -47,8 +46,8 @@ export class BookComponent implements OnInit {
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
       data: {
         title: this.book?.title,
-        driveUrl: this.driveUrl,
         bookId: this.bookId,
+        updatedAt: this.book?.updatedAt,
       },
     });
     dialogRef.closed.subscribe((result?: SettingOutput) => {

@@ -9,6 +9,14 @@
 .dialog-header {
   @include variable.dialog-header;
 }
+.updatedAt {
+  font-size: 0.8rem;
+  color: gray;
+  margin-bottom: 1rem;
+}
+.title {
+  margin-bottom: 0;
+}
 .dialog-content {
   @include variable.dialog-content;
   display: flex;

@@ -17,6 +17,6 @@ export type Sentense = {
   section: string;
   number: number;
   note: string;
-  pronanciation?: string;
+  pronunciation?: string;
   audioUrl?: string;
 };

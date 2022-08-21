@@ -15,6 +15,7 @@ export type SettingOutput = Array<{ key: SettingOutputType; value?: string }>;
 type Setting = {
   bookId: string;
   title: string;
+  updatedAt: string;
 };
 @Component({
   selector: 'app-settings-dialog',

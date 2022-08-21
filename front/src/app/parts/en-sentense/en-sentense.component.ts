@@ -14,16 +14,16 @@ import {
 })
 export class EnSentenseComponent implements OnChanges {
   @Input() sentense?: string = '';
-  @Input() pronanciation?: string = '';
+  @Input() pronunciation?: string = '';
   @Output() wordClick = new EventEmitter<string>();
   splitedSentense: string[] = [];
-  splitedPronanciation: string[] = [];
+  splitedPronunciation: string[] = [];
 
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.splitedPronanciation =
-      changes['pronanciation']?.currentValue?.split(' ') || [];
+    this.splitedPronunciation =
+      changes['pronunciation']?.currentValue?.split(' ') || [];
     this.splitedSentense = changes['sentense']?.currentValue.split(' ') || [];
   }
 
