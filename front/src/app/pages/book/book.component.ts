@@ -82,6 +82,7 @@ export class BookComponent implements OnInit {
           '失敗しました。時間を置いてから再度お試しください。',
           '',
           {
+            panelClass: ['warn-snackbar'],
             duration: 5000,
           }
         );
