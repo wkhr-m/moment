@@ -70,7 +70,10 @@ export class BooksComponent implements OnInit {
           if (error.status === 0) {
             msg =
               'インターネットに接続されていないため、読み込みに失敗しました。';
-          } else if (error.status === HttpStatusCode.InternalServerError) {
+          } else if (
+            error.status === HttpStatusCode.InternalServerError &&
+            typeof error.error === 'string'
+          ) {
             msg = error.error;
           }
           this._snackBar.open(msg, '', {
