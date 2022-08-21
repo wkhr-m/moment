@@ -5,6 +5,7 @@ import type { Book, Sentense } from '@m-types/books';
 import { speechWord } from '@utils/speech';
 import SwiperCore, {
   EffectCreative,
+  Keyboard,
   Navigation,
   Swiper,
   Virtual,
@@ -13,7 +14,7 @@ import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
 import { HeaderService } from './../../services/header.service';
 
-SwiperCore.use([Virtual, EffectCreative, Navigation]);
+SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
 
 @Component({
   selector: 'app-sentense-viewer',
