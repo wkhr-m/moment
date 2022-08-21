@@ -3,41 +3,44 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-export const SETTING_OUTPUT_TYPE = {
+export const BOOK_SETTING_OUTPUT_TYPE = {
   RESYNC: 'RESYNC',
   DELETE: 'DELETE',
 };
-export type SettingOutputType =
-  typeof SETTING_OUTPUT_TYPE[keyof typeof SETTING_OUTPUT_TYPE];
+export type BookSettingOutputType =
+  typeof BOOK_SETTING_OUTPUT_TYPE[keyof typeof BOOK_SETTING_OUTPUT_TYPE];
 
-export type SettingOutput = Array<{ key: SettingOutputType; value?: string }>;
+export type SettingOutput = Array<{
+  key: BookSettingOutputType;
+  value?: string;
+}>;
 
-type Setting = {
+type BookSettingInput = {
   bookId: string;
   title: string;
   updatedAt: string;
 };
 @Component({
-  selector: 'app-settings-dialog',
-  templateUrl: './settings-dialog.component.html',
-  styleUrls: ['./settings-dialog.component.scss'],
+  selector: 'app-book-settings-dialog',
+  templateUrl: './book-settings-dialog.component.html',
+  styleUrls: ['./book-settings-dialog.component.scss'],
 })
-export class SettingsDialogComponent {
+export class BookSettingsDialogComponent {
   sheetName = new FormControl('シート1', [Validators.required]);
 
   constructor(
     public dialogRef: DialogRef,
-    @Inject(DIALOG_DATA) public data: Setting,
+    @Inject(DIALOG_DATA) public data: BookSettingInput,
     private _snackBar: MatSnackBar
   ) {}
 
-  onClose(key?: SettingOutputType, value?: string): void {
+  onClose(key?: BookSettingOutputType, value?: string): void {
     this.dialogRef.close(key ? [{ key, value }] : undefined);
   }
 
   onResync(): void {
     if (!!this.sheetName.value?.trim()) {
-      this.onClose(SETTING_OUTPUT_TYPE.RESYNC, this.sheetName.value);
+      this.onClose(BOOK_SETTING_OUTPUT_TYPE.RESYNC, this.sheetName.value);
     } else {
       this._snackBar.open('シート名を入力してください', '', {
         duration: 5000,
@@ -47,6 +50,6 @@ export class SettingsDialogComponent {
   }
 
   onDelete(): void {
-    this.onClose(SETTING_OUTPUT_TYPE.DELETE);
+    this.onClose(BOOK_SETTING_OUTPUT_TYPE.DELETE);
   }
 }

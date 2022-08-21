@@ -19,6 +19,7 @@ import { HeaderService } from './../../services/header.service';
 export class BooksComponent implements OnInit {
   books: Book[] = [];
   isLoading: boolean = false;
+  isInitLoaded: boolean = false;
 
   constructor(
     private bookService: BookService,
@@ -35,6 +36,7 @@ export class BooksComponent implements OnInit {
   private loadBooks(): void {
     this.bookService.getAllBooks().subscribe((res) => {
       this.books = res;
+      this.isInitLoaded = true;
     });
   }
 

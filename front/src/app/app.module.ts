@@ -25,11 +25,11 @@ import { AppComponent } from './app.component';
 import { BookComponent } from './pages/book/book.component';
 import { BooksComponent } from './pages/books/books.component';
 import { SentenseViewerComponent } from './pages/sentense-viewer/sentense-viewer.component';
+import { BookSettingsDialogComponent } from './parts/book-settings-dialog/book-settings-dialog.component';
 import { DownloadBookComponent } from './parts/download-book/download-book.component';
 import { EnSentenseComponent } from './parts/en-sentense/en-sentense.component';
 import { HeaderComponent } from './parts/header/header.component';
 import { MeanWordComponent } from './parts/mean-word/mean-word.component';
-import { SettingsDialogComponent } from './parts/settings-dialog/settings-dialog.component';
 import { BookService } from './services/book.service';
 import { HeaderService } from './services/header.service';
 import { WordService } from './services/word.service';
@@ -44,7 +44,7 @@ import { WordService } from './services/word.service';
     EnSentenseComponent,
     MeanWordComponent,
     DownloadBookComponent,
-    SettingsDialogComponent,
+    BookSettingsDialogComponent,
   ],
   imports: [
     CommonModule,
