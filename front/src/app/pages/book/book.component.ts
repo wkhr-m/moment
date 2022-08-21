@@ -4,10 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Book } from '@m-types/books';
 import {
-  SettingsDialogComponent,
-  SETTING_OUTPUT_TYPE,
-} from '../../parts/settings-dialog/settings-dialog.component';
-import { SettingOutput } from './../../parts/settings-dialog/settings-dialog.component';
+  BookSettingsDialogComponent,
+  BOOK_SETTING_OUTPUT_TYPE,
+  SettingOutput,
+} from '../../parts/book-settings-dialog/book-settings-dialog.component';
 import { BookService } from './../../services/book.service';
 import { HeaderService } from './../../services/header.service';
 
@@ -42,22 +42,25 @@ export class BookComponent implements OnInit {
   }
 
   openSettings() {
-    const dialogRef = this.dialog.open<SettingOutput>(SettingsDialogComponent, {
-      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
-      data: {
-        title: this.book?.title,
-        bookId: this.bookId,
-        updatedAt: this.book?.updatedAt,
-      },
-    });
+    const dialogRef = this.dialog.open<SettingOutput>(
+      BookSettingsDialogComponent,
+      {
+        backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
+        data: {
+          title: this.book?.title,
+          bookId: this.bookId,
+          updatedAt: this.book?.updatedAt,
+        },
+      }
+    );
     dialogRef.closed.subscribe((result?: SettingOutput) => {
       if (result) {
         for (const setting of result) {
           switch (setting.key) {
-            case SETTING_OUTPUT_TYPE.DELETE:
+            case BOOK_SETTING_OUTPUT_TYPE.DELETE:
               this.deleteBook();
               break;
-            case SETTING_OUTPUT_TYPE.RESYNC:
+            case BOOK_SETTING_OUTPUT_TYPE.RESYNC:
               this.resyncBook(setting.value);
               break;
           }
