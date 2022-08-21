@@ -3,9 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { speechWord } from '@utils/speech';
+import SwiperCore, {
+  EffectCreative,
+  Navigation,
+  Swiper,
+  Virtual,
+} from 'swiper';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
 import { HeaderService } from './../../services/header.service';
+
+SwiperCore.use([Virtual, EffectCreative, Navigation]);
 
 @Component({
   selector: 'app-sentense-viewer',
@@ -16,9 +24,9 @@ export class SentenseViewerComponent implements OnInit {
   book?: Book;
   sentenses: Sentense[] = [];
   activeSentenseNumber: number = 0;
-  isSecondHide: boolean = true;
+  isSecondSentenseHide: boolean = true;
   isLoaded = false;
-  isExist: boolean = true;
+  isBookExist: boolean = true;
 
   constructor(
     private bookService: BookService,
@@ -32,7 +40,7 @@ export class SentenseViewerComponent implements OnInit {
     const section = this.route.snapshot.queryParams['section'];
 
     this.bookService.getBookAndChapters(bookId).subscribe((book) => {
-      this.isExist = !!book;
+      this.isBookExist = !!book;
       this.book = book;
       this.setHeader(book);
     });
@@ -47,7 +55,7 @@ export class SentenseViewerComponent implements OnInit {
       }
       // 文章がない場合
       if (this.sentenses.length === 0) {
-        this.isExist = false;
+        this.isBookExist = false;
         this.headerService.setBackURL('books');
         this.isLoaded = true;
         return;
@@ -58,14 +66,12 @@ export class SentenseViewerComponent implements OnInit {
   }
 
   onClickHide(): void {
-    this.isSecondHide = false;
+    this.isSecondSentenseHide = false;
   }
 
-  onChangePage(page: number) {
-    const newActiveNumber = this.activeSentenseNumber + page;
-    this.activeSentenseNumber = newActiveNumber;
-    this.isSecondHide = true;
-    this.setSentenseNumberAtHeader(newActiveNumber);
+  onSlideChange(swipers: Swiper[]) {
+    this.isSecondSentenseHide = true;
+    this.activeSentenseNumber = swipers[0].activeIndex;
   }
 
   onPlay(rate: number) {

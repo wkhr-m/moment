@@ -18,6 +18,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { dbConfig } from '@utils/db-config';
 import { NgxIndexedDBModule } from 'ngx-indexed-db';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SwiperModule } from 'swiper/angular';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -59,6 +60,7 @@ import { WordService } from './services/word.service';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     NgxSkeletonLoaderModule,
+    SwiperModule,
     BrowserModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
