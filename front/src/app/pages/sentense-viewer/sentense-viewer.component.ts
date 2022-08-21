@@ -72,6 +72,7 @@ export class SentenseViewerComponent implements OnInit {
   onSlideChange(swipers: Swiper[]) {
     this.isSecondSentenseHide = true;
     this.activeSentenseNumber = swipers[0].activeIndex;
+    this.setSentenseNumberAtHeader(swipers[0].activeIndex);
   }
 
   onPlay(rate: number) {
