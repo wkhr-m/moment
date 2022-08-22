@@ -70,7 +70,11 @@
   align-items: center;
   justify-content: space-between;
 }
-
+.action-buttons-item {
+  button {
+    margin: 0 0.3rem;
+  }
+}
 .not-exist {
   @include variable.not-exist;
 }

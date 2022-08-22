@@ -1,0 +1,17 @@
+@use "./../../../style/variable.scss" as variable;
+
+:host {
+  @include variable.dialog-host;
+}
+.dialog-wrapper {
+  @include variable.dialog-wrapper;
+}
+.dialog-header {
+  @include variable.dialog-header;
+}
+.dialog-content {
+  @include variable.dialog-content;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}

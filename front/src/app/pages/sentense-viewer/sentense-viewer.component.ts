@@ -12,6 +12,7 @@ import SwiperCore, {
 } from 'swiper';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
+import { ViewerSettingDialogComponent } from './../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { HeaderService } from './../../services/header.service';
 
 SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
@@ -97,6 +98,17 @@ export class SentenseViewerComponent implements OnInit {
     this.dialog.open(MeanWordComponent, {
       data: {
         word,
+      },
+      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
+    });
+  }
+
+  onOpenSetting(): void {
+    this.dialog.open(ViewerSettingDialogComponent, {
+      data: {
+        order: 'EnJa',
+        IsHideSecondLang: true,
+        note: true,
       },
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
     });
