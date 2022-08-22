@@ -28,6 +28,7 @@ export class SentenseViewerComponent implements OnInit {
   isSecondSentenseHide: boolean = true;
   isLoaded = false;
   isBookExist: boolean = true;
+  audio?: HTMLAudioElement;
 
   constructor(
     private bookService: BookService,
@@ -61,6 +62,9 @@ export class SentenseViewerComponent implements OnInit {
         this.isLoaded = true;
         return;
       }
+      if (!!this.sentenses[0].audioUrl) {
+        this.audio = new Audio(this.sentenses[0].audioUrl);
+      }
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
       this.isLoaded = true;
     });
@@ -72,17 +76,18 @@ export class SentenseViewerComponent implements OnInit {
 
   onSlideChange(swipers: Swiper[]) {
     this.isSecondSentenseHide = true;
-    this.activeSentenseNumber = swipers[0].activeIndex;
-    this.setSentenseNumberAtHeader(swipers[0].activeIndex);
+    const newActiveIndex = swipers[0].activeIndex;
+    this.activeSentenseNumber = newActiveIndex;
+    this.setSentenseNumberAtHeader(newActiveIndex);
+    if (!!this.sentenses[newActiveIndex].audioUrl) {
+      this.audio = new Audio(this.sentenses[newActiveIndex].audioUrl);
+    }
   }
 
   onPlay(rate: number) {
-    if (!!this.sentenses[this.activeSentenseNumber].audioUrl) {
-      const music = new Audio(
-        this.sentenses[this.activeSentenseNumber].audioUrl
-      );
-      music.playbackRate = rate;
-      music.play();
+    if (!!this.audio?.src) {
+      this.audio.playbackRate = rate;
+      this.audio.play();
     } else {
       speechWord(this.sentenses[this.activeSentenseNumber].en, rate);
     }
