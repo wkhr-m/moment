@@ -1,7 +1,9 @@
+export const LANG_EN = 'en-US';
+
 export const speechWord = (
   word: string,
   rate: number = 1,
-  lang: string = 'en-US'
+  lang: string = LANG_EN
 ): void => {
   window.speechSynthesis.cancel();
   const uttr = new SpeechSynthesisUtterance();

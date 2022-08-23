@@ -2,7 +2,9 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
+import { Setting } from '@m-types/setting';
 import { speechWord } from '@utils/speech';
+import { SettingService } from 'app/services/setting.service';
 import SwiperCore, {
   EffectCreative,
   Keyboard,
@@ -30,9 +32,11 @@ export class SentenseViewerComponent implements OnInit {
   isLoaded = false;
   isBookExist: boolean = true;
   audio?: HTMLAudioElement;
+  setting?: Setting;
 
   constructor(
     private bookService: BookService,
+    private settingService: SettingService,
     private headerService: HeaderService,
     private route: ActivatedRoute,
     public dialog: Dialog
@@ -41,6 +45,8 @@ export class SentenseViewerComponent implements OnInit {
   ngOnInit(): void {
     const bookId = this.route.snapshot.paramMap.get('bookId') || '';
     const section = this.route.snapshot.queryParams['section'];
+
+    this.settingService.getSetting().subscribe((res) => (this.setting = res));
 
     this.bookService.getBookAndChapters(bookId).subscribe((book) => {
       this.isBookExist = !!book;
@@ -105,11 +111,7 @@ export class SentenseViewerComponent implements OnInit {
 
   onOpenSetting(): void {
     this.dialog.open(ViewerSettingDialogComponent, {
-      data: {
-        order: 'EnJa',
-        IsHideSecondLang: true,
-        note: true,
-      },
+      data: this.setting,
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
     });
   }

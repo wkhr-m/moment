@@ -6,7 +6,28 @@
     </button>
   </div>
   <div class="dialog-content" mat-dialog-content>
-    <h2>ご要望・お問合せを書く</h2>
+    <mat-form-field appearance="fill">
+      <mat-label>表示する順番</mat-label>
+      <mat-select>
+        <mat-option [value]="viewerOrder.JAEN">日本語⇨英語</mat-option>
+        <mat-option [value]="viewerOrder.ENJA">英語⇨日本語</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>音声</mat-label>
+      <mat-select>
+        <mat-option
+          *ngFor="let voice of voiceOptions"
+          [value]="voice.voiceURI"
+          >{{ voice.voiceURI }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button>試聴</button>
+    <mat-slide-toggle
+      >{{ form.controls["order"].value }}を隠す</mat-slide-toggle
+    >
+    <mat-slide-toggle>自動再生</mat-slide-toggle>
     <button mat-raised-button color="warn">お問合せ</button>
   </div>
 </section>

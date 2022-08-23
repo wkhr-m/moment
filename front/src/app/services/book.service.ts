@@ -44,7 +44,7 @@ export class BookService {
               sentenses: book.sentenses,
             }),
             this.dbService.update(STORE_TYPE.STORE_BOOK, {
-              updatedAt: this.updatedAt(),
+              updatedAt: this.getNow(),
               id: id,
               title: book.title,
               count: book.sentenses.length,
@@ -57,7 +57,8 @@ export class BookService {
       );
   }
 
-  private updatedAt() {
+  // 現在の時刻を取得し、文字列で返す
+  private getNow() {
     const now = new Date();
     return `${now.getFullYear()}年${
       now.getMonth() + 1

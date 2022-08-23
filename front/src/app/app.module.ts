@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,6 +35,7 @@ import { MeanWordComponent } from './parts/mean-word/mean-word.component';
 import { ViewerSettingDialogComponent } from './parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { BookService } from './services/book.service';
 import { HeaderService } from './services/header.service';
+import { SettingService } from './services/setting.service';
 import { WordService } from './services/word.service';
 
 @NgModule({
@@ -59,6 +62,8 @@ import { WordService } from './services/word.service';
     DialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
     NgxSkeletonLoaderModule,
@@ -76,7 +81,7 @@ import { WordService } from './services/word.service';
       registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
-  providers: [HeaderService, BookService, WordService],
+  providers: [HeaderService, BookService, WordService, SettingService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
