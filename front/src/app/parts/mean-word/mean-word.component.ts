@@ -5,6 +5,7 @@ import { Word, WordService } from './../../services/word.service';
 
 export type DialogData = {
   word: string;
+  voice?: string;
 };
 @Component({
   selector: 'app-mean-word',
@@ -36,7 +37,7 @@ export class MeanWordComponent implements OnInit {
   }
 
   onPlayWord(): void {
-    speechWord(this.data.word);
+    speechWord(this.data.word, 1, this.data.voice);
   }
 
   onClose() {

@@ -2,7 +2,9 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
+import { Setting, ViewerOrder } from '@m-types/setting';
 import { speechWord } from '@utils/speech';
+import { SettingService } from 'app/services/setting.service';
 import SwiperCore, {
   EffectCreative,
   Keyboard,
@@ -12,6 +14,7 @@ import SwiperCore, {
 } from 'swiper';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
+import { ViewerSettingDialogComponent } from './../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { HeaderService } from './../../services/header.service';
 
 SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
@@ -22,6 +25,7 @@ SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
   styleUrls: ['./sentense-viewer.component.scss'],
 })
 export class SentenseViewerComponent implements OnInit {
+  viewerOrder = ViewerOrder;
   book?: Book;
   sentenses: Sentense[] = [];
   activeSentenseNumber: number = 0;
@@ -29,9 +33,11 @@ export class SentenseViewerComponent implements OnInit {
   isLoaded = false;
   isBookExist: boolean = true;
   audio?: HTMLAudioElement;
+  setting?: Setting;
 
   constructor(
     private bookService: BookService,
+    private settingService: SettingService,
     private headerService: HeaderService,
     private route: ActivatedRoute,
     public dialog: Dialog
@@ -40,6 +46,8 @@ export class SentenseViewerComponent implements OnInit {
   ngOnInit(): void {
     const bookId = this.route.snapshot.paramMap.get('bookId') || '';
     const section = this.route.snapshot.queryParams['section'];
+
+    this.getSetting();
 
     this.bookService.getBookAndChapters(bookId).subscribe((book) => {
       this.isBookExist = !!book;
@@ -89,7 +97,11 @@ export class SentenseViewerComponent implements OnInit {
       this.audio.playbackRate = rate;
       this.audio.play();
     } else {
-      speechWord(this.sentenses[this.activeSentenseNumber].en, rate);
+      speechWord(
+        this.sentenses[this.activeSentenseNumber].en,
+        rate,
+        this.setting?.voice
+      );
     }
   }
 
@@ -97,8 +109,25 @@ export class SentenseViewerComponent implements OnInit {
     this.dialog.open(MeanWordComponent, {
       data: {
         word,
+        voice: this.setting?.voice,
       },
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
+    });
+  }
+
+  onOpenSetting(): void {
+    const dialogRef = this.dialog.open(ViewerSettingDialogComponent, {
+      data: this.setting,
+      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
+    });
+    dialogRef.closed.subscribe(() => {
+      this.getSetting();
+    });
+  }
+
+  private getSetting() {
+    this.settingService.getSetting().subscribe((res) => {
+      this.setting = res;
     });
   }
 

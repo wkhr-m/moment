@@ -3,7 +3,7 @@
 .content {
   display: grid;
   row-gap: 0.6rem;
-  grid-template-rows: 1fr 5rem;
+  grid-template-rows: 1fr 6rem;
   height: 100%;
 }
 .swiper {
@@ -22,9 +22,9 @@
   row-gap: 1.2rem;
   grid-template-rows: repeat(3, 1fr);
 }
-.second-sentense {
+.hide-target {
   position: relative;
-  .second-sentense-text {
+  .hide-target-text {
     margin: 1rem 0;
   }
   .hide {
@@ -70,7 +70,11 @@
   align-items: center;
   justify-content: space-between;
 }
-
+.action-buttons-item {
+  button {
+    margin: 0 0.3rem;
+  }
+}
 .not-exist {
   @include variable.not-exist;
 }

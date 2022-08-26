@@ -1,0 +1,52 @@
+<section class="dialog-wrapper">
+  <div class="dialog-header">
+    設定
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content" mat-dialog-content>
+    <form [formGroup]="form" class="setting-form">
+      <mat-form-field appearance="fill">
+        <mat-label>表示する順番</mat-label>
+        <mat-select formControlName="order">
+          <mat-option [value]="viewerOrder.JAEN">日本語⇨英語</mat-option>
+          <mat-option [value]="viewerOrder.ENJA">英語⇨日本語</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>音声</mat-label>
+        <mat-select formControlName="voice">
+          <mat-option
+            *ngFor="let voice of voiceOptions"
+            [value]="voice.voiceURI"
+            >{{ voice.voiceURI }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button (click)="onAudition()">試聴</button>
+      <mat-slide-toggle formControlName="secondLangIsHide"
+        >{{
+          form.controls["order"].value === viewerOrder.JAEN ? "英語" : "日本語"
+        }}を隠す</mat-slide-toggle
+      >
+      <!-- <mat-slide-toggle formControlName="isAutoPlay">自動再生</mat-slide-toggle> -->
+    </form>
+    <div class="action-buttons">
+      <a
+        href="https://www.notion.so/Moment-9d9e6093566a4f02a78004ac048b27b5"
+        target="_blank"
+        mat-raised-button
+        color="primary"
+        >使い方 <mat-icon>open_in_new</mat-icon></a
+      >
+      <a
+        href="https://docs.google.com/forms/d/16Q8LlY_gQOyZyKbb6y4hdZwuk1Qs0U658vTKjgI-Lzs"
+        target="_blank"
+        mat-raised-button
+        color="accent"
+        >お問合せ <mat-icon>open_in_new</mat-icon></a
+      >
+    </div>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+@use "./../../../style/variable.scss" as variable;
+
+:host {
+  @include variable.dialog-host;
+}
+.dialog-wrapper {
+  @include variable.dialog-wrapper;
+}
+.dialog-header {
+  @include variable.dialog-header;
+}
+.dialog-content {
+  @include variable.dialog-content;
+}
+
+.setting-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.action-buttons {
+  margin: 3rem 0;
+  display: flex;
+  gap: 2rem;
+}
