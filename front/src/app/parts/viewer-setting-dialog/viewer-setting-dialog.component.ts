@@ -1,9 +1,9 @@
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Setting, ViewerOrder } from '@m-types/setting';
-import { LANG_EN } from './../../../utils/speech';
+import { getVoices, speechWord } from '@utils/speech';
+import { SettingService } from './../../services/setting.service';
 
 @Component({
   selector: 'app-viewer-setting-dialog',
@@ -17,21 +17,29 @@ export class ViewerSettingDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: DialogRef,
-    @Inject(DIALOG_DATA) public data: Setting,
-    private _snackBar: MatSnackBar
+    @Optional() @Inject(DIALOG_DATA) public data: Setting,
+    private settingService: SettingService
   ) {
-    this.voiceOptions = window.speechSynthesis
-      .getVoices()
-      .filter((item) => item.lang === LANG_EN);
+    this.voiceOptions = getVoices();
     this.form = new FormGroup({
-      order: new FormControl(data.order || ViewerOrder.ENJA),
-      voice: new FormControl(data.voice || this.voiceOptions[0].voiceURI),
+      order: new FormControl(data?.order || ViewerOrder.ENJA),
+      voice: new FormControl(data?.voice || this.voiceOptions[0].voiceURI),
+      secondLangIsHide: new FormControl(data?.secondLangIsHide || false),
+      isAutoPlay: new FormControl(data?.isAutoPlay || false),
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form.valueChanges.subscribe((setting) => {
+      this.settingService.setSetting(setting).subscribe();
+    });
+  }
 
   onClose(): void {
     this.dialogRef.close();
+  }
+
+  onAudition() {
+    speechWord('Hello world', 1, this.form.value['voice']);
   }
 }

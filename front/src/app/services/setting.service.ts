@@ -16,6 +16,7 @@ export class SettingService {
   }
 
   setSetting(setting: Setting): Observable<Setting> {
+    setting.id = 'setting';
     return this.dbService.update<Setting>(STORE_TYPE.STORE_SETTING, setting);
   }
 }

@@ -24,20 +24,38 @@
         <ng-container *ngFor="let sentense of sentenses; index as i">
           <ng-template swiperSlide>
             <mat-card class="word-viewer">
-              <div class="card-content first-sentense">
-                <app-en-sentense
-                  [sentense]="sentense.en"
-                  [pronunciation]="sentense.pronunciation"
-                  (wordClick)="onClickWord($event)"
-                ></app-en-sentense>
-              </div>
-              <div class="card-content second-sentense">
-                <div class="second-sentense-text">
+              <div class="card-content">
+                <ng-container
+                  *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_EN"
+                >
                   {{ sentense.ja }}
+                </ng-container>
+                <ng-template #JAEN_EN>
+                  <app-en-sentense
+                    [sentense]="sentense.en"
+                    [pronunciation]="sentense.pronunciation"
+                    (wordClick)="onClickWord($event)"
+                  ></app-en-sentense>
+                </ng-template>
+              </div>
+              <div class="card-content hide-target">
+                <div class="hide-target-text">
+                  <ng-container
+                    *ngIf="setting?.order === viewerOrder.ENJA; else ENJA_EN"
+                  >
+                    {{ sentense.ja }}
+                  </ng-container>
+                  <ng-template #ENJA_EN>
+                    <app-en-sentense
+                      [sentense]="sentense.en"
+                      [pronunciation]="sentense.pronunciation"
+                      (wordClick)="onClickWord($event)"
+                    ></app-en-sentense>
+                  </ng-template>
                 </div>
                 <div
                   class="hide"
-                  *ngIf="isSecondSentenseHide"
+                  *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
                   (click)="onClickHide()"
                 >
                   🫣 Please Click HERE!!🫣

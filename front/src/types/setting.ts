@@ -3,6 +3,7 @@ export type Setting = {
   order: ViewerOrderType;
   secondLangIsHide: boolean;
   voice?: string;
+  isAutoPlay: boolean;
 };
 
 export type ViewerOrderType = typeof ViewerOrder[keyof typeof ViewerOrder];
