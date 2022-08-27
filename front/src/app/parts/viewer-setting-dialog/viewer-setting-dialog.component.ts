@@ -2,7 +2,7 @@ import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Setting, ViewerOrder } from '@m-types/setting';
-import { getVoices, speechWord } from '@utils/speech';
+import { getVoices, initVoices, speechWord } from '@utils/speech';
 import { SettingService } from './../../services/setting.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class ViewerSettingDialogComponent implements OnInit {
     private settingService: SettingService
   ) {
     this.voiceOptions = getVoices();
+    initVoices();
     this.form = new FormGroup({
       order: new FormControl(data?.order || ViewerOrder.ENJA),
       voice: new FormControl(data?.voice || this.voiceOptions[0]?.voiceURI),
@@ -33,6 +34,9 @@ export class ViewerSettingDialogComponent implements OnInit {
     this.form.valueChanges.subscribe((setting) => {
       this.settingService.setSetting(setting).subscribe();
     });
+    if (this.voiceOptions.length === 0) {
+      this.voiceOptions = getVoices();
+    }
   }
 
   onClose(): void {

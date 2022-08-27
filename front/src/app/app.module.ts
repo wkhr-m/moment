@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -66,6 +67,7 @@ import { WordService } from './services/word.service';
     MatSlideToggleModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
+    A11yModule,
     NgxSkeletonLoaderModule,
     SwiperModule,
     BrowserModule,
