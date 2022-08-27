@@ -1,5 +1,5 @@
 import { Dialog } from '@angular/cdk/dialog';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
@@ -15,6 +15,7 @@ import SwiperCore, {
 } from 'swiper';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
+import { releaseRecord } from './../../../utils/record';
 import { ViewerSettingDialogComponent } from './../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { HeaderService } from './../../services/header.service';
 
@@ -25,7 +26,7 @@ SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
   templateUrl: './sentense-viewer.component.html',
   styleUrls: ['./sentense-viewer.component.scss'],
 })
-export class SentenseViewerComponent implements OnInit {
+export class SentenseViewerComponent implements OnInit, OnDestroy {
   viewerOrder = ViewerOrder;
   book?: Book;
   sentenses: Sentense[] = [];
@@ -81,6 +82,10 @@ export class SentenseViewerComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    releaseRecord();
+  }
+
   onClickHide(): void {
     this.isSecondSentenseHide = false;
   }
@@ -88,6 +93,7 @@ export class SentenseViewerComponent implements OnInit {
   onSlideChange(swipers: Swiper[]) {
     this.isSecondSentenseHide = true;
     this.isRecorded = false;
+    releaseRecord();
     const newActiveIndex = swipers[0].activeIndex;
     this.activeSentenseNumber = newActiveIndex;
     this.setSentenseNumberAtHeader(newActiveIndex);

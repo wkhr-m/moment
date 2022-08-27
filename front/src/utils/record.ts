@@ -13,6 +13,7 @@ export const RecordVoice = async () => {
     return;
   }
   window.URL.revokeObjectURL(url);
+  releaseRecord();
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: true,
   });
@@ -33,4 +34,8 @@ export const playRecord = () => {
   url = window.URL.createObjectURL(audioData);
   const audio = new Audio(url);
   audio.play();
+};
+
+export const releaseRecord = () => {
+  window.URL.revokeObjectURL(url);
 };
