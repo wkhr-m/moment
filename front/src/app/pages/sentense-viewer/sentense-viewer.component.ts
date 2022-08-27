@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
-import { RecordVoice } from '@utils/record';
+import { playRecord, RecordVoice } from '@utils/record';
 import { speechWord } from '@utils/speech';
 import { SettingService } from 'app/services/setting.service';
 import SwiperCore, {
@@ -15,7 +15,6 @@ import SwiperCore, {
 } from 'swiper';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
-import { playRecord } from './../../../utils/record';
 import { ViewerSettingDialogComponent } from './../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { HeaderService } from './../../services/header.service';
 
