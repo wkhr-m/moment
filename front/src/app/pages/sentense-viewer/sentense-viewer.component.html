@@ -86,10 +86,15 @@
         </div>
 
         <div class="action-buttons-item">
-          <button mat-mini-fab aria-label="Recording">
-            <mat-icon>mic</mat-icon>
+          <button mat-mini-fab aria-label="Recording" (click)="onRecordVoice()">
+            <mat-icon>{{ isRecording ? "pause" : "mic"}}</mat-icon>
           </button>
-          <button mat-mini-fab aria-label="Recording">
+          <button
+            mat-mini-fab
+            aria-label="Recording"
+            (click)="onHearVoice()"
+            [disabled]="!isRecorded"
+          >
             <mat-icon>hearing</mat-icon>
           </button>
         </div>

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
+import { RecordVoice } from '@utils/record';
 import { speechWord } from '@utils/speech';
 import { SettingService } from 'app/services/setting.service';
 import SwiperCore, {
@@ -14,6 +15,7 @@ import SwiperCore, {
 } from 'swiper';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
+import { playRecord } from './../../../utils/record';
 import { ViewerSettingDialogComponent } from './../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { HeaderService } from './../../services/header.service';
 
@@ -34,6 +36,8 @@ export class SentenseViewerComponent implements OnInit {
   isBookExist: boolean = true;
   audio?: HTMLAudioElement;
   setting?: Setting;
+  isRecorded: boolean = false;
+  isRecording: boolean = false;
 
   constructor(
     private bookService: BookService,
@@ -84,6 +88,7 @@ export class SentenseViewerComponent implements OnInit {
 
   onSlideChange(swipers: Swiper[]) {
     this.isSecondSentenseHide = true;
+    this.isRecorded = false;
     const newActiveIndex = swipers[0].activeIndex;
     this.activeSentenseNumber = newActiveIndex;
     this.setSentenseNumberAtHeader(newActiveIndex);
@@ -123,6 +128,18 @@ export class SentenseViewerComponent implements OnInit {
     dialogRef.closed.subscribe(() => {
       this.getSetting();
     });
+  }
+
+  onRecordVoice(): void {
+    this.isRecording = !this.isRecording;
+    if (!this.isRecording) {
+      this.isRecorded = true;
+    }
+    RecordVoice();
+  }
+
+  onHearVoice(): void {
+    playRecord();
   }
 
   private getSetting() {
