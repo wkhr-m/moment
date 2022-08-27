@@ -23,7 +23,7 @@ export class ViewerSettingDialogComponent implements OnInit {
     this.voiceOptions = getVoices();
     this.form = new FormGroup({
       order: new FormControl(data?.order || ViewerOrder.ENJA),
-      voice: new FormControl(data?.voice || this.voiceOptions[0].voiceURI),
+      voice: new FormControl(data?.voice || this.voiceOptions[0]?.voiceURI),
       secondLangIsHide: new FormControl(data?.secondLangIsHide || false),
       isAutoPlay: new FormControl(data?.isAutoPlay || false),
     });

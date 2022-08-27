@@ -41,16 +41,16 @@
               <div class="card-content hide-target">
                 <div class="hide-target-text">
                   <ng-container
-                    *ngIf="setting?.order === viewerOrder.ENJA; else ENJA_EN"
+                    *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_JA"
                   >
-                    {{ sentense.ja }}
-                  </ng-container>
-                  <ng-template #ENJA_EN>
                     <app-en-sentense
                       [sentense]="sentense.en"
                       [pronunciation]="sentense.pronunciation"
                       (wordClick)="onClickWord($event)"
                     ></app-en-sentense>
+                  </ng-container>
+                  <ng-template #JAEN_JA>
+                    {{ sentense.ja }}
                   </ng-template>
                 </div>
                 <div
@@ -87,7 +87,7 @@
 
         <div class="action-buttons-item">
           <button mat-mini-fab aria-label="Recording" (click)="onRecordVoice()">
-            <mat-icon>{{ isRecording ? "pause" : "mic"}}</mat-icon>
+            <mat-icon>{{ isRecording ? "pause" : "mic" }}</mat-icon>
           </button>
           <button
             mat-mini-fab
