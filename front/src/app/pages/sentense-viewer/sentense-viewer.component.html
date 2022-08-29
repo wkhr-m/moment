@@ -2,6 +2,7 @@
   <section class="content">
     <ng-container *ngIf="isLoaded">
       <swiper
+        #swiperRef
         [slidesPerView]="1"
         [spaceBetween]="50"
         [keyboard]="{
@@ -72,6 +73,14 @@
         </ng-container>
       </swiper>
       <mat-card class="action-buttons">
+        <mat-slider
+          class="slider"
+          min="0"
+          [max]="sentenses.length - 1"
+          step="1"
+          (change)="onChangeActivevNumberFromBar($event.value)"
+          [value]="activeSentenseNumber"
+        ></mat-slider>
         <button mat-mini-fab (click)="onOpenSetting()">
           <mat-icon>settings</mat-icon>
         </button>
