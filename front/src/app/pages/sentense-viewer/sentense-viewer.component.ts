@@ -1,5 +1,5 @@
 import { Dialog } from '@angular/cdk/dialog';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
@@ -13,6 +13,7 @@ import SwiperCore, {
   Swiper,
   Virtual,
 } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
 import { releaseRecord } from './../../../utils/record';
@@ -38,6 +39,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
   setting?: Setting;
   isRecorded: boolean = false;
   isRecording: boolean = false;
+  @ViewChild('swiperRef', { static: false }) swiper?: SwiperComponent;
 
   constructor(
     private bookService: BookService,
@@ -86,6 +88,13 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     releaseRecord();
   }
 
+  onChangeActivevNumberFromBar(newActiveIndex: number | null) {
+    if (newActiveIndex !== null) {
+      this.setActiveNumber(newActiveIndex);
+      this.swiper?.swiperRef.slideTo(newActiveIndex, 0);
+    }
+  }
+
   onClickHide(): void {
     this.isSecondSentenseHide = false;
   }
@@ -95,6 +104,10 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     this.isRecorded = false;
     releaseRecord();
     const newActiveIndex = swipers[0].activeIndex;
+    this.setActiveNumber(newActiveIndex);
+  }
+
+  private setActiveNumber(newActiveIndex: number) {
     this.activeSentenseNumber = newActiveIndex;
     this.setSentenseNumberAtHeader(newActiveIndex);
     if (!!this.sentenses[newActiveIndex].audioUrl) {

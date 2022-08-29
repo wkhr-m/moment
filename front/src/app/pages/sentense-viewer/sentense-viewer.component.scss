@@ -3,7 +3,7 @@
 .content {
   display: grid;
   row-gap: 0.6rem;
-  grid-template-rows: 1fr 6rem;
+  grid-template-rows: 1fr 8rem;
   height: 100%;
 }
 .swiper {
@@ -66,9 +66,16 @@
 }
 
 .action-buttons {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.slider {
+  position: absolute;
+  width: 100%;
+  top: -24px;
+  left: 0;
 }
 .action-buttons-item {
   button {
