@@ -1,4 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -58,10 +59,11 @@ import { WordService } from './services/word.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    DialogModule,
+    ClipboardModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    DialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
