@@ -1,4 +1,5 @@
-export const LANG_EN = 'en-US';
+const LANG_EN = 'en-US';
+const LANG_EN_FOR_ANDROID = 'en_US';
 
 let voices: SpeechSynthesisVoice[] = [];
 
@@ -9,14 +10,18 @@ const allVoicesObtained = new Promise<SpeechSynthesisVoice[]>(function (
 ) {
   let voices = window.speechSynthesis
     .getVoices()
-    .filter((item) => item.lang === LANG_EN);
+    .filter(
+      (item) => item.lang === LANG_EN || item.lang === LANG_EN_FOR_ANDROID
+    );
   if (voices.length !== 0) {
     resolve(voices);
   } else {
     window.speechSynthesis.addEventListener('voiceschanged', function () {
       voices = window.speechSynthesis
         .getVoices()
-        .filter((item) => item.lang === LANG_EN);
+        .filter(
+          (item) => item.lang === LANG_EN || item.lang === LANG_EN_FOR_ANDROID
+        );
       resolve(voices);
     });
   }
