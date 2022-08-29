@@ -1,6 +1,6 @@
 # moment
 単語帳
-GoogleスプレッドシートとGoogleDriveから単語帳の情報をインポートする(ようになりたいな)
+Google SheetsとGoogleDriveから単語帳の情報をインポートする(ようになりたいな)
 
 ## 使用しているAPI
   - [WordsAPI](https://rapidapi.com/dpventures/api/wordsapi)
@@ -20,7 +20,7 @@ GitHub ActionsからGAEにデプロイ
     - Storage オブジェクト閲覧者
     - サービス アカウント ユーザー
 - spreadsheet-reader@サービスアカウント
-  - Googleスプレッドシートから内容を読むためのアカウント
+  - Google Sheetssから内容を読むためのアカウント
   - 付与したロール
 
 

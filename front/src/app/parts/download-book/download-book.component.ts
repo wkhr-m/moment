@@ -31,7 +31,7 @@ export class DownloadBookComponent {
       this.dialogRef.close(this.form.value);
     } else {
       this._snackBar.open(
-        '入力されたスプレッドシートのURLかシート名が不正です。',
+        '入力されたGoogle SheetsのURLかシート名が不正です。',
         '',
         {
           panelClass: ['warn-snackbar'],

@@ -21,14 +21,14 @@
         <li>
           spreadsheet-reader@wk-moment.iam.gserviceaccount.comを閲覧者として共有する
         </li>
-        <li>下記の入力欄にスプレッドシートのURLを書き込む</li>
+        <li>下記の入力欄にGoogle SheetsのURLを書き込む</li>
         <li>読み込みボタンを押す</li>
       </ol>
     </section>
     <section>
       <form [formGroup]="form" class="form">
         <mat-form-field appearance="fill">
-          <mat-label>スプレッドシートのURL</mat-label>
+          <mat-label>Google SheetsのURL</mat-label>
           <input matInput formControlName="url" />
         </mat-form-field>
         <mat-form-field appearance="fill">
@@ -42,7 +42,7 @@
         (click)="onSubmit()"
         mat-raised-button
       >
-        スプレッドシートを読み込む
+        Google Sheetsを読み込む
       </button>
     </section>
   </div>
