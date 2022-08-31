@@ -35,10 +35,15 @@ export class BookComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getBook();
+  }
+
+  private getBook() {
     this.bookService.getBookAndChapters(this.bookId).subscribe((book: Book) => {
       this.isExist = !!book;
       this.book = book;
       this.setHeader(book);
+      this.isLoading = false;
     });
   }
 
@@ -73,8 +78,8 @@ export class BookComponent implements OnInit {
   private resyncBook(value?: string) {
     this.isLoading = true;
     this.bookService.downloadBook(this.bookId, value || '').subscribe({
-      next: () => {
-        this.isLoading = false;
+      next: (res) => {
+        this.getBook();
         this._snackBar.open('再同期完了しました。', '', {
           duration: 5000,
         });
