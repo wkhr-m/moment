@@ -78,6 +78,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
       }
       if (!!this.sentenses[0].audioUrl) {
         this.audio = new Audio(this.sentenses[0].audioUrl);
+        this.audio.load();
       }
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
       this.isLoaded = true;
@@ -112,11 +113,13 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     this.setSentenseNumberAtHeader(newActiveIndex);
     if (!!this.sentenses[newActiveIndex].audioUrl) {
       this.audio = new Audio(this.sentenses[newActiveIndex].audioUrl);
+    } else {
+      this.audio = undefined;
     }
   }
 
   onPlay(rate: number) {
-    if (!!this.audio?.src) {
+    if (!!this.audio?.src && this.audio?.readyState !== 0) {
       this.audio.playbackRate = rate;
       this.audio.play();
     } else {
