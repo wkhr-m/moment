@@ -113,6 +113,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     this.setSentenseNumberAtHeader(newActiveIndex);
     if (!!this.sentenses[newActiveIndex].audioUrl) {
       this.audio = new Audio(this.sentenses[newActiveIndex].audioUrl);
+      this.audio.load();
     } else {
       this.audio = undefined;
     }
