@@ -1,6 +1,23 @@
 const express = require('express');
 const app = express();
 const readSheet = require('./api/read-sheet');
+const socket_io = require('socket.io')(8081, { cors: { origin: '*' } });
+
+const fs = require('fs');
+
+socket_io.on('connection', (socket) => {
+  console.log(socket);
+  const result = JSON.parse(fs.readFileSync('./result.json'));
+
+  socket.on('disconnect', function () {
+    console.log('disconnect');
+  });
+
+  socket.on('on_pronunciation', (data) => {
+    console.log(data);
+    socket_io.emit('emit_pronunciation', result);
+  });
+});
 
 const allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');

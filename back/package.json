@@ -11,6 +11,8 @@
   "dependencies": {
     "express": "^4.18.1",
     "google-auth-library": "^8.1.1",
-    "googleapis": "^105.0.0"
+    "googleapis": "^105.0.0",
+    "microsoft-cognitiveservices-speech-sdk": "^1.23.0",
+    "socket.io": "^4.5.1"
   }
 }
