@@ -7,6 +7,7 @@ import { FixedQueue } from '@utils/fixed-queue';
 import { playRecord, RecordVoice } from '@utils/record';
 import { speechWord } from '@utils/speech';
 import { SettingService } from 'app/services/setting.service';
+import { Subscription } from 'rxjs';
 import SwiperCore, {
   EffectCreative,
   Keyboard,
@@ -20,6 +21,10 @@ import { BookService } from '../../services/book.service';
 import { releaseRecord } from './../../../utils/record';
 import { ViewerSettingDialogComponent } from './../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { HeaderService } from './../../services/header.service';
+import {
+  PronunciationResult,
+  PronunciationService,
+} from './../../services/pronunciation.service';
 
 SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
 
@@ -45,13 +50,16 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     0,
     []
   );
+  pronunciationResult?: PronunciationResult;
+  pronunciationConnect?: Subscription;
 
   constructor(
     private bookService: BookService,
     private settingService: SettingService,
     private headerService: HeaderService,
     private route: ActivatedRoute,
-    public dialog: Dialog
+    public dialog: Dialog,
+    private pronunciationService: PronunciationService
   ) {}
 
   ngOnInit(): void {
@@ -91,10 +99,47 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
       this.isLoaded = true;
     });
+
+    // 発音のためにsocket接続する
+    this.pronunciationService.connect();
+    this.pronunciationConnect = this.pronunciationService
+      .on('emit_pronunciation')
+      .subscribe((data: any) => {
+        console.log('emit', data);
+        this.pronunciationResult = data;
+      });
   }
 
   ngOnDestroy(): void {
     releaseRecord();
+    this.pronunciationConnect?.unsubscribe();
+  }
+
+  async onPronunciation() {
+    //https://qiita.com/ninomiyt/items/001b496e067ebf216384
+    // 音声をおくりたーいけどこれふるーい記事
+    // そもそもAudio周りを理解していないのはまずいよね
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    const ctx = new AudioContext();
+    const source = ctx.createMediaStreamSource(stream);
+    const processor = ctx.createScriptProcessor(1024, 1, 1);
+
+    const connection = new WebSocket('http://localhost:8081');
+
+    source.connect(processor);
+    processor.connect(ctx.destination);
+
+    processor.onaudioprocess = function (e) {
+      const voice = e.inputBuffer.getChannelData(0);
+      connection.send(voice);
+    };
+
+    this.pronunciationService.emit(
+      'on_pronunciation',
+      this.sentenses[this.activeSentenseNumber]
+    );
   }
 
   onChangeActivevNumberFromBar(newActiveIndex: number | null) {

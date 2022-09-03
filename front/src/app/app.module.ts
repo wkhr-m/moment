@@ -39,6 +39,7 @@ import { MeanWordComponent } from './parts/mean-word/mean-word.component';
 import { ViewerSettingDialogComponent } from './parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { BookService } from './services/book.service';
 import { HeaderService } from './services/header.service';
+import { PronunciationService } from './services/pronunciation.service';
 import { SettingService } from './services/setting.service';
 import { WordService } from './services/word.service';
 
@@ -89,7 +90,13 @@ import { WordService } from './services/word.service';
       registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
-  providers: [HeaderService, BookService, WordService, SettingService],
+  providers: [
+    HeaderService,
+    BookService,
+    WordService,
+    SettingService,
+    PronunciationService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
