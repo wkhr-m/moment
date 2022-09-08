@@ -1,8 +1,8 @@
 {
   "name": "moment",
   "short_name": "moment",
-  "theme_color": "#fcfbfb",
-  "background_color": "#fcfbfb",
+  "theme_color": "#e8eaed",
+  "background_color": "#e8eaed",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
