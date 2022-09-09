@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BookComponent } from './pages/book/book.component';
 import { BooksComponent } from './pages/books/books.component';
+import { HomeComponent } from './pages/home/home.component';
 import { SentenseViewerComponent } from './pages/sentense-viewer/sentense-viewer.component';
 
 const routes: Routes = [
@@ -9,6 +10,11 @@ const routes: Routes = [
     path: '',
     children: [
       { path: '', pathMatch: 'full', redirectTo: '/books' },
+      {
+        path: 'home',
+        pathMatch: 'full',
+        component: HomeComponent,
+      },
       {
         path: 'books',
         pathMatch: 'full',

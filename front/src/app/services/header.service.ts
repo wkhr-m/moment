@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 // HeaderComponentに情報を共有するためのService
 
-const APP_NAME = 'MOMENT';
+const APP_NAME = 'Moment';
 @Injectable()
 export class HeaderService {
   color$ = new Subject<string>();

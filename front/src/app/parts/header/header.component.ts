@@ -7,7 +7,7 @@ import { HeaderService } from '../../services/header.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  title: string = 'MOMENT';
+  title: string = 'Moment';
   url?: string;
   color?: string;
   bgColor?: string;
