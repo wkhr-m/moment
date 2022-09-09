@@ -1,6 +1,17 @@
 <header>
-  <a mat-icon-button *ngIf="url" [routerLink]="url">
-    <mat-icon>arrow_back</mat-icon>
-  </a>
-  <div class="title">{{ title }}</div>
+  <div class="left">
+    <a mat-icon-button *ngIf="url" [routerLink]="url">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <div class="title">{{ title }}</div>
+  </div>
+  <div class="action-buttons">
+    <a
+      href="https://cedar-impatiens-49c.notion.site/Moment-9d9e6093566a4f02a78004ac048b27b5"
+      target="_blank"
+      mat-icon-button
+    >
+      <mat-icon>description</mat-icon>
+    </a>
+  </div>
 </header>
