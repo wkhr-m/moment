@@ -12,7 +12,17 @@
 .dialog-content {
   @include variable.dialog-content;
 }
-
+.capacity-msg {
+  padding-bottom: 1rem;
+  &.near-over {
+    color: red;
+    font-weight: bold;
+  }
+}
+.title {
+  font-weight: bold;
+  margin: 0;
+}
 .form {
   display: flex;
   flex-direction: column;

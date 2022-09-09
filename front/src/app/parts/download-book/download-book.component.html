@@ -12,45 +12,53 @@
     </button>
   </div>
   <div class="dialog-content">
-    <section>
-      <h3>読み込む方法</h3>
-      <ol>
-        <li>Google Sheetsを作成する</li>
-        <li>1行目に「ja」「en」「section」をそれぞれの列に追加</li>
-        <li>2行目以降に列に対応する日本文、英文、セクション名を追加</li>
-        <li>
-          <button
-            mat-stroked-button
-            cdkCopyToClipboard="spreadsheet-reader@wk-moment.iam.gserviceaccount.com"
-          >
-            spreadsheet-reader@wk-moment.iam.gserviceaccount.com
-            <mat-icon>content_copy</mat-icon>
-          </button>
-          を閲覧者として共有する
-        </li>
-        <li>下記の入力欄にGoogle SheetsのURLを書き込む</li>
-        <li>読み込みボタンを押す</li>
-      </ol>
+    <section class="capacity-msg" [class.near-over]="isNearCapacity">
+      {{ capacityMsg }}
     </section>
-    <section>
-      <form [formGroup]="form" class="form">
-        <mat-form-field appearance="fill">
-          <mat-label>Google SheetsのURL</mat-label>
-          <input matInput formControlName="url" />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>シート名</mat-label>
-          <input matInput formControlName="name" />
-        </mat-form-field>
-      </form>
-      <button
-        [disabled]="form.invalid"
-        color="primary"
-        (click)="onSubmit()"
-        mat-raised-button
-      >
-        Google Sheetsを読み込む
-      </button>
-    </section>
+    <ng-container *ngIf="!isCapacityOver; else elseTemplate">
+      <section>
+        <h3 class="title">読み込む方法</h3>
+        <ol>
+          <li>Google Sheetsを作成する</li>
+          <li>1行目に「ja」「en」「section」をそれぞれの列に追加</li>
+          <li>2行目以降に列に対応する日本文、英文、セクション名を追加</li>
+          <li>
+            <button
+              mat-stroked-button
+              cdkCopyToClipboard="spreadsheet-reader@wk-moment.iam.gserviceaccount.com"
+            >
+              spreadsheet-reader@wk-moment.iam.gserviceaccount.com
+              <mat-icon>content_copy</mat-icon>
+            </button>
+            を閲覧者として共有する
+          </li>
+          <li>下記の入力欄にGoogle SheetsのURLを書き込む</li>
+          <li>読み込みボタンを押す</li>
+        </ol>
+      </section>
+      <section>
+        <form [formGroup]="form" class="form">
+          <mat-form-field appearance="fill">
+            <mat-label>Google SheetsのURL</mat-label>
+            <input matInput formControlName="url" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>シート名</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </form>
+        <button
+          [disabled]="form.invalid"
+          color="primary"
+          (click)="onSubmit()"
+          mat-raised-button
+        >
+          Google Sheetsを読み込む
+        </button>
+      </section>
+    </ng-container>
+    <ng-template #elseTemplate>
+      容量がオーバーしています。単語帳を削除してください。
+    </ng-template>
   </div>
 </section>
