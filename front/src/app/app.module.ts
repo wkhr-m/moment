@@ -29,6 +29,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BookComponent } from './pages/book/book.component';
 import { BooksComponent } from './pages/books/books.component';
+import { HomeComponent } from './pages/home/home.component';
 import { SentenseViewerComponent } from './pages/sentense-viewer/sentense-viewer.component';
 import { BookSettingsDialogComponent } from './parts/book-settings-dialog/book-settings-dialog.component';
 import { DownloadBookComponent } from './parts/download-book/download-book.component';
@@ -53,6 +54,7 @@ import { WordService } from './services/word.service';
     DownloadBookComponent,
     BookSettingsDialogComponent,
     ViewerSettingDialogComponent,
+    HomeComponent,
   ],
   imports: [
     CommonModule,

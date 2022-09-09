@@ -1,47 +1,39 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  MatSnackBar,
+  MatSnackBarRef,
+  TextOnlySnackBar,
+} from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import type { Book } from '@m-types/books';
 import { REGEXP_SPREADSHEET_URL } from '@utils/regexp';
 import {
   DownloadBookComponent,
   DownloadBookComponentOutput,
-} from '../../parts/download-book/download-book.component';
-import { BookService } from '../../services/book.service';
-import { HeaderService } from './../../services/header.service';
+} from './../../parts/download-book/download-book.component';
+import { BookService } from './../../services/book.service';
 
 @Component({
-  selector: 'app-books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.scss'],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
-export class BooksComponent implements OnInit {
-  books: Book[] = [];
-  isLoading: boolean = false;
-  isInitLoaded: boolean = false;
+export class HomeComponent implements OnInit {
+  readingRef?: MatSnackBarRef<TextOnlySnackBar>;
 
   constructor(
     private bookService: BookService,
-    private headerService: HeaderService,
+    private router: Router,
     public dialog: Dialog,
-    private _snackBar: MatSnackBar,
-    private router: Router
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.headerService.init();
-    this.loadBooks();
-  }
-
-  private loadBooks(): void {
-    this.bookService.getAllBooks().subscribe((res) => {
-      if (res?.length === 0) {
-        this.router.navigateByUrl('/home');
+    this.bookService.getAllBooks().subscribe((book) => {
+      if (book?.length > 0) {
+        this.router.navigateByUrl('/books');
       }
-      this.books = res;
-      this.isInitLoaded = true;
     });
   }
 
@@ -63,14 +55,13 @@ export class BooksComponent implements OnInit {
   private downloadBook(url: string, name: string) {
     const id = url.trim().match(REGEXP_SPREADSHEET_URL)?.[1];
     if (id) {
-      this.isLoading = true;
+      this.readingRef = this._snackBar.open('読み込み中...');
       this.bookService.downloadBook(id, name).subscribe({
-        next: (book) => {
+        next: () => {
           this._snackBar.open('読み込みに成功しました。', '', {
             duration: 5000,
           });
-          this.loadBooks();
-          this.isLoading = false;
+          this.router.navigateByUrl('/books');
         },
         error: (error: HttpErrorResponse) => {
           let msg = '読み込みに失敗しました。';
@@ -83,11 +74,11 @@ export class BooksComponent implements OnInit {
           ) {
             msg = error.error;
           }
+          this.readingRef?.dismiss();
           this._snackBar.open(msg, '', {
             duration: 5000,
             panelClass: ['warn-snackbar'],
           });
-          this.isLoading = false;
         },
       });
     }
