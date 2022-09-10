@@ -16,7 +16,7 @@ export type DownloadBookComponentOutput = {
 })
 export class DownloadBookComponent implements OnInit {
   capacityMsg: string = '';
-  isCapacityOver: boolean = true;
+  isCapacityOver: boolean = false;
   isNearCapacity: boolean = false;
   form = new FormGroup({
     url: new FormControl('', Validators.compose([Validators.required])),
