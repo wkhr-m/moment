@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
+import { FixedQueue } from '@utils/fixed-queue';
 import { playRecord, RecordVoice } from '@utils/record';
 import { speechWord } from '@utils/speech';
 import { SettingService } from 'app/services/setting.service';
@@ -35,11 +36,15 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
   isSecondSentenseHide: boolean = true;
   isLoaded = false;
   isBookExist: boolean = true;
-  audio?: HTMLAudioElement;
   setting?: Setting;
   isRecorded: boolean = false;
   isRecording: boolean = false;
   @ViewChild('swiperRef', { static: false }) swiper?: SwiperComponent;
+
+  private audioFixedQueue: FixedQueue<HTMLAudioElement | null> = new FixedQueue(
+    0,
+    []
+  );
 
   constructor(
     private bookService: BookService,
@@ -76,10 +81,13 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
         this.isLoaded = true;
         return;
       }
-      if (!!this.sentenses[0].audioUrl) {
-        this.audio = new Audio(this.sentenses[0].audioUrl);
-        this.audio.load();
-      }
+
+      const firstAudio = new Audio(this.sentenses[0].audioUrl);
+      firstAudio.load();
+      const secondAudio = new Audio(this.sentenses[1]?.audioUrl);
+      secondAudio.load();
+      this.audioFixedQueue = new FixedQueue(3, [null, firstAudio, secondAudio]);
+
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
       this.isLoaded = true;
     });
@@ -91,7 +99,24 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
 
   onChangeActivevNumberFromBar(newActiveIndex: number | null) {
     if (newActiveIndex !== null) {
-      this.setActiveNumber(newActiveIndex);
+      this.setSentenseNumberAtHeader(newActiveIndex);
+      const firstAudio = new Audio(
+        this.sentenses[newActiveIndex - 1]?.audioUrl
+      );
+      firstAudio.load();
+      const secondAudio = new Audio(this.sentenses[newActiveIndex].audioUrl);
+      secondAudio.load();
+      const thirdAudio = new Audio(
+        this.sentenses[newActiveIndex + 1]?.audioUrl
+      );
+      thirdAudio.load();
+      this.audioFixedQueue = new FixedQueue(3, [
+        firstAudio,
+        secondAudio,
+        thirdAudio,
+      ]);
+      this.activeSentenseNumber = newActiveIndex;
+
       this.swiper?.swiperRef.slideTo(newActiveIndex, 0);
     }
   }
@@ -101,28 +126,34 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
   }
 
   onSlideChange(swipers: Swiper[]) {
+    const newActiveIndex = swipers[0].activeIndex;
+    if (newActiveIndex === this.activeSentenseNumber) {
+      return;
+    }
     this.isSecondSentenseHide = true;
     this.isRecorded = false;
     releaseRecord();
-    const newActiveIndex = swipers[0].activeIndex;
-    this.setActiveNumber(newActiveIndex);
-  }
 
-  private setActiveNumber(newActiveIndex: number) {
-    this.activeSentenseNumber = newActiveIndex;
     this.setSentenseNumberAtHeader(newActiveIndex);
-    if (!!this.sentenses[newActiveIndex].audioUrl) {
-      this.audio = new Audio(this.sentenses[newActiveIndex].audioUrl);
-      this.audio.load();
+
+    if (this.activeSentenseNumber > newActiveIndex) {
+      const tmp = new Audio(this.sentenses[newActiveIndex - 1].audioUrl);
+      tmp.load();
+      this.audioFixedQueue.dequeue(tmp);
     } else {
-      this.audio = undefined;
+      const tmp = new Audio(this.sentenses[newActiveIndex + 1].audioUrl);
+      tmp.load();
+      this.audioFixedQueue.enqueue(tmp);
     }
+
+    this.activeSentenseNumber = newActiveIndex;
   }
 
   onPlay(rate: number) {
-    if (!!this.audio?.src && this.audio?.readyState !== 0) {
-      this.audio.playbackRate = rate;
-      this.audio.play();
+    const audio = this.audioFixedQueue.getItem(1);
+    if (!!audio?.src && audio?.readyState !== 0) {
+      audio.playbackRate = rate;
+      audio.play();
     } else {
       speechWord(
         this.sentenses[this.activeSentenseNumber].en,
