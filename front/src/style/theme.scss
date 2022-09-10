@@ -8,9 +8,9 @@ $primary-palette: (
   lighter: $light-color,
   darker: $darker-color,
   contrast: (
-    default: #fff,
+    default: $bg-color,
     lighter: theme.$dark-primary-text,
-    darker: #fff,
+    darker: $bg-color,
   ),
 );
 $accent-palette: (
@@ -40,4 +40,17 @@ $myapp-theme: mat.define-light-theme(
   )
 );
 
+$myapp-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $myapp-primary,
+      accent: $myapp-accent,
+      warn: $myapp-warn,
+    ),
+  )
+);
+
 @include mat.all-component-themes($myapp-theme);
+@media (prefers-color-scheme: dark) {
+  @include mat.all-component-themes($myapp-dark-theme);
+}

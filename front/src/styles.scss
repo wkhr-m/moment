@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use "./style/theme.scss";
+@use "./style/color.scss" as color;
 @import "swiper/scss";
 @import "swiper/scss/navigation";
 @import "swiper/scss/pagination";
@@ -72,7 +73,13 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #e8eaed;
+  background-color: color.$bg-color;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background: color.$bg-color;
+    color: color.$darker-color;
+  }
 }
 .cdk-global-overlay-wrapper {
   align-items: flex-end !important;
