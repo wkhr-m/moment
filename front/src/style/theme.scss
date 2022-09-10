@@ -8,7 +8,7 @@ $primary-palette: (
   lighter: $light-color,
   darker: $darker-color,
   contrast: (
-    default: $bg-color,
+    default: #fff,
     lighter: theme.$dark-primary-text,
     darker: $bg-color,
   ),
