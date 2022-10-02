@@ -82,7 +82,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const firstAudio = new Audio(this.sentenses[0].audioUrl);
+      const firstAudio = new Audio(this.sentenses[0]?.audioUrl);
       firstAudio.load();
       const secondAudio = new Audio(this.sentenses[1]?.audioUrl);
       secondAudio.load();
@@ -137,13 +137,21 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     this.setSentenseNumberAtHeader(newActiveIndex);
 
     if (this.activeSentenseNumber > newActiveIndex) {
-      const tmp = new Audio(this.sentenses[newActiveIndex - 1].audioUrl);
-      tmp.load();
-      this.audioFixedQueue.dequeue(tmp);
+      if (!this.sentenses[newActiveIndex - 1]?.audioUrl) {
+        this.audioFixedQueue.dequeue(null);
+      } else {
+        const tmp = new Audio(this.sentenses[newActiveIndex - 1].audioUrl);
+        tmp.load();
+        this.audioFixedQueue.dequeue(tmp);
+      }
     } else {
-      const tmp = new Audio(this.sentenses[newActiveIndex + 1].audioUrl);
-      tmp.load();
-      this.audioFixedQueue.enqueue(tmp);
+      if (!this.sentenses[newActiveIndex + 1]?.audioUrl) {
+        this.audioFixedQueue.enqueue(null);
+      } else {
+        const tmp = new Audio(this.sentenses[newActiveIndex + 1].audioUrl);
+        tmp.load();
+        this.audioFixedQueue.enqueue(tmp);
+      }
     }
 
     this.activeSentenseNumber = newActiveIndex;
