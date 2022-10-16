@@ -161,6 +161,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     const audio = this.audioFixedQueue.getItem(1);
     if (!!audio?.src && audio?.readyState !== 0) {
       audio.playbackRate = rate;
+      audio.currentTime = 0;
       audio.play();
     } else {
       speechWord(
