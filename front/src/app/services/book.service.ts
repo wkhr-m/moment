@@ -5,7 +5,7 @@ import { STORE_TYPE } from '@utils/db-config';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { map, merge, Observable } from 'rxjs';
 
-const LOCAL_URL = 'http://192.168.11.17:8080/api/';
+const LOCAL_URL = 'http://127.0.0.1:8080/api/';
 const PROD_URL = '/api/';
 
 const LOCAL_HEADER = {
