@@ -75,13 +75,18 @@
       </swiper>
       <mat-card class="action-buttons">
         <mat-slider
+          discrete
           class="slider"
           min="0"
           [max]="sentenses.length - 1"
           step="1"
-          (change)="onChangeActivevNumberFromBar($event.value)"
-          [value]="activeSentenseNumber"
-        ></mat-slider>
+        >
+          <input
+            matSliderThumb
+            [(ngModel)]="activeSentenseNumber"
+            (valueChange)="onChangeActivevNumberFromBar($event)"
+          />
+        </mat-slider>
         <button mat-mini-fab (click)="onOpenSetting()">
           <mat-icon>settings</mat-icon>
         </button>

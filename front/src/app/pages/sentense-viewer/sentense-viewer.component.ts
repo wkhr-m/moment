@@ -119,7 +119,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     releaseRecord();
   }
 
-  onChangeActivevNumberFromBar(newActiveIndex: number | null) {
+  onChangeActivevNumberFromBar(newActiveIndex: number) {
     if (newActiveIndex !== null) {
       this.setSentenseNumberAtHeader(newActiveIndex);
       this.setActiveNumberFromUrl(newActiveIndex + 1);

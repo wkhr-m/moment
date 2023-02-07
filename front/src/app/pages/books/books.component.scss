@@ -9,6 +9,12 @@
   font-weight: bold;
   font-size: 1.2rem;
   color: color.$text-title-color;
+  margin-bottom: 1rem;
+  .import-book {
+    font-weight: initial;
+    font-size: initial;
+    color: #fff;
+  }
 }
 .books {
   grid-column-gap: 0.75rem;
@@ -22,6 +28,9 @@
 .book-link {
   text-decoration: none;
   color: inherit;
+}
+.book {
+  padding: 0.4rem;
 }
 .book-title {
   font-weight: bolder;

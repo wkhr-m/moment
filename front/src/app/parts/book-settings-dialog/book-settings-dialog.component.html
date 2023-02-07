@@ -13,7 +13,12 @@
         <mat-label>シート名</mat-label>
         <input matInput [formControl]="sheetName" />
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="onResync()">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onResync()"
+        class="resync-button"
+      >
         再同期する
       </button>
     </section>

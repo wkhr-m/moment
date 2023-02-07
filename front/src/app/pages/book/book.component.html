@@ -8,6 +8,7 @@
     <div class="sub-header">
       <div class="sub-header-actions">
         <a
+          class="all-play-button"
           mat-raised-button
           color="primary"
           routerLink="/book/{{ book?.id }}/sentense"
@@ -20,12 +21,12 @@
 
     <div class="chapters">
       <a
-        class="chapter"
+        class="chapter-wrapper"
         routerLink="/book/{{ book?.id }}/sentense"
         [queryParams]="{ section: section.id }"
         *ngFor="let section of book?.section"
       >
-        <mat-card>
+        <mat-card class="chapter">
           <h3 class="chapter-title">{{ section.id }}</h3>
           <span class="chapter-sub">{{ section.count }}文</span>
           <div class="action-buttons"></div>

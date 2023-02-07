@@ -35,7 +35,9 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   margin: 0 2rem;
 }
-
+.card {
+  padding: 1rem;
+}
 .card-title {
   font-size: 1rem;
   font-weight: bold;

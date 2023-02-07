@@ -15,6 +15,10 @@
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
+  .all-play-button {
+    color: #fff;
+    text-decoration: none;
+  }
 }
 .chapters {
   padding: 0 1rem;
@@ -25,13 +29,16 @@
   position: relative;
   margin-bottom: 2rem;
 }
-.chapter {
+.chapter-wrapper {
   text-decoration: none;
+}
+.chapter {
+  color: color.$text-title-color;
+  padding: 0.4rem;
 }
 .chapter-title {
   margin: 0;
   font-weight: bold;
-  color: color.$text-title-color;
 }
 .action-buttons {
   display: flex;
