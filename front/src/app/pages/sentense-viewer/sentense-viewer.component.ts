@@ -1,6 +1,7 @@
 import { Dialog } from '@angular/cdk/dialog';
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
 import { FixedQueue } from '@utils/fixed-queue';
@@ -31,6 +32,7 @@ SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
 export class SentenseViewerComponent implements OnInit, OnDestroy {
   viewerOrder = ViewerOrder;
   book?: Book;
+  section?: string;
   sentenses: Sentense[] = [];
   activeSentenseNumber: number = 0;
   isSecondSentenseHide: boolean = true;
@@ -51,12 +53,19 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     private settingService: SettingService,
     private headerService: HeaderService,
     private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
     public dialog: Dialog
   ) {}
 
   ngOnInit(): void {
     const bookId = this.route.snapshot.paramMap.get('bookId') || '';
-    const section = this.route.snapshot.queryParams['section'];
+
+    if (!!this.route.snapshot.paramMap.get('activeSentenseNumber')) {
+      this.activeSentenseNumber =
+        Number(this.route.snapshot.paramMap.get('activeSentenseNumber')) - 1;
+    }
+    this.section = this.route.snapshot.queryParams['section'];
 
     this.getSetting();
 
@@ -67,9 +76,9 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     });
 
     this.bookService.getBookSentences(bookId).subscribe((book) => {
-      if (section) {
+      if (!!this.section) {
         this.sentenses = book.sentenses.filter(
-          (sentense) => sentense.section === section
+          (sentense) => sentense.section === this.section
         );
       } else {
         this.sentenses = book.sentenses;
@@ -82,6 +91,13 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
         return;
       }
 
+      //activeNumberの確認
+      if (this.activeSentenseNumber > book.sentenses.length - 1) {
+        this.activeSentenseNumber = 0;
+        this.setActiveNumberFromUrl(1);
+      }
+
+      // 音声準備
       const firstAudio = new Audio(this.sentenses[0]?.audioUrl);
       firstAudio.load();
       const secondAudio = new Audio(this.sentenses[1]?.audioUrl);
@@ -100,6 +116,8 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
   onChangeActivevNumberFromBar(newActiveIndex: number | null) {
     if (newActiveIndex !== null) {
       this.setSentenseNumberAtHeader(newActiveIndex);
+      this.setActiveNumberFromUrl(newActiveIndex + 1);
+
       const firstAudio = new Audio(
         this.sentenses[newActiveIndex - 1]?.audioUrl
       );
@@ -135,6 +153,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     releaseRecord();
 
     this.setSentenseNumberAtHeader(newActiveIndex);
+    this.setActiveNumberFromUrl(newActiveIndex + 1);
 
     if (this.activeSentenseNumber > newActiveIndex) {
       if (!this.sentenses[newActiveIndex - 1]?.audioUrl) {
@@ -214,6 +233,18 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     this.headerService.setTitle(
       `${activeSentenseNumber + 1} / ${this.sentenses.length}`
     );
+  }
+
+  private setActiveNumberFromUrl(newActiveNumber: number) {
+    console.log(newActiveNumber);
+    const url = this.router
+      .createUrlTree(['book', this.book?.id, 'sentense', newActiveNumber], {
+        queryParams: {
+          section: this.section,
+        },
+      })
+      .toString();
+    this.location.replaceState(url);
   }
   // headerにタイトルや色を設定する
   private setHeader(book: Book): void {
