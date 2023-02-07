@@ -109,6 +109,12 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     });
   }
 
+  initSwiper() {
+    if (this.activeSentenseNumber > 0) {
+      this.swiper?.swiperRef.slideTo(this.activeSentenseNumber, 0);
+    }
+  }
+
   ngOnDestroy(): void {
     releaseRecord();
   }
@@ -197,6 +203,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
         word,
         voice: this.setting?.voice,
       },
+      panelClass: ['dialog-section'],
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
     });
   }
@@ -236,7 +243,6 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
   }
 
   private setActiveNumberFromUrl(newActiveNumber: number) {
-    console.log(newActiveNumber);
     const url = this.router
       .createUrlTree(['book', this.book?.id, 'sentense', newActiveNumber], {
         queryParams: {

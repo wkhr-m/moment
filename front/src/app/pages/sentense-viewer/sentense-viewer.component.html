@@ -5,6 +5,7 @@
         #swiperRef
         [slidesPerView]="1"
         [spaceBetween]="50"
+        (swiper)="initSwiper()"
         [keyboard]="{
           enabled: true
         }"
@@ -87,10 +88,10 @@
 
         <div class="action-buttons-item">
           <button mat-mini-fab aria-label="Slowly play" (click)="onPlay(0.7)">
-            <mat-icon>slow_motion_video</mat-icon>
+            <mat-icon>play_arrow</mat-icon>
           </button>
           <button mat-fab color="primary" aria-label="Play" (click)="onPlay(1)">
-            <mat-icon>play_arrow</mat-icon>
+            <mat-icon style="transform: scale(1.6)">play_arrow</mat-icon>
           </button>
         </div>
 
