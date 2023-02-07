@@ -26,6 +26,11 @@ const routes: Routes = [
         component: SentenseViewerComponent,
       },
       {
+        path: 'book/:bookId/sentense/:activeSentenseNumber',
+        pathMatch: 'full',
+        component: SentenseViewerComponent,
+      },
+      {
         path: 'book/:bookId',
         pathMatch: 'full',
         component: BookComponent,
