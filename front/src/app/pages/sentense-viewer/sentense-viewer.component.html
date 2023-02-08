@@ -88,21 +88,24 @@
           />
         </mat-slider>
         <button mat-mini-fab (click)="onOpenSetting()">
-          <mat-icon>settings</mat-icon>
+          <mat-icon fontIcon="settings"></mat-icon>
         </button>
 
         <div class="action-buttons-item">
           <button mat-mini-fab aria-label="Slowly play" (click)="onPlay(0.7)">
-            <mat-icon>play_arrow</mat-icon>
+            <mat-icon fontIcon="slow_motion_video"></mat-icon>
           </button>
           <button mat-fab color="primary" aria-label="Play" (click)="onPlay(1)">
-            <mat-icon style="transform: scale(1.6)">play_arrow</mat-icon>
+            <mat-icon
+              style="transform: scale(1.6)"
+              fontIcon="play_arrow"
+            ></mat-icon>
           </button>
         </div>
 
         <div class="action-buttons-item">
           <button mat-mini-fab aria-label="Recording" (click)="onRecordVoice()">
-            <mat-icon>{{ isRecording ? "pause" : "mic" }}</mat-icon>
+            <mat-icon [fontIcon]="isRecording ? 'pause' : 'mic'"></mat-icon>
           </button>
           <button
             mat-mini-fab
@@ -110,7 +113,7 @@
             (click)="onHearVoice()"
             [disabled]="!isRecorded"
           >
-            <mat-icon>hearing</mat-icon>
+            <mat-icon fontIcon="hearing"></mat-icon>
           </button>
         </div>
       </mat-card>
