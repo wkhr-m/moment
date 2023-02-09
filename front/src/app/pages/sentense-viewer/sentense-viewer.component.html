@@ -1,17 +1,16 @@
 <ng-container *ngIf="isBookExist; else elseTemplate">
   <section class="content">
     <ng-container *ngIf="isLoaded">
-      <swiper
-        #swiperRef
-        [slidesPerView]="1"
-        [spaceBetween]="50"
-        (swiper)="initSwiper()"
-        [keyboard]="{
-          enabled: true
-        }"
-        [virtual]="true"
-        [effect]="'creative'"
-        [navigation]="true"
+      <swiper-container
+        navigation="true"
+        space-between="50"
+        slides-per-view="1"
+        keyboard="true"
+        class="swiper-container"
+        init="false"
+        virtual="true"
+        grabCursor="true"
+        effect="creative"
         [creativeEffect]="{
           prev: {
             shadow: true,
@@ -21,58 +20,55 @@
             translate: ['100%', 0, 0]
           }
         }"
-        (slideChange)="onSlideChange($event)"
       >
-        <ng-container *ngFor="let sentense of sentenses; index as i">
-          <ng-template swiperSlide>
-            <mat-card class="word-viewer">
-              <div class="card-content">
+        <swiper-slide *ngFor="let sentense of sentenses; index as i">
+          <mat-card class="word-viewer">
+            <div class="card-content">
+              <ng-container
+                *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_EN"
+              >
+                {{ sentense.ja }}
+              </ng-container>
+              <ng-template #JAEN_EN>
+                <app-en-sentense
+                  [sentense]="sentense.en"
+                  [pronunciation]="sentense.pronunciation"
+                  (wordClick)="onClickWord($event)"
+                ></app-en-sentense>
+              </ng-template>
+            </div>
+            <div class="card-content hide-target">
+              <div class="hide-target-text">
                 <ng-container
-                  *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_EN"
+                  *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_JA"
                 >
-                  {{ sentense.ja }}
-                </ng-container>
-                <ng-template #JAEN_EN>
                   <app-en-sentense
                     [sentense]="sentense.en"
                     [pronunciation]="sentense.pronunciation"
                     (wordClick)="onClickWord($event)"
                   ></app-en-sentense>
+                </ng-container>
+                <ng-template #JAEN_JA>
+                  {{ sentense.ja }}
                 </ng-template>
               </div>
-              <div class="card-content hide-target">
-                <div class="hide-target-text">
-                  <ng-container
-                    *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_JA"
-                  >
-                    <app-en-sentense
-                      [sentense]="sentense.en"
-                      [pronunciation]="sentense.pronunciation"
-                      (wordClick)="onClickWord($event)"
-                    ></app-en-sentense>
-                  </ng-container>
-                  <ng-template #JAEN_JA>
-                    {{ sentense.ja }}
-                  </ng-template>
-                </div>
-                <div
-                  class="hide"
-                  *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
-                  (click)="onClickHide()"
-                >
-                  🫣 Check Answer!!🫣
-                </div>
+              <div
+                class="hide"
+                *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
+                (click)="onClickHide()"
+              >
+                🫣 Check Answer!!🫣
               </div>
-              <div class="card-content note" *ngIf="sentense.note">
-                <div class="note-title">NOTE</div>
-                <div class="note-body">
-                  {{ sentense.note }}
-                </div>
+            </div>
+            <div class="card-content note" *ngIf="sentense.note">
+              <div class="note-title">NOTE</div>
+              <div class="note-body">
+                {{ sentense.note }}
               </div>
-            </mat-card>
-          </ng-template>
-        </ng-container>
-      </swiper>
+            </div>
+          </mat-card>
+        </swiper-slide>
+      </swiper-container>
       <mat-card class="action-buttons">
         <mat-slider
           discrete

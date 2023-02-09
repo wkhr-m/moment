@@ -1,6 +1,12 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
@@ -12,10 +18,8 @@ import SwiperCore, {
   EffectCreative,
   Keyboard,
   Navigation,
-  Swiper,
   Virtual,
 } from 'swiper';
-import { SwiperComponent } from 'swiper/angular';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { BookService } from '../../services/book.service';
 import { releaseRecord } from './../../../utils/record';
@@ -24,12 +28,16 @@ import { HeaderService } from './../../services/header.service';
 
 SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
 
+type SwiperElement = HTMLElement & { swiper: SwiperCore };
+
 @Component({
   selector: 'app-sentense-viewer',
   templateUrl: './sentense-viewer.component.html',
   styleUrls: ['./sentense-viewer.component.scss'],
 })
-export class SentenseViewerComponent implements OnInit, OnDestroy {
+export class SentenseViewerComponent
+  implements OnInit, OnDestroy, AfterViewChecked
+{
   viewerOrder = ViewerOrder;
   book?: Book;
   section?: string;
@@ -41,7 +49,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
   setting?: Setting;
   isRecorded: boolean = false;
   isRecording: boolean = false;
-  @ViewChild('swiperRef', { static: false }) swiper?: SwiperComponent;
+  private swiperEl?: SwiperElement;
 
   private audioFixedQueue: FixedQueue<HTMLAudioElement | null> = new FixedQueue(
     0,
@@ -55,6 +63,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
+    private ngZone: NgZone,
     public dialog: Dialog
   ) {}
 
@@ -109,13 +118,22 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     });
   }
 
-  initSwiper() {
-    if (this.activeSentenseNumber > 0) {
-      this.swiper?.swiperRef.slideTo(this.activeSentenseNumber, 0);
+  ngAfterViewChecked() {
+    const swiperEl = document.querySelector<SwiperElement>('swiper-container');
+    if (!this.swiperEl && !!swiperEl) {
+      this.swiperEl = swiperEl;
+      (this.swiperEl as any).initialize();
+      if (this.activeSentenseNumber > 0) {
+        this.swiperEl?.swiper.slideTo(this.activeSentenseNumber, 0);
+      }
+      this.swiperEl.addEventListener('slidechange', (event) => {
+        this.ngZone.run(() => this.onSlideChange(event));
+      });
     }
   }
 
   ngOnDestroy(): void {
+    this.swiperEl?.removeEventListener('slideChange', this.onSlideChange);
     releaseRecord();
   }
 
@@ -141,7 +159,7 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
       ]);
       this.activeSentenseNumber = newActiveIndex;
 
-      this.swiper?.swiperRef.slideTo(newActiveIndex, 0);
+      this.swiperEl?.swiper.slideTo(newActiveIndex, 0);
     }
   }
 
@@ -149,8 +167,8 @@ export class SentenseViewerComponent implements OnInit, OnDestroy {
     this.isSecondSentenseHide = false;
   }
 
-  onSlideChange(swipers: Swiper[]) {
-    const newActiveIndex = swipers[0].activeIndex;
+  onSlideChange(event: any) {
+    const newActiveIndex = event.currentTarget.swiper.activeIndex;
     if (newActiveIndex === this.activeSentenseNumber) {
       return;
     }

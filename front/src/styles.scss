@@ -65,6 +65,8 @@ body {
 // original
 main {
   height: calc(100vh - 3rem);
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 html,

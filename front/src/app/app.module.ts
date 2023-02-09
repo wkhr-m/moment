@@ -3,7 +3,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DialogModule } from '@angular/cdk/dialog';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { dbConfig } from '@utils/db-config';
 import { NgxIndexedDBModule } from 'ngx-indexed-db';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { SwiperModule } from 'swiper/angular';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,6 +38,7 @@ import { BookService } from './services/book.service';
 import { HeaderService } from './services/header.service';
 import { SettingService } from './services/setting.service';
 import { WordService } from './services/word.service';
+import { SentenseCardComponent } from './parts/sentense-card/sentense-card.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +53,7 @@ import { WordService } from './services/word.service';
     BookSettingsDialogComponent,
     ViewerSettingDialogComponent,
     HomeComponent,
+    SentenseCardComponent,
   ],
   imports: [
     CommonModule,
@@ -73,7 +74,6 @@ import { WordService } from './services/word.service';
     MatProgressSpinnerModule,
     A11yModule,
     NgxSkeletonLoaderModule,
-    SwiperModule,
     BrowserModule,
     AppRoutingModule,
     NgxIndexedDBModule.forRoot(dbConfig),
@@ -85,6 +85,7 @@ import { WordService } from './services/word.service';
       registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [HeaderService, BookService, WordService, SettingService],
   bootstrap: [AppComponent],
 })
