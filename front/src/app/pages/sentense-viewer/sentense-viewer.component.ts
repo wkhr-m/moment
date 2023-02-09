@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
 import { FixedQueue } from '@utils/fixed-queue';
-import { playRecord, RecordVoice } from '@utils/record';
 import { speechWord } from '@utils/speech';
 import { SettingService } from 'app/services/setting.service';
 import SwiperCore, {
@@ -47,8 +46,6 @@ export class SentenseViewerComponent
   isLoaded = false;
   isBookExist: boolean = true;
   setting?: Setting;
-  isRecorded: boolean = false;
-  isRecording: boolean = false;
   private swiperEl?: SwiperElement;
 
   private audioFixedQueue: FixedQueue<HTMLAudioElement | null> = new FixedQueue(
@@ -185,7 +182,6 @@ export class SentenseViewerComponent
       return;
     }
     this.isSecondSentenseHide = true;
-    this.isRecorded = false;
     releaseRecord();
 
     this.setSentenseNumberAtHeader(newActiveIndex);
@@ -252,17 +248,7 @@ export class SentenseViewerComponent
     });
   }
 
-  onRecordVoice(): void {
-    this.isRecording = !this.isRecording;
-    if (!this.isRecording) {
-      this.isRecorded = true;
-    }
-    RecordVoice();
-  }
-
-  onHearVoice(): void {
-    playRecord();
-  }
+  edit(): void {}
 
   private getSetting() {
     this.settingService.getSetting().subscribe((res) => {

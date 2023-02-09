@@ -100,16 +100,8 @@
         </div>
 
         <div class="action-buttons-item">
-          <button mat-mini-fab aria-label="Recording" (click)="onRecordVoice()">
-            <mat-icon [fontIcon]="isRecording ? 'pause' : 'mic'"></mat-icon>
-          </button>
-          <button
-            mat-mini-fab
-            aria-label="Recording"
-            (click)="onHearVoice()"
-            [disabled]="!isRecorded"
-          >
-            <mat-icon fontIcon="hearing"></mat-icon>
+          <button mat-mini-fab aria-label="編集" (click)="edit()">
+            <mat-icon fontIcon="edit"></mat-icon>
           </button>
         </div>
       </mat-card>
