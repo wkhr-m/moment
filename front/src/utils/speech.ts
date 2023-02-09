@@ -5,16 +5,19 @@ const allVoicesObtained = new Promise<SpeechSynthesisVoice[]>(function (
   resolve,
   reject
 ) {
-  let voices = window.speechSynthesis
-    .getVoices()
-    .filter((item) => item.lang.includes('en'));
+  let voices = window.speechSynthesis.getVoices().filter(
+    // eloqunceはsafariにある合成音声の種類。これを使うと余計な文章まで読まれるので除外する
+    (item) => item.lang.includes('en') && !item.lang.includes('eloquence')
+  );
   if (voices.length !== 0) {
     resolve(voices);
   } else {
     window.speechSynthesis.addEventListener('voiceschanged', function () {
       voices = window.speechSynthesis
         .getVoices()
-        .filter((item) => item.lang.includes('en'));
+        .filter(
+          (item) => item.lang.includes('en') && !item.lang.includes('eloquence')
+        );
       resolve(voices);
     });
   }
