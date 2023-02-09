@@ -38,7 +38,6 @@ import { BookService } from './services/book.service';
 import { HeaderService } from './services/header.service';
 import { SettingService } from './services/setting.service';
 import { WordService } from './services/word.service';
-import { SentenseCardComponent } from './parts/sentense-card/sentense-card.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +52,6 @@ import { SentenseCardComponent } from './parts/sentense-card/sentense-card.compo
     BookSettingsDialogComponent,
     ViewerSettingDialogComponent,
     HomeComponent,
-    SentenseCardComponent,
   ],
   imports: [
     CommonModule,
