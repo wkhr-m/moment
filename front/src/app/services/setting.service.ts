@@ -10,6 +10,7 @@ const INIT_SETTING = {
   order: ViewerOrder.ENJA,
   secondLangIsHide: false,
   isAutoPlay: false,
+  useSpeechSynthesis: false,
 };
 @Injectable()
 export class SettingService {

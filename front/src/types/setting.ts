@@ -4,6 +4,7 @@ export type Setting = {
   secondLangIsHide: boolean;
   voice?: string;
   isAutoPlay: boolean;
+  useSpeechSynthesis: boolean;
 };
 
 export type ViewerOrderType = typeof ViewerOrder[keyof typeof ViewerOrder];

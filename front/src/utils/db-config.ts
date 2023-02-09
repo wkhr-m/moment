@@ -37,6 +37,11 @@ export const dbConfig: DBConfig = {
           keypath: 'secondLangIsHide',
           options: { unique: false },
         },
+        {
+          name: 'useSpeechSynthesis',
+          keypath: 'useSpeechSynthesis',
+          options: { unique: false },
+        },
         { name: 'voice', keypath: 'voice', options: { unique: false } },
       ],
     },

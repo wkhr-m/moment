@@ -25,11 +25,14 @@
         </mat-select>
       </mat-form-field>
       <button mat-raised-button (click)="onAudition()">試聴</button>
-      <mat-slide-toggle formControlName="secondLangIsHide"
-        >{{
+      <mat-slide-toggle formControlName="useSpeechSynthesis">
+        合成音声を優先的に使う
+      </mat-slide-toggle>
+      <mat-slide-toggle formControlName="secondLangIsHide">
+        {{
           form.controls["order"].value === viewerOrder.JAEN ? "英語" : "日本語"
-        }}を隠す</mat-slide-toggle
-      >
+        }}を隠す
+      </mat-slide-toggle>
       <!-- <mat-slide-toggle formControlName="isAutoPlay">自動再生</mat-slide-toggle> -->
     </form>
     <div class="action-buttons">

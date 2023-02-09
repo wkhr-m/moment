@@ -25,6 +25,7 @@ export class ViewerSettingDialogComponent implements OnInit {
     this.form = new FormGroup({
       order: new FormControl(data?.order),
       voice: new FormControl(data?.voice || this.voiceOptions[0]?.voiceURI),
+      useSpeechSynthesis: new FormControl(data?.useSpeechSynthesis),
       secondLangIsHide: new FormControl(data?.secondLangIsHide),
       isAutoPlay: new FormControl(data?.isAutoPlay),
     });

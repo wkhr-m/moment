@@ -107,11 +107,23 @@ export class SentenseViewerComponent
       }
 
       // 音声準備
-      const firstAudio = new Audio(this.sentenses[0]?.audioUrl);
+      const firstAudio = new Audio(
+        this.sentenses[this.activeSentenseNumber - 1]?.audioUrl
+      );
       firstAudio.load();
-      const secondAudio = new Audio(this.sentenses[1]?.audioUrl);
+      const secondAudio = new Audio(
+        this.sentenses[this.activeSentenseNumber]?.audioUrl
+      );
       secondAudio.load();
-      this.audioFixedQueue = new FixedQueue(3, [null, firstAudio, secondAudio]);
+      const thirdAudio = new Audio(
+        this.sentenses[this.activeSentenseNumber + 1]?.audioUrl
+      );
+      secondAudio.load();
+      this.audioFixedQueue = new FixedQueue(3, [
+        firstAudio,
+        secondAudio,
+        thirdAudio,
+      ]);
 
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
       this.isLoaded = true;
@@ -202,7 +214,11 @@ export class SentenseViewerComponent
 
   onPlay(rate: number) {
     const audio = this.audioFixedQueue.getItem(1);
-    if (!!audio?.src && audio?.readyState !== 0) {
+    if (
+      !!audio?.src &&
+      audio?.readyState !== 0 &&
+      !this.setting?.useSpeechSynthesis
+    ) {
       audio.playbackRate = rate;
       audio.currentTime = 0;
       audio.play();
