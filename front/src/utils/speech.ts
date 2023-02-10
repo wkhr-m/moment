@@ -7,7 +7,7 @@ const allVoicesObtained = new Promise<SpeechSynthesisVoice[]>(function (
 ) {
   let voices = window.speechSynthesis.getVoices().filter(
     // eloqunceはsafariにある合成音声の種類。これを使うと余計な文章まで読まれるので除外する
-    (item) => item.lang.includes('en') && !item.lang.includes('eloquence')
+    (item) => item.lang.includes('en') && !item.voiceURI.includes('eloquence')
   );
   if (voices.length !== 0) {
     resolve(voices);
@@ -16,7 +16,8 @@ const allVoicesObtained = new Promise<SpeechSynthesisVoice[]>(function (
       voices = window.speechSynthesis
         .getVoices()
         .filter(
-          (item) => item.lang.includes('en') && !item.lang.includes('eloquence')
+          (item) =>
+            item.lang.includes('en') && !item.voiceURI.includes('eloquence')
         );
       resolve(voices);
     });
