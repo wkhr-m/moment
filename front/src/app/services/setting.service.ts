@@ -11,6 +11,7 @@ const INIT_SETTING = {
   secondLangIsHide: false,
   isAutoPlay: false,
   useSpeechSynthesis: false,
+  speechRate: 1,
 };
 @Injectable()
 export class SettingService {

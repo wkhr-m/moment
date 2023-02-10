@@ -18,16 +18,15 @@
     color: red;
     font-weight: bold;
   }
-}
-.title {
-  font-weight: bold;
-  margin: 0;
+  &.hidden {
+    display: none;
+  }
 }
 .form {
   display: flex;
   flex-direction: column;
-  width: 80%;
-  margin: 2rem 0;
+  width: 100%;
+  margin: 1rem 0;
 }
 
 .download-button {

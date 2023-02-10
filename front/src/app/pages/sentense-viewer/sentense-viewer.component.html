@@ -71,7 +71,6 @@
       </swiper-container>
       <mat-card class="action-buttons">
         <mat-slider
-          discrete
           class="slider"
           min="0"
           [max]="sentenses.length - 1"
@@ -88,10 +87,7 @@
         </button>
 
         <div class="action-buttons-item">
-          <button mat-mini-fab aria-label="Slowly play" (click)="onPlay(0.7)">
-            <mat-icon fontIcon="slow_motion_video"></mat-icon>
-          </button>
-          <button mat-fab color="primary" aria-label="Play" (click)="onPlay(1)">
+          <button mat-fab color="primary" aria-label="Play" (click)="onPlay()">
             <mat-icon
               style="transform: scale(1.6)"
               fontIcon="play_arrow"

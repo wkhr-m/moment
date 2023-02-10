@@ -14,6 +14,20 @@
           <mat-option [value]="viewerOrder.ENJA">英語⇨日本語</mat-option>
         </mat-select>
       </mat-form-field>
+      <div>
+        音声の速度
+        <mat-slider
+          discrete
+          class="slider"
+          min="0.1"
+          [max]="1"
+          step="0.1"
+          [discrete]="true"
+          [showTickMarks]="true"
+        >
+          <input matSliderThumb formControlName="speechRate" />
+        </mat-slider>
+      </div>
       <mat-form-field appearance="fill">
         <mat-label>音声</mat-label>
         <mat-select formControlName="voice">

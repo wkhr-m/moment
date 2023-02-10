@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
+  HostListener,
   NgZone,
   OnDestroy,
   OnInit,
@@ -208,8 +209,9 @@ export class SentenseViewerComponent
     this.activeSentenseNumber = newActiveIndex;
   }
 
-  onPlay(rate: number) {
+  onPlay() {
     const audio = this.audioFixedQueue.getItem(1);
+    const rate = this.setting?.speechRate || 1;
     if (
       !!audio?.src &&
       audio?.readyState !== 0 &&
@@ -275,5 +277,11 @@ export class SentenseViewerComponent
   // headerにタイトルや色を設定する
   private setHeader(book: Book): void {
     this.headerService.setBackURL(book ? `book/${book.id}` : 'books');
+  }
+
+  @HostListener('window:keydown.control.space', ['$event'])
+  @HostListener('window:keydown.space', ['$event'])
+  spaceEvent() {
+    this.onPlay();
   }
 }

@@ -5,6 +5,7 @@ export type Setting = {
   voice?: string;
   isAutoPlay: boolean;
   useSpeechSynthesis: boolean;
+  speechRate?: number;
 };
 
 export type ViewerOrderType = typeof ViewerOrder[keyof typeof ViewerOrder];

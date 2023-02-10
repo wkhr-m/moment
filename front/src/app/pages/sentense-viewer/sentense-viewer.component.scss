@@ -71,7 +71,6 @@ swiper-slide {
 }
 
 .action-buttons {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -80,10 +79,10 @@ swiper-slide {
 }
 
 .slider {
-  position: absolute;
-  top: -24px;
-  left: 1rem;
-  width: 97vw;
+  position: fixed;
+  left: 0.4rem;
+  width: 90%;
+  bottom: 6.4rem;
 }
 .action-buttons-item {
   button {

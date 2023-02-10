@@ -12,30 +12,23 @@
     </button>
   </div>
   <div class="dialog-content">
-    <section class="capacity-msg" [class.near-over]="isNearCapacity">
+    <section
+      class="capacity-msg"
+      [class.near-over]="isNearCapacity"
+      [class.hidden]="!capacityMsg"
+    >
       {{ capacityMsg }}
     </section>
     <ng-container *ngIf="!isCapacityOver; else elseTemplate">
-      <section>
-        <h3 class="title">読み込む方法</h3>
-        <ol>
-          <li>Google Sheetsを作成する</li>
-          <li>1行目に「ja」「en」「section」をそれぞれの列に追加</li>
-          <li>2行目以降に列に対応する日本文、英文、セクション名を追加</li>
-          <li>
-            <button
-              mat-stroked-button
-              cdkCopyToClipboard="spreadsheet-reader@wk-moment.iam.gserviceaccount.com"
-            >
-              spreadsheet-reader@wk-moment.iam.gserviceaccount.com
-              <mat-icon fontIcon="content_copy"></mat-icon>
-            </button>
-            を閲覧者として共有する
-          </li>
-          <li>下記の入力欄にGoogle SheetsのURLを書き込む</li>
-          <li>読み込みボタンを押す</li>
-        </ol>
-      </section>
+      <a
+        href="https://cedar-impatiens-49c.notion.site/GoogleSpreadsheet-55b57e3196d9400aac97cda92b290a45"
+        target="_blank"
+        alt="詳しい方法を確認する"
+        mat-raised-button
+      >
+        <mat-icon fontIcon="description"></mat-icon>
+        詳しい方法を確認する
+      </a>
       <section>
         <form [formGroup]="form" class="form">
           <mat-form-field appearance="fill">

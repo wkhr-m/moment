@@ -43,6 +43,11 @@ export const dbConfig: DBConfig = {
           options: { unique: false },
         },
         { name: 'voice', keypath: 'voice', options: { unique: false } },
+        {
+          name: 'speechRate',
+          keypath: 'speechRate',
+          options: { unique: false },
+        },
       ],
     },
   ],
