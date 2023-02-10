@@ -46,6 +46,10 @@ export class ViewerSettingDialogComponent implements OnInit {
   }
 
   onAudition() {
-    speechWord('Hello world', 1, this.form.value['voice']);
+    speechWord(
+      'Hello world',
+      this.form.value['speechRate'],
+      this.form.value['voice']
+    );
   }
 }
