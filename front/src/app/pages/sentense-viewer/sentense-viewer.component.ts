@@ -147,32 +147,6 @@ export class SentenseViewerComponent
     releaseRecord();
   }
 
-  onChangeActivevNumberFromBar(newActiveIndex: number) {
-    if (newActiveIndex !== null) {
-      this.setSentenseNumberAtHeader(newActiveIndex);
-      this.setActiveNumberFromUrl(newActiveIndex + 1);
-
-      const firstAudio = new Audio(
-        this.sentenses[newActiveIndex - 1]?.audioUrl
-      );
-      firstAudio.load();
-      const secondAudio = new Audio(this.sentenses[newActiveIndex].audioUrl);
-      secondAudio.load();
-      const thirdAudio = new Audio(
-        this.sentenses[newActiveIndex + 1]?.audioUrl
-      );
-      thirdAudio.load();
-      this.audioFixedQueue = new FixedQueue(3, [
-        firstAudio,
-        secondAudio,
-        thirdAudio,
-      ]);
-      this.activeSentenseNumber = newActiveIndex;
-
-      this.swiperEl?.swiper.slideTo(newActiveIndex, 0);
-    }
-  }
-
   onClickHide(): void {
     this.isSecondSentenseHide = false;
   }
