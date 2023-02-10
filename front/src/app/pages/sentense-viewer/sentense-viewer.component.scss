@@ -80,9 +80,10 @@ swiper-slide {
 
 .slider {
   position: fixed;
-  left: 0.4rem;
-  width: 90%;
   bottom: 6.4rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  width: auto;
 }
 .action-buttons-item {
   button {
