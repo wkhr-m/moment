@@ -3,7 +3,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import type { Book, Sentense } from '@m-types/books';
 import { STORE_TYPE } from '@utils/db-config';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { map, merge, Observable } from 'rxjs';
+import { map, merge, Observable, zip } from 'rxjs';
 
 const LOCAL_URL = 'http://127.0.0.1:8080/api/';
 const PROD_URL = '/api/';
@@ -48,6 +48,7 @@ export class BookService {
               id: id,
               title: book.title,
               count: book.sentenses.length,
+              sheetName: name,
               section: this.setSection(book.sentenses),
             })
           ).subscribe(() => console.log('import sucess'));
@@ -55,6 +56,38 @@ export class BookService {
           return book.sentenses;
         })
       );
+  }
+
+  updateSheetRow(
+    id: string,
+    name: string,
+    rowIndex: number,
+    row: { en: string; ja: string; pronunciation: string; note: string }
+  ): Observable<Sentense[]> {
+    return zip(
+      this.http.post<Response>(
+        `${
+          isDevMode() ? LOCAL_URL : PROD_URL
+        }update-sheet-row?sheetId=${id}&sheetName=${name}`,
+        { rowIndex: rowIndex + 1, row },
+        {
+          headers: isDevMode() ? LOCAL_HEADER : {},
+        }
+      ),
+      this.getBookSentences(id)
+    ).pipe(
+      map((result) => {
+        const newSentenses = result[1].sentenses.concat();
+        newSentenses[rowIndex] = { ...newSentenses[rowIndex], ...row };
+        this.dbService
+          .update(STORE_TYPE.STORE_SENTENSES, {
+            id: id,
+            sentenses: newSentenses,
+          })
+          .subscribe(() => console.log('update'));
+        return newSentenses;
+      })
+    );
   }
 
   // 現在の時刻を取得し、文字列で返す

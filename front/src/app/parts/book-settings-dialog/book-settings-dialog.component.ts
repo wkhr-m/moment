@@ -1,5 +1,5 @@
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -19,20 +19,25 @@ type BookSettingInput = {
   bookId: string;
   title: string;
   updatedAt: string;
+  sheetName: string;
 };
 @Component({
   selector: 'app-book-settings-dialog',
   templateUrl: './book-settings-dialog.component.html',
   styleUrls: ['./book-settings-dialog.component.scss'],
 })
-export class BookSettingsDialogComponent {
-  sheetName = new FormControl('シート1', [Validators.required]);
+export class BookSettingsDialogComponent implements OnInit {
+  sheetName: FormControl = new FormControl('シート1', [Validators.required]);
 
   constructor(
     public dialogRef: DialogRef,
     @Inject(DIALOG_DATA) public data: BookSettingInput,
     private _snackBar: MatSnackBar
   ) {}
+
+  ngOnInit(): void {
+    this.sheetName.setValue(this.data.sheetName);
+  }
 
   onClose(key?: BookSettingOutputType, value?: string): void {
     this.dialogRef.close(key ? [{ key, value }] : undefined);

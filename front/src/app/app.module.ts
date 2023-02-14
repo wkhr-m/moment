@@ -30,6 +30,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { SentenseViewerComponent } from './pages/sentense-viewer/sentense-viewer.component';
 import { BookSettingsDialogComponent } from './parts/book-settings-dialog/book-settings-dialog.component';
 import { DownloadBookComponent } from './parts/download-book/download-book.component';
+import { EditorComponent } from './parts/editor/editor.component';
 import { EnSentenseComponent } from './parts/en-sentense/en-sentense.component';
 import { HeaderComponent } from './parts/header/header.component';
 import { MeanWordComponent } from './parts/mean-word/mean-word.component';
@@ -52,6 +53,7 @@ import { WordService } from './services/word.service';
     BookSettingsDialogComponent,
     ViewerSettingDialogComponent,
     HomeComponent,
+    EditorComponent,
   ],
   imports: [
     CommonModule,

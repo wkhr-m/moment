@@ -18,6 +18,7 @@ export const dbConfig: DBConfig = {
         { name: 'title', keypath: 'title', options: { unique: false } },
         { name: 'count', keypath: 'count', options: { unique: false } },
         { name: 'section', keypath: 'section', options: { unique: false } },
+        { name: 'sheetName', keypath: 'sheetName', options: { unique: false } },
       ],
     },
     {

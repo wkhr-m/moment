@@ -1,0 +1,33 @@
+<section class="dialog">
+  <div class="dialog-header">
+    <div>編集</div>
+    <button
+      mat-icon-button
+      color="primary"
+      aria-label="Close"
+      (click)="onClose()"
+    >
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </div>
+  <div class="dialog-content">
+    <form [formGroup]="form" class="editor">
+      <mat-form-field appearance="fill">
+        <mat-label>日本語</mat-label>
+        <input formControlName="ja" matInput />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>英語</mat-label>
+        <input formControlName="en" matInput />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>英語の発音記号</mat-label>
+        <input formControlName="pronunciation" matInput />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>ノート</mat-label>
+        <textarea formControlName="note" matInput> </textarea>
+      </mat-form-field>
+    </form>
+  </div>
+</section>

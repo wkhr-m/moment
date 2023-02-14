@@ -56,6 +56,7 @@ export class BookComponent implements OnInit {
           title: this.book?.title,
           bookId: this.bookId,
           updatedAt: this.book?.updatedAt,
+          sheetName: this.book?.sheetName,
         },
       }
     );

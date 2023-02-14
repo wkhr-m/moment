@@ -13,18 +13,19 @@ import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
 import { FixedQueue } from '@utils/fixed-queue';
 import { speechWord } from '@utils/speech';
-import { SettingService } from 'app/services/setting.service';
 import SwiperCore, {
   EffectCreative,
   Keyboard,
   Navigation,
   Virtual,
 } from 'swiper';
+import { EditorComponent } from '../../parts/editor/editor.component';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
+import { ViewerSettingDialogComponent } from '../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { BookService } from '../../services/book.service';
+import { HeaderService } from '../../services/header.service';
+import { SettingService } from '../../services/setting.service';
 import { releaseRecord } from './../../../utils/record';
-import { ViewerSettingDialogComponent } from './../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
-import { HeaderService } from './../../services/header.service';
 
 SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
 
@@ -214,6 +215,42 @@ export class SentenseViewerComponent
     });
   }
 
+  onOpenEditor() {
+    this.swiperEl?.swiper.keyboard.disable();
+    const dialogRef = this.dialog.open(EditorComponent, {
+      data: {
+        pronunciation: this.sentenses[this.activeSentenseNumber].pronunciation,
+        en: this.sentenses[this.activeSentenseNumber].en,
+        ja: this.sentenses[this.activeSentenseNumber].ja,
+        note: this.sentenses[this.activeSentenseNumber].note,
+      },
+      panelClass: ['dialog-section'],
+      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
+    });
+    dialogRef.closed.subscribe((res) => {
+      const row = dialogRef.componentInstance?.form.value;
+      if (
+        row.ja !== this.sentenses[this.activeSentenseNumber].ja ||
+        row.en !== this.sentenses[this.activeSentenseNumber].en ||
+        row.pronunciation !==
+          this.sentenses[this.activeSentenseNumber].pronunciation ||
+        row.note !== this.sentenses[this.activeSentenseNumber].note
+      ) {
+        this.bookService
+          .updateSheetRow(
+            this.book?.id || '',
+            this.book?.sheetName || '',
+            this.activeSentenseNumber,
+            row
+          )
+          .subscribe((res) => {
+            this.sentenses = res;
+          });
+      }
+      this.swiperEl?.swiper.keyboard.enable();
+    });
+  }
+
   onOpenSetting(): void {
     const dialogRef = this.dialog.open(ViewerSettingDialogComponent, {
       data: this.setting,
@@ -223,8 +260,6 @@ export class SentenseViewerComponent
       this.getSetting();
     });
   }
-
-  edit(): void {}
 
   private getSetting() {
     this.settingService.getSetting().subscribe((res) => {
