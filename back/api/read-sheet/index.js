@@ -1,5 +1,5 @@
 const { google } = require('googleapis');
-const { JWT } = require('google-auth-library');
+const { getJwt, getApiKey } = require('./../../utils');
 
 // ヘッダーの種類
 const HEADER = ['ja', 'en', 'pronunciation', 'section', 'audioUrl', 'note'];
@@ -87,19 +87,4 @@ function parseValue(data) {
     resultList.push(result);
   }
   return resultList;
-}
-
-function getJwt() {
-  const keys = require('./../../credential.json');
-  const client = new JWT({
-    email: keys.client_email,
-    key: keys.private_key,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-  });
-  return client;
-}
-
-function getApiKey() {
-  var apiKeyFile = require('./../../api_key.json');
-  return apiKeyFile.key;
 }

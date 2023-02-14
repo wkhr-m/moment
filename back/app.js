@@ -1,6 +1,11 @@
 const express = require('express');
 const app = express();
 const readSheet = require('./api/read-sheet');
+const updateSheetRow = require('./api/update-shee-row');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -25,6 +30,10 @@ app.get('/api', (req, res) => {
 
 app.get('/api/read-sheet', (req, res) => {
   readSheet.main(req, res);
+});
+
+app.post('/api/update-sheet-row', (req, res) => {
+  updateSheetRow.main(req, res);
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
