@@ -87,7 +87,11 @@ body {
   align-items: flex-end !important;
 }
 
-.warn-snackbar {
-  color: #fff;
-  background-color: #f44336;
+.mdc-snackbar {
+  &.warn-snackbar {
+    .mdc-snackbar__surface {
+      color: #fff;
+      background-color: #f44336;
+    }
+  }
 }

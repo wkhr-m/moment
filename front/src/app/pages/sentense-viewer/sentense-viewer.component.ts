@@ -1,5 +1,6 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Location } from '@angular/common';
+import { HttpStatusCode } from '@angular/common/http';
 import {
   AfterViewChecked,
   Component,
@@ -8,6 +9,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
@@ -63,7 +65,8 @@ export class SentenseViewerComponent
     private router: Router,
     private location: Location,
     private ngZone: NgZone,
-    public dialog: Dialog
+    public dialog: Dialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -243,8 +246,26 @@ export class SentenseViewerComponent
             this.activeSentenseNumber,
             row
           )
-          .subscribe((res) => {
-            this.sentenses = res;
+          .subscribe({
+            next: (res) => {
+              this.sentenses = res;
+            },
+            error: (error) => {
+              let msg = '読み込みに失敗しました。';
+              if (error.status === 0) {
+                msg =
+                  'インターネットに接続されていないため、読み込みに失敗しました。';
+              } else if (
+                error.status === HttpStatusCode.InternalServerError &&
+                typeof error.error === 'string'
+              ) {
+                msg = error.error;
+              }
+              this._snackBar.open(msg, '', {
+                duration: 5000,
+                panelClass: ['warn-snackbar'],
+              });
+            },
           });
       }
       this.swiperEl?.swiper.keyboard.enable();
