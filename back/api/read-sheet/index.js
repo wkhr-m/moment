@@ -79,7 +79,7 @@ function parseValue(data) {
 
   const resultList = [];
   for (let index = 1; index < data.length; index++) {
-    if (index === 1001) {
+    if (index === 3001) {
       break;
     }
     const item = data[index];
