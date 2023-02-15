@@ -6,6 +6,16 @@
     </button>
   </div>
   <div class="dialog-content" mat-dialog-content>
+    <section>
+      <h2>対象のGoogleSheets</h2>
+      <a
+        mat-raised-button
+        [href]="'https://docs.google.com/spreadsheets/d/' + data.sheetId"
+        target="_blank"
+        alt="Google Sheets"
+        >このGoogleSheetsにアクセスする</a
+      >
+    </section>
     <section class="resync">
       <h2 class="title">単語帳の内容を再同期する</h2>
       <span class="updatedAt">(最終更新日: {{ data.updatedAt }})</span>
