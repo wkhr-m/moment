@@ -21,6 +21,7 @@ import { BookService } from './../../services/book.service';
 })
 export class HomeComponent implements OnInit {
   readingRef?: MatSnackBarRef<TextOnlySnackBar>;
+  booksCount: number = 0;
 
   constructor(
     private bookService: BookService,
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.bookService.getAllBooks().subscribe((book) => {
+      this.booksCount = book.length;
       if (book?.length > 0) {
         this.router.navigateByUrl('/books');
       }
@@ -42,7 +44,7 @@ export class HomeComponent implements OnInit {
       DownloadBookComponent,
       {
         backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
-        data: {},
+        data: { booksCount: this.booksCount },
       }
     );
     dialogRef.closed.subscribe((result?: DownloadBookComponentOutput) => {
