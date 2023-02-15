@@ -16,10 +16,10 @@ export type SettingOutput = Array<{
 }>;
 
 type BookSettingInput = {
-  bookId: string;
+  sheetId: string;
+  sheetName: string;
   title: string;
   updatedAt: string;
-  sheetName: string;
 };
 @Component({
   selector: 'app-book-settings-dialog',

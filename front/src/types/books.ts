@@ -4,6 +4,7 @@ export type Book = {
   count: number;
   updatedAt: string;
   sheetName: string;
+  sheetId: string;
   section: Section[];
 };
 

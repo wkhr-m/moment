@@ -79,6 +79,9 @@ function parseValue(data) {
 
   const resultList = [];
   for (let index = 1; index < data.length; index++) {
+    if (index === 1001) {
+      break;
+    }
     const item = data[index];
     const result = {};
     for (const clomnIndex in headerIndexMap) {

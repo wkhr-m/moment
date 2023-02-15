@@ -50,7 +50,7 @@ export class BooksComponent implements OnInit {
       DownloadBookComponent,
       {
         backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
-        data: {},
+        data: { booksCount: this.books.length },
       }
     );
     dialogRef.closed.subscribe((result?: DownloadBookComponentOutput) => {

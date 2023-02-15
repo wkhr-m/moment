@@ -21,17 +21,17 @@ const routes: Routes = [
         component: BooksComponent,
       },
       {
-        path: 'book/:bookId/sentense',
+        path: 'book/:sheetId/:sheetName/sentense',
         pathMatch: 'full',
         component: SentenseViewerComponent,
       },
       {
-        path: 'book/:bookId/sentense/:activeSentenseNumber',
+        path: 'book/:sheetId/:sheetName/sentense/:activeSentenseNumber',
         pathMatch: 'full',
         component: SentenseViewerComponent,
       },
       {
-        path: 'book/:bookId',
+        path: 'book/:sheetId/:sheetName',
         pathMatch: 'full',
         component: BookComponent,
       },

@@ -11,7 +11,7 @@
           class="all-play-button"
           mat-raised-button
           color="primary"
-          routerLink="/book/{{ book?.id }}/sentense"
+          routerLink="/book/{{ sheetId }}/{{ sheetName }}/sentense"
         >
           全再生
         </a>
@@ -22,7 +22,7 @@
     <div class="chapters">
       <a
         class="chapter-wrapper"
-        routerLink="/book/{{ book?.id }}/sentense"
+        routerLink="/book/{{ sheetId }}/{{ sheetName }}/sentense"
         [queryParams]="{ section: section.id }"
         *ngFor="let section of book?.section"
       >

@@ -12,14 +12,9 @@
     </button>
   </div>
   <div class="dialog-content">
-    <section
-      class="capacity-msg"
-      [class.near-over]="isNearCapacity"
-      [class.hidden]="!capacityMsg"
-    >
-      {{ capacityMsg }}
-    </section>
-    <ng-container *ngIf="!isCapacityOver; else elseTemplate">
+    <div class="msg">・1つのシートから読み込めるのは1000行までです。</div>
+    <div class="msg">・保存できる単語帳は20個までです。</div>
+    <ng-container *ngIf="data.booksCount <= 21; else elseTemplate">
       <a
         href="https://cedar-impatiens-49c.notion.site/GoogleSpreadsheet-55b57e3196d9400aac97cda92b290a45"
         target="_blank"

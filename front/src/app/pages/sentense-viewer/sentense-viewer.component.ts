@@ -70,7 +70,8 @@ export class SentenseViewerComponent
   ) {}
 
   ngOnInit(): void {
-    const bookId = this.route.snapshot.paramMap.get('bookId') || '';
+    const sheetId = this.route.snapshot.paramMap.get('sheetId') || '';
+    const sheetName = this.route.snapshot.paramMap.get('sheetName') || '';
 
     if (!!this.route.snapshot.paramMap.get('activeSentenseNumber')) {
       this.activeSentenseNumber =
@@ -80,13 +81,15 @@ export class SentenseViewerComponent
 
     this.getSetting();
 
-    this.bookService.getBookAndChapters(bookId).subscribe((book) => {
-      this.isBookExist = !!book;
-      this.book = book;
-      this.setHeader(book);
-    });
+    this.bookService
+      .getBookAndChapters(sheetId, sheetName)
+      .subscribe((book) => {
+        this.isBookExist = !!book;
+        this.book = book;
+        this.setHeader(book);
+      });
 
-    this.bookService.getBookSentences(bookId).subscribe((book) => {
+    this.bookService.getBookSentences(sheetId, sheetName).subscribe((book) => {
       if (!!this.section) {
         this.sentenses = book.sentenses.filter(
           (sentense) => sentense.section === this.section
@@ -241,7 +244,7 @@ export class SentenseViewerComponent
       ) {
         this.bookService
           .updateSheetRow(
-            this.book?.id || '',
+            this.book?.sheetId || '',
             this.book?.sheetName || '',
             this.activeSentenseNumber,
             row
@@ -296,17 +299,28 @@ export class SentenseViewerComponent
 
   private setActiveNumberFromUrl(newActiveNumber: number) {
     const url = this.router
-      .createUrlTree(['book', this.book?.id, 'sentense', newActiveNumber], {
-        queryParams: {
-          section: this.section,
-        },
-      })
+      .createUrlTree(
+        [
+          'book',
+          this.book?.sheetId,
+          this.book?.sheetName,
+          'sentense',
+          newActiveNumber,
+        ],
+        {
+          queryParams: {
+            section: this.section,
+          },
+        }
+      )
       .toString();
     this.location.replaceState(url);
   }
   // headerにタイトルや色を設定する
   private setHeader(book: Book): void {
-    this.headerService.setBackURL(book ? `book/${book.id}` : 'books');
+    this.headerService.setBackURL(
+      book ? `book/${book.sheetId}/${book.sheetName}` : 'books'
+    );
   }
 
   @HostListener('window:keydown.control.space', ['$event'])

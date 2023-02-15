@@ -38,14 +38,16 @@ export class BookService {
       )
       .pipe(
         map((book) => {
+          const key = this.createKey(id, name);
           merge(
             this.dbService.update(STORE_TYPE.STORE_SENTENSES, {
-              id: id,
+              id: key,
               sentenses: book.sentenses,
             }),
             this.dbService.update(STORE_TYPE.STORE_BOOK, {
               updatedAt: this.getNow(),
-              id: id,
+              id: key,
+              sheetId: id,
               title: book.title,
               count: book.sentenses.length,
               sheetName: name,
@@ -74,14 +76,15 @@ export class BookService {
           headers: isDevMode() ? LOCAL_HEADER : {},
         }
       ),
-      this.getBookSentences(id)
+      this.getBookSentences(id, name)
     ).pipe(
       map((result) => {
         const newSentenses = result[1].sentenses.concat();
         newSentenses[rowIndex] = { ...newSentenses[rowIndex], ...row };
+        const key = this.createKey(id, name);
         this.dbService
           .update(STORE_TYPE.STORE_SENTENSES, {
-            id: id,
+            id: key,
             sentenses: newSentenses,
           })
           .subscribe(() => console.log('update'));
@@ -98,10 +101,11 @@ export class BookService {
     }月${now.getDate()}日 ${now.getHours()}:${now.getMinutes()}`;
   }
 
-  deleteBook(id: string) {
+  deleteBook(id: string, name: string) {
+    const key = this.createKey(id, name);
     return merge(
-      this.dbService.deleteByKey(STORE_TYPE.STORE_SENTENSES, id),
-      this.dbService.deleteByKey(STORE_TYPE.STORE_BOOK, id)
+      this.dbService.deleteByKey(STORE_TYPE.STORE_SENTENSES, key),
+      this.dbService.deleteByKey(STORE_TYPE.STORE_BOOK, key)
     );
   }
 
@@ -120,16 +124,23 @@ export class BookService {
     return this.dbService.getAll<Book>(STORE_TYPE.STORE_BOOK);
   }
 
-  getBookAndChapters(id: string): Observable<Book> {
-    return this.dbService.getByKey<Book>(STORE_TYPE.STORE_BOOK, id);
+  getBookAndChapters(id: string, name: string): Observable<Book> {
+    const key = this.createKey(id, name);
+    return this.dbService.getByKey<Book>(STORE_TYPE.STORE_BOOK, key);
   }
 
   getBookSentences(
-    id: string
+    id: string,
+    name: string
   ): Observable<{ id: string; sentenses: Sentense[] }> {
+    const key = this.createKey(id, name);
     return this.dbService.getByKey<{ id: string; sentenses: Sentense[] }>(
       STORE_TYPE.STORE_SENTENSES,
-      id
+      key
     );
+  }
+
+  private createKey(id: string, name: string): string {
+    return `${id}___${name}`;
   }
 }

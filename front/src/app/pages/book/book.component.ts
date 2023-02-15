@@ -19,7 +19,8 @@ import { HeaderService } from './../../services/header.service';
 })
 export class BookComponent implements OnInit {
   book?: Book;
-  bookId: string;
+  sheetId: string;
+  sheetName: string;
   isLoading: boolean = false;
   isExist: boolean = true;
 
@@ -31,7 +32,8 @@ export class BookComponent implements OnInit {
     private _snackBar: MatSnackBar,
     public dialog: Dialog
   ) {
-    this.bookId = this.route.snapshot.paramMap.get('bookId') || '';
+    this.sheetId = this.route.snapshot.paramMap.get('sheetId') || '';
+    this.sheetName = this.route.snapshot.paramMap.get('sheetName') || '';
   }
 
   ngOnInit(): void {
@@ -39,12 +41,14 @@ export class BookComponent implements OnInit {
   }
 
   private getBook() {
-    this.bookService.getBookAndChapters(this.bookId).subscribe((book: Book) => {
-      this.isExist = !!book;
-      this.book = book;
-      this.setHeader(book);
-      this.isLoading = false;
-    });
+    this.bookService
+      .getBookAndChapters(this.sheetId, this.sheetName)
+      .subscribe((book: Book) => {
+        this.isExist = !!book;
+        this.book = book;
+        this.setHeader(book);
+        this.isLoading = false;
+      });
   }
 
   openSettings() {
@@ -54,9 +58,9 @@ export class BookComponent implements OnInit {
         backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
         data: {
           title: this.book?.title,
-          bookId: this.bookId,
+          sheetId: this.sheetId,
+          sheetName: this.sheetName,
           updatedAt: this.book?.updatedAt,
-          sheetName: this.book?.sheetName,
         },
       }
     );
@@ -78,7 +82,7 @@ export class BookComponent implements OnInit {
 
   private resyncBook(value?: string) {
     this.isLoading = true;
-    this.bookService.downloadBook(this.bookId, value || '').subscribe({
+    this.bookService.downloadBook(this.sheetId, value || '').subscribe({
       next: (res) => {
         this.getBook();
         this._snackBar.open('再同期完了しました。', '', {
@@ -106,7 +110,7 @@ export class BookComponent implements OnInit {
   }
 
   private deleteBook() {
-    this.bookService.deleteBook(this.bookId).subscribe(() => {
+    this.bookService.deleteBook(this.sheetId, this.sheetName).subscribe(() => {
       this.router.navigateByUrl('/books');
     });
   }

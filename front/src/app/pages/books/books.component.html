@@ -15,7 +15,7 @@
     <a
       class="book-link"
       *ngFor="let book of books"
-      routerLink="/book/{{ book.id }}"
+      routerLink="/book/{{ book.sheetId }}/{{ book.sheetName }}"
     >
       <mat-card class="book">
         <h3 class="book-title">{{ book.title }}</h3>

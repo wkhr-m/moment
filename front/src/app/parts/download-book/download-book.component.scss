@@ -12,15 +12,8 @@
 .dialog-content {
   @include variable.dialog-content;
 }
-.capacity-msg {
+.msg {
   padding-bottom: 1rem;
-  &.near-over {
-    color: red;
-    font-weight: bold;
-  }
-  &.hidden {
-    display: none;
-  }
 }
 .form {
   display: flex;
