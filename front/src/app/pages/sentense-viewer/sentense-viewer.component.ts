@@ -245,6 +245,10 @@ export class SentenseViewerComponent
           this.sentenses[this.activeSentenseNumber].pronunciation ||
         row.note !== this.sentenses[this.activeSentenseNumber].note
       ) {
+        const beforeRow = { ...this.sentenses[this.activeSentenseNumber] };
+        const newRow = { ...beforeRow, ...row };
+        this.sentenses[this.activeSentenseNumber] = newRow;
+        const snackbarRef = this._snackBar.open('保存中', '');
         this.bookService
           .updateSheetRow(
             this.book?.sheetId || '',
@@ -255,8 +259,11 @@ export class SentenseViewerComponent
           .subscribe({
             next: (res) => {
               this.sentenses = res;
+              snackbarRef.dismiss();
             },
             error: (error) => {
+              this.sentenses[this.activeSentenseNumber] = beforeRow;
+              snackbarRef.dismiss();
               let msg = '読み込みに失敗しました。';
               if (error.status === 0) {
                 msg =
