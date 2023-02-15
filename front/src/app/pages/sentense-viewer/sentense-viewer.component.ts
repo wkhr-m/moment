@@ -51,6 +51,7 @@ export class SentenseViewerComponent
   isBookExist: boolean = true;
   setting?: Setting;
   private swiperEl?: SwiperElement;
+  isOpeningDialog: boolean = false;
 
   private audioFixedQueue: FixedQueue<HTMLAudioElement | null> = new FixedQueue(
     0,
@@ -223,6 +224,7 @@ export class SentenseViewerComponent
 
   onOpenEditor() {
     this.swiperEl?.swiper.keyboard.disable();
+    this.isOpeningDialog = true;
     const dialogRef = this.dialog.open(EditorComponent, {
       data: {
         pronunciation: this.sentenses[this.activeSentenseNumber].pronunciation,
@@ -234,6 +236,7 @@ export class SentenseViewerComponent
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
     });
     dialogRef.closed.subscribe((res) => {
+      this.isOpeningDialog = false;
       const row = dialogRef.componentInstance?.form.value;
       if (
         row.ja !== this.sentenses[this.activeSentenseNumber].ja ||
@@ -276,11 +279,13 @@ export class SentenseViewerComponent
   }
 
   onOpenSetting(): void {
+    this.isOpeningDialog = true;
     const dialogRef = this.dialog.open(ViewerSettingDialogComponent, {
       data: this.setting,
       backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
     });
     dialogRef.closed.subscribe(() => {
+      this.isOpeningDialog = false;
       this.getSetting();
     });
   }
@@ -326,6 +331,9 @@ export class SentenseViewerComponent
   @HostListener('window:keydown.control.space', ['$event'])
   @HostListener('window:keydown.space', ['$event'])
   spaceEvent(event: Event) {
+    if (this.isOpeningDialog) {
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
     this.onPlay();
