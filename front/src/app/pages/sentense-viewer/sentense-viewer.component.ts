@@ -82,13 +82,16 @@ export class SentenseViewerComponent
 
     this.getSetting();
 
-    this.bookService
-      .getBookAndChapters(sheetId, sheetName)
-      .subscribe((book) => {
+    this.bookService.getBookAndChapters(sheetId, sheetName).subscribe({
+      next: (book) => {
         this.isBookExist = !!book;
         this.book = book;
         this.setHeader(book);
-      });
+      },
+      error: () => {
+        this.router.navigateByUrl('/books');
+      },
+    });
 
     this.bookService.getBookSentences(sheetId, sheetName).subscribe((book) => {
       if (!!this.section) {
@@ -338,6 +341,7 @@ export class SentenseViewerComponent
   @HostListener('window:keydown.control.space', ['$event'])
   @HostListener('window:keydown.space', ['$event'])
   spaceEvent(event: Event) {
+    this.bookService.saveAudio();
     if (this.isOpeningDialog) {
       return;
     }

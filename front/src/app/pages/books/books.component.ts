@@ -36,12 +36,17 @@ export class BooksComponent implements OnInit {
   }
 
   private loadBooks(): void {
-    this.bookService.getAllBooks().subscribe((res) => {
-      if (res?.length === 0) {
+    this.bookService.getAllBooks().subscribe({
+      next: (res) => {
+        if (res?.length === 0) {
+          this.router.navigateByUrl('/home');
+        }
+        this.books = res;
+        this.isInitLoaded = true;
+      },
+      error: () => {
         this.router.navigateByUrl('/home');
-      }
-      this.books = res;
-      this.isInitLoaded = true;
+      },
     });
   }
 

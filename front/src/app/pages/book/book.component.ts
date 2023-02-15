@@ -43,11 +43,16 @@ export class BookComponent implements OnInit {
   private getBook() {
     this.bookService
       .getBookAndChapters(this.sheetId, this.sheetName)
-      .subscribe((book: Book) => {
-        this.isExist = !!book;
-        this.book = book;
-        this.setHeader(book);
-        this.isLoading = false;
+      .subscribe({
+        next: (book: Book) => {
+          this.isExist = !!book;
+          this.book = book;
+          this.setHeader(book);
+          this.isLoading = false;
+        },
+        error: () => {
+          this.router.navigateByUrl('/books');
+        },
       });
   }
 
