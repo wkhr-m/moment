@@ -341,7 +341,6 @@ export class SentenseViewerComponent
   @HostListener('window:keydown.control.space', ['$event'])
   @HostListener('window:keydown.space', ['$event'])
   spaceEvent(event: Event) {
-    this.bookService.saveAudio();
     if (this.isOpeningDialog) {
       return;
     }
