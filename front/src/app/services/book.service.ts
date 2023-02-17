@@ -125,7 +125,6 @@ export class BookService {
       'https://doc-04-8c-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/v49i2i1mchb35l02d70ruhtaiujqvedq/1676509425000/00970553223073830182/*/117JLBKrF82jMKzhqe1RZczKokw4aoJPk?e=download&uuid=345f17b7-4612-47b6-96c5-3932fbe605e9';
     fetch(url).then(async (res: any) => {
       const arybuffer = await res.arrayBuffer();
-      console.log(arybuffer);
 
       const key = 'sheetId___sheetName___0';
       this.dbService
