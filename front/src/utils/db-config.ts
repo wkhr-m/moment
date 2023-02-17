@@ -4,6 +4,7 @@ export const STORE_TYPE = {
   STORE_BOOK: 'book',
   STORE_SENTENSES: 'sentenses',
   STORE_SETTING: 'setting',
+  STORE_AUDIO: 'audio',
 };
 
 export const dbConfig: DBConfig = {
@@ -50,6 +51,13 @@ export const dbConfig: DBConfig = {
           keypath: 'speechRate',
           options: { unique: false },
         },
+      ],
+    },
+    {
+      store: STORE_TYPE.STORE_AUDIO,
+      storeConfig: { keyPath: 'id', autoIncrement: false },
+      storeSchema: [
+        { name: 'audio', keypath: 'audio', options: { unique: false } },
       ],
     },
   ],

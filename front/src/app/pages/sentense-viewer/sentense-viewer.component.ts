@@ -82,13 +82,16 @@ export class SentenseViewerComponent
 
     this.getSetting();
 
-    this.bookService
-      .getBookAndChapters(sheetId, sheetName)
-      .subscribe((book) => {
+    this.bookService.getBookAndChapters(sheetId, sheetName).subscribe({
+      next: (book) => {
         this.isBookExist = !!book;
         this.book = book;
         this.setHeader(book);
-      });
+      },
+      error: () => {
+        this.router.navigateByUrl('/books');
+      },
+    });
 
     this.bookService.getBookSentences(sheetId, sheetName).subscribe((book) => {
       if (!!this.section) {

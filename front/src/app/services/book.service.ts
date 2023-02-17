@@ -120,6 +120,40 @@ export class BookService {
     }));
   }
 
+  saveAudio() {
+    const url =
+      'https://doc-04-8c-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/v49i2i1mchb35l02d70ruhtaiujqvedq/1676509425000/00970553223073830182/*/117JLBKrF82jMKzhqe1RZczKokw4aoJPk?e=download&uuid=345f17b7-4612-47b6-96c5-3932fbe605e9';
+    fetch(url).then(async (res: any) => {
+      const arybuffer = await res.arrayBuffer();
+
+      const key = 'sheetId___sheetName___0';
+      this.dbService
+        .update(STORE_TYPE.STORE_AUDIO, {
+          id: key,
+          audio: arybuffer,
+        })
+        .subscribe((a) => {
+          this.dbService
+            .getByKey<{ id: string; audio: ArrayBuffer }>(
+              STORE_TYPE.STORE_AUDIO,
+              'sheetId___sheetName___0'
+            )
+            .subscribe(async (data) => {
+              if (!data) {
+                console.log('data', data);
+                return;
+              }
+              const audioCtx = new AudioContext();
+              const buffer = await audioCtx.decodeAudioData(data.audio);
+              const source = audioCtx.createBufferSource();
+              source.buffer = buffer;
+              source.connect(audioCtx.destination);
+              source.start();
+            });
+        });
+    });
+  }
+
   getAllBooks(): Observable<Book[]> {
     return this.dbService.getAll<Book>(STORE_TYPE.STORE_BOOK);
   }
