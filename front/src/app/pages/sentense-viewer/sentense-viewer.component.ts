@@ -7,7 +7,7 @@ import {
   HostListener,
   NgZone,
   OnDestroy,
-  OnInit,
+  OnInit
 } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,7 +19,7 @@ import SwiperCore, {
   EffectCreative,
   Keyboard,
   Navigation,
-  Virtual,
+  Virtual
 } from 'swiper';
 import { EditorComponent } from '../../parts/editor/editor.component';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
@@ -71,6 +71,9 @@ export class SentenseViewerComponent
   ) {}
 
   ngOnInit(): void {
+    // iOSのsafariで画面が上下に動いてしまうので固定する
+    window.document.body.style.position = 'fixed';
+
     const sheetId = this.route.snapshot.paramMap.get('sheetId') || '';
     const sheetName = this.route.snapshot.paramMap.get('sheetName') || '';
 
@@ -154,6 +157,7 @@ export class SentenseViewerComponent
   }
 
   ngOnDestroy(): void {
+    window.document.body.style.position = '';
     this.swiperEl?.removeEventListener('slideChange', this.onSlideChange);
     releaseRecord();
   }
