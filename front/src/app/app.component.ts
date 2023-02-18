@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,18 @@ import { Component } from '@angular/core';
       <router-outlet></router-outlet>
     </main> `,
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private _snackBar: MatSnackBar, updates: SwUpdate) {
+    updates.versionUpdates
+      .pipe(
+        filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY')
+      )
+      .subscribe(() => {
+        const snackbarRef = this._snackBar.open(
+          '更新情報があります。更新しますか？',
+          '更新する'
+        );
+        snackbarRef.onAction().subscribe((res) => document.location.reload());
+      });
+  }
+}
