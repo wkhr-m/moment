@@ -6,27 +6,25 @@
   grid-template-rows: 1fr 8rem;
   height: 100%;
 }
-swiper-container {
+.keen-slider {
   width: 100%;
   height: 100%;
-}
-swiper-slide {
-  overflow: hidden;
-}
-.card-content {
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
 }
 .word-viewer {
+  min-width: calc(100% - 2rem);
   height: calc(100% - 1rem);
-  margin: 0 1rem;
   overflow: hidden;
   display: grid;
   row-gap: 1.2rem;
   grid-template-rows: repeat(3, 1fr);
   padding: 8px;
 }
+.card-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
 .hide-target {
   position: relative;
   .hide-target-text {
@@ -80,7 +78,7 @@ swiper-slide {
 
 .action-buttons-item {
   button {
-    margin: 0 0.3rem;
+    margin: 0 0.6rem;
   }
 }
 .not-exist {

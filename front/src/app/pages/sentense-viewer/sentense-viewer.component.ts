@@ -3,11 +3,14 @@ import { Location } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
 import {
   AfterViewChecked,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   HostListener,
   NgZone,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,12 +18,7 @@ import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
 import { FixedQueue } from '@utils/fixed-queue';
 import { speechWord } from '@utils/speech';
-import SwiperCore, {
-  EffectCreative,
-  Keyboard,
-  Navigation,
-  Virtual,
-} from 'swiper';
+import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { EditorComponent } from '../../parts/editor/editor.component';
 import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { ViewerSettingDialogComponent } from '../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
@@ -28,10 +26,6 @@ import { BookService } from '../../services/book.service';
 import { HeaderService } from '../../services/header.service';
 import { SettingService } from '../../services/setting.service';
 import { releaseRecord } from './../../../utils/record';
-
-SwiperCore.use([Virtual, EffectCreative, Navigation, Keyboard]);
-
-type SwiperElement = HTMLElement & { swiper: SwiperCore };
 
 @Component({
   selector: 'app-sentense-viewer',
@@ -50,8 +44,11 @@ export class SentenseViewerComponent
   isLoaded = false;
   isBookExist: boolean = true;
   setting?: Setting;
-  private swiperEl?: SwiperElement;
   isOpeningDialog: boolean = false;
+  @ViewChild('sliderRef') sliderRef?: ElementRef<HTMLElement>;
+  indexes: number[] = [];
+
+  slider?: KeenSliderInstance;
 
   private audioFixedQueue: FixedQueue<HTMLAudioElement | null> = new FixedQueue(
     0,
@@ -67,7 +64,8 @@ export class SentenseViewerComponent
     private location: Location,
     private ngZone: NgZone,
     public dialog: Dialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -140,21 +138,39 @@ export class SentenseViewerComponent
   }
 
   ngAfterViewChecked() {
-    const swiperEl = document.querySelector<SwiperElement>('swiper-container');
-    if (!this.swiperEl && !!swiperEl) {
-      this.swiperEl = swiperEl;
-      (this.swiperEl as any).initialize();
-      if (this.activeSentenseNumber > 0) {
-        this.swiperEl?.swiper.slideTo(this.activeSentenseNumber, 0);
-      }
-      this.swiperEl.addEventListener('slidechange', (event) => {
-        this.ngZone.run(() => this.onSlideChange(event));
+    if (this.sliderRef && !this.slider && this.sentenses.length > 0) {
+      this.slider = new KeenSlider(this.sliderRef.nativeElement, {
+        initial: this.activeSentenseNumber,
+        loop: {
+          min: 0,
+          max: this.sentenses.length - 1,
+        },
+        range: {
+          align: true,
+          min: 0,
+          max: this.sentenses.length - 1,
+        },
+        mode: 'snap',
+        slideChanged: (event) => {
+          this.onSlideChange(event);
+        },
+        detailsChanged: (s) => {
+          this.indexes = s.track.details.slides.map((slide) => {
+            return slide.abs;
+          });
+        },
+        slides: {
+          spacing: 8,
+          number: 3,
+          perView: 1,
+        },
       });
     }
   }
 
   ngOnDestroy(): void {
-    this.swiperEl?.removeEventListener('slideChange', this.onSlideChange);
+    if (this.slider) this.slider.destroy();
+
     releaseRecord();
   }
 
@@ -163,7 +179,7 @@ export class SentenseViewerComponent
   }
 
   onSlideChange(event: any) {
-    const newActiveIndex = event.currentTarget.swiper.activeIndex;
+    const newActiveIndex = event.track.details.abs;
     if (newActiveIndex === this.activeSentenseNumber) {
       return;
     }
@@ -226,7 +242,6 @@ export class SentenseViewerComponent
   }
 
   onOpenEditor() {
-    this.swiperEl?.swiper.keyboard.disable();
     this.isOpeningDialog = true;
     const dialogRef = this.dialog.open(EditorComponent, {
       data: {
@@ -284,7 +299,6 @@ export class SentenseViewerComponent
             },
           });
       }
-      this.swiperEl?.swiper.keyboard.enable();
     });
   }
 
@@ -347,5 +361,21 @@ export class SentenseViewerComponent
     event.preventDefault();
     event.stopPropagation();
     this.onPlay();
+  }
+
+  @HostListener('window:keydown.arrowRight', ['$event'])
+  rightKeyEvent(event: Event) {
+    if (this.isOpeningDialog) {
+      return;
+    }
+    this.slider?.next();
+  }
+
+  @HostListener('window:keydown.arrowLeft', ['$event'])
+  leftKeyEvent(event: Event) {
+    if (this.isOpeningDialog) {
+      return;
+    }
+    this.slider?.prev();
   }
 }

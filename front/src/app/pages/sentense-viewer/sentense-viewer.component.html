@@ -1,94 +1,102 @@
 <ng-container *ngIf="isBookExist; else elseTemplate">
   <section class="content">
-    <ng-container *ngIf="isLoaded">
-      <swiper-container
-        navigation="true"
-        space-between="50"
-        slides-per-view="1"
-        keyboard="true"
-        class="swiper-container"
-        init="false"
-        virtual="true"
-        effect="creative"
-        [creativeEffect]="{
-          prev: {
-            shadow: true,
-            translate: [0, 0, -400]
-          },
-          next: {
-            translate: ['100%', 0, 0]
-          }
-        }"
+    <div class="keen-slider" #sliderRef>
+      <mat-card
+        class="word-viewer keen-slider__slide"
+        *ngFor="let index of [0, 1, 2]"
       >
-        <swiper-slide *ngFor="let sentense of sentenses; index as i">
-          <mat-card class="word-viewer">
-            <div class="card-content">
-              <ng-container
-                *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_EN"
-              >
-                {{ sentense.ja }}
-              </ng-container>
-              <ng-template #JAEN_EN>
-                <app-en-sentense
-                  [sentense]="sentense.en"
-                  [pronunciation]="sentense.pronunciation"
-                  (wordClick)="onClickWord($event)"
-                ></app-en-sentense>
-              </ng-template>
-            </div>
-            <div class="card-content hide-target">
-              <div class="hide-target-text">
-                <ng-container
-                  *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_JA"
-                >
-                  <app-en-sentense
-                    [sentense]="sentense.en"
-                    [pronunciation]="sentense.pronunciation"
-                    (wordClick)="onClickWord($event)"
-                  ></app-en-sentense>
-                </ng-container>
-                <ng-template #JAEN_JA>
-                  {{ sentense.ja }}
-                </ng-template>
-              </div>
-              <div
-                class="hide"
-                *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
-                (click)="onClickHide()"
-              >
-                🫣 Check Answer!!🫣
-              </div>
-            </div>
-            <div class="card-content note" *ngIf="sentense.note">
-              <div class="note-title">NOTE</div>
-              <div class="note-body">
-                {{ sentense.note }}
-              </div>
-            </div>
-          </mat-card>
-        </swiper-slide>
-      </swiper-container>
-      <mat-card class="action-buttons">
-        <button mat-mini-fab (click)="onOpenSetting()">
-          <mat-icon fontIcon="settings"></mat-icon>
-        </button>
-
-        <div class="action-buttons-item">
-          <button mat-fab color="primary" aria-label="Play" (click)="onPlay()">
-            <mat-icon
-              style="transform: scale(1.6)"
-              fontIcon="play_arrow"
-            ></mat-icon>
-          </button>
+        <div class="card-content" *ngIf="isLoaded && indexes.length > 0">
+          <ng-container
+            *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_EN"
+          >
+            {{ sentenses[indexes[index]]?.ja }}
+          </ng-container>
+          <ng-template #JAEN_EN>
+            <app-en-sentense
+              [sentense]="sentenses[indexes[index]]?.en"
+              [pronunciation]="sentenses[indexes[index]]?.pronunciation"
+              (wordClick)="onClickWord($event)"
+            ></app-en-sentense>
+          </ng-template>
         </div>
-
-        <div class="action-buttons-item">
-          <button mat-mini-fab aria-label="編集" (click)="onOpenEditor()">
-            <mat-icon fontIcon="edit"></mat-icon>
-          </button>
+        <div class="card-content hide-target">
+          <div class="hide-target-text">
+            <ng-container
+              *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_JA"
+            >
+              <app-en-sentense
+                [sentense]="sentenses[indexes[index]]?.en"
+                [pronunciation]="sentenses[indexes[index]]?.pronunciation"
+                (wordClick)="onClickWord($event)"
+              ></app-en-sentense>
+            </ng-container>
+            <ng-template #JAEN_JA>
+              {{ sentenses[indexes[index]]?.ja }}
+            </ng-template>
+          </div>
+          <div
+            class="hide"
+            *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
+            (click)="onClickHide()"
+          >
+            🫣 Check Answer!!🫣
+          </div>
+        </div>
+        <div class="card-content note" *ngIf="sentenses[indexes[index]]?.note">
+          <div class="note-title">NOTE</div>
+          <div class="note-body">
+            {{ sentenses[indexes[index]]?.note }}
+          </div>
         </div>
       </mat-card>
-    </ng-container>
+    </div>
+    <mat-card class="action-buttons">
+      <button mat-mini-fab (click)="onOpenSetting()">
+        <mat-icon fontIcon="settings"></mat-icon>
+      </button>
+
+      <div class="action-buttons-item">
+        <button
+          mat-mini-fab
+          aria-label="back"
+          (click)="slider?.prev()"
+          [disabled]="activeSentenseNumber === 0"
+          [class.arrow--disabled]="activeSentenseNumber === 0"
+        >
+          <mat-icon fontIcon="arrow_back_ios"></mat-icon>
+        </button>
+
+        <button
+          style="transform: scale(1.2)"
+          mat-fab
+          color="primary"
+          aria-label="Play"
+          (click)="onPlay()"
+        >
+          <mat-icon
+            style="transform: scale(1.6)"
+            fontIcon="play_arrow"
+          ></mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          aria-label="Play"
+          [class.arrow--disabled]="
+            sentenses.length - 1 === activeSentenseNumber
+          "
+          [disabled]="sentenses.length - 1 === activeSentenseNumber"
+          (click)="slider?.next()"
+        >
+          <mat-icon fontIcon="arrow_forward_ios"></mat-icon>
+        </button>
+      </div>
+
+      <div class="action-buttons-item">
+        <button mat-mini-fab aria-label="編集" (click)="onOpenEditor()">
+          <mat-icon fontIcon="edit"></mat-icon>
+        </button>
+      </div>
+    </mat-card>
   </section>
 </ng-container>
 <ng-template #elseTemplate>
