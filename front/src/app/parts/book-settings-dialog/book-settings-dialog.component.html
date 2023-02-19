@@ -13,22 +13,19 @@
         [href]="'https://docs.google.com/spreadsheets/d/' + data.sheetId"
         target="_blank"
         alt="Google Sheets"
-        >このGoogleSheetsにアクセスする</a
       >
+        <mat-icon fontIcon="open_in_new"></mat-icon>
+        {{ data.title }}の{{ data.sheetName }}にアクセスする
+      </a>
     </section>
     <section class="resync">
       <h2 class="title">単語帳の内容を再同期する</h2>
       <span class="updatedAt">(最終更新日: {{ data.updatedAt }})</span>
-      <mat-form-field class="audio-form">
-        <mat-label>シート名</mat-label>
-        <input matInput [formControl]="sheetName" />
-      </mat-form-field>
       <button
         mat-raised-button
         color="primary"
         (click)="onResync()"
         class="resync-button"
-        [disabled]="!sheetName.valid"
       >
         再同期する
       </button>

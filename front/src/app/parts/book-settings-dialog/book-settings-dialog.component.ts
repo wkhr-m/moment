@@ -1,7 +1,5 @@
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, Inject } from '@angular/core';
 
 export const BOOK_SETTING_OUTPUT_TYPE = {
   RESYNC: 'RESYNC',
@@ -26,32 +24,18 @@ type BookSettingInput = {
   templateUrl: './book-settings-dialog.component.html',
   styleUrls: ['./book-settings-dialog.component.scss'],
 })
-export class BookSettingsDialogComponent implements OnInit {
-  sheetName: FormControl = new FormControl('シート1', [Validators.required]);
-
+export class BookSettingsDialogComponent {
   constructor(
     public dialogRef: DialogRef,
-    @Inject(DIALOG_DATA) public data: BookSettingInput,
-    private _snackBar: MatSnackBar
+    @Inject(DIALOG_DATA) public data: BookSettingInput
   ) {}
-
-  ngOnInit(): void {
-    this.sheetName.setValue(this.data.sheetName);
-  }
 
   onClose(key?: BookSettingOutputType, value?: string): void {
     this.dialogRef.close(key ? [{ key, value }] : undefined);
   }
 
   onResync(): void {
-    if (!!this.sheetName.value?.trim()) {
-      this.onClose(BOOK_SETTING_OUTPUT_TYPE.RESYNC, this.sheetName.value);
-    } else {
-      this._snackBar.open('シート名を入力してください', '', {
-        duration: 5000,
-        panelClass: ['warn-snackbar'],
-      });
-    }
+    this.onClose(BOOK_SETTING_OUTPUT_TYPE.RESYNC, this.data.sheetName);
   }
 
   onDelete(): void {
