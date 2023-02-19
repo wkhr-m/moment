@@ -28,6 +28,7 @@
         color="primary"
         (click)="onResync()"
         class="resync-button"
+        [disabled]="!sheetName.valid"
       >
         再同期する
       </button>
