@@ -5,49 +5,56 @@
         class="word-viewer keen-slider__slide"
         *ngFor="let index of [0, 1, 2]"
       >
-        <div class="card-content" *ngIf="isLoaded && indexes.length > 0">
-          <ng-container
-            *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_EN"
-          >
-            {{ sentenses[indexes[index]]?.ja }}
-          </ng-container>
-          <ng-template #JAEN_EN>
-            <app-en-sentense
-              [sentense]="sentenses[indexes[index]]?.en"
-              [pronunciation]="sentenses[indexes[index]]?.pronunciation"
-              (wordClick)="onClickWord($event)"
-            ></app-en-sentense>
-          </ng-template>
-        </div>
-        <div class="card-content hide-target">
-          <div class="hide-target-text">
+        <ng-container
+          *ngIf="isLoaded && indexes.length > 0 && sentenses.length > 0"
+        >
+          <div class="card-content">
             <ng-container
-              *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_JA"
+              *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_EN"
             >
+              {{ sentenses[indexes[index]].ja }}
+            </ng-container>
+            <ng-template #JAEN_EN>
               <app-en-sentense
-                [sentense]="sentenses[indexes[index]]?.en"
-                [pronunciation]="sentenses[indexes[index]]?.pronunciation"
+                [sentense]="sentenses[indexes[index]].en"
+                [pronunciation]="sentenses[indexes[index]].pronunciation"
                 (wordClick)="onClickWord($event)"
               ></app-en-sentense>
-            </ng-container>
-            <ng-template #JAEN_JA>
-              {{ sentenses[indexes[index]]?.ja }}
             </ng-template>
           </div>
+          <div class="card-content hide-target">
+            <div class="hide-target-text">
+              <ng-container
+                *ngIf="setting?.order === viewerOrder.JAEN; else JAEN_JA"
+              >
+                <app-en-sentense
+                  [sentense]="sentenses[indexes[index]].en"
+                  [pronunciation]="sentenses[indexes[index]].pronunciation"
+                  (wordClick)="onClickWord($event)"
+                ></app-en-sentense>
+              </ng-container>
+              <ng-template #JAEN_JA>
+                {{ sentenses[indexes[index]].ja }}
+              </ng-template>
+            </div>
+            <div
+              class="hide"
+              *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
+              (click)="onClickHide()"
+            >
+              🫣 Check Answer!!🫣
+            </div>
+          </div>
           <div
-            class="hide"
-            *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
-            (click)="onClickHide()"
+            class="card-content note"
+            *ngIf="sentenses[indexes[index]]?.note"
           >
-            🫣 Check Answer!!🫣
+            <div class="note-title">NOTE</div>
+            <div class="note-body">
+              {{ sentenses[indexes[index]].note }}
+            </div>
           </div>
-        </div>
-        <div class="card-content note" *ngIf="sentenses[indexes[index]]?.note">
-          <div class="note-title">NOTE</div>
-          <div class="note-body">
-            {{ sentenses[indexes[index]]?.note }}
-          </div>
-        </div>
+        </ng-container>
       </mat-card>
     </div>
     <mat-card class="action-buttons">

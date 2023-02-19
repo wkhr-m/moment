@@ -133,7 +133,6 @@ export class SentenseViewerComponent
       ]);
 
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
-      this.isLoaded = true;
     });
   }
 
@@ -165,6 +164,8 @@ export class SentenseViewerComponent
           perView: 1,
         },
       });
+      this.isLoaded = true;
+      this.cdr.detectChanges();
     }
   }
 
