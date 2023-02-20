@@ -19,7 +19,6 @@ import { HeaderService } from './../../services/header.service';
 })
 export class BooksComponent implements OnInit {
   books: Book[] = [];
-  isLoading: boolean = false;
   isInitLoaded: boolean = false;
 
   constructor(
@@ -68,16 +67,19 @@ export class BooksComponent implements OnInit {
   private downloadBook(url: string, name: string) {
     const id = url.trim().match(REGEXP_SPREADSHEET_URL)?.[1];
     if (id) {
-      this.isLoading = true;
+      const snackbarRef = this._snackBar.open('読み込み中です。', '', {
+        duration: 5000,
+      });
       this.bookService.downloadBook(id, name).subscribe({
         next: (book) => {
+          snackbarRef.dismiss();
           this._snackBar.open('読み込みに成功しました。', '', {
             duration: 5000,
           });
           this.loadBooks();
-          this.isLoading = false;
         },
         error: (error: HttpErrorResponse) => {
+          snackbarRef.dismiss();
           let msg = '読み込みに失敗しました。';
           if (error.status === 0) {
             msg =
@@ -92,7 +94,6 @@ export class BooksComponent implements OnInit {
             duration: 5000,
             panelClass: ['warn-snackbar'],
           });
-          this.isLoading = false;
         },
       });
     }

@@ -87,18 +87,22 @@ export class BookComponent implements OnInit {
 
   private resyncBook(value?: string) {
     this.isLoading = true;
+    const snackbarRef = this._snackBar.open('再同期をしています。', '', {
+      duration: 5000,
+    });
     this.bookService.downloadBook(this.sheetId, value || '').subscribe({
       next: (res) => {
         this.getBook();
-        this._snackBar.open('再同期完了しました。', '', {
+        snackbarRef.dismiss();
+        this._snackBar.open('再同期が完了しました。', '', {
           duration: 5000,
         });
       },
       error: (error) => {
-        let msg = '読み込みに失敗しました。';
+        snackbarRef.dismiss();
+        let msg = '再同期に失敗しました。';
         if (error.status === 0) {
-          msg =
-            'インターネットに接続されていないため、読み込みに失敗しました。';
+          msg = 'インターネットに接続されていないため、再同期に失敗しました。';
         } else if (
           error.status === HttpStatusCode.InternalServerError &&
           typeof error.error === 'string'
