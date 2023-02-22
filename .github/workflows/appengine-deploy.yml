@@ -37,7 +37,12 @@ jobs:
         env:
           SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
         working-directory: ./front
-
+      - name: Save the environment
+        run: 'echo "$SECRET_FILE" > src/environments/environment.ts'
+        shell: bash
+        env:
+          SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
+        working-directory: ./front
       - run: npm ci
         working-directory: ./front
       - run: npm run build
