@@ -37,7 +37,6 @@ import { ViewerSettingDialogComponent } from './parts/viewer-setting-dialog/view
 import { BookService } from './services/book.service';
 import { HeaderService } from './services/header.service';
 import { SettingService } from './services/setting.service';
-import { WordService } from './services/word.service';
 
 @NgModule({
   declarations: [
@@ -84,7 +83,7 @@ import { WordService } from './services/word.service';
     }),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [HeaderService, BookService, WordService, SettingService],
+  providers: [HeaderService, BookService, SettingService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -2,10 +2,6 @@
 単語帳
 Google SheetsとGoogleDriveから単語帳の情報をインポートする(ようになりたいな)
 
-## 使用しているAPI
-  - [WordsAPI](https://rapidapi.com/dpventures/api/wordsapi)
-    - 英単語の意味を調べるAPI
-
 ## デプロイ
 GitHub ActionsからGAEにデプロイ
 
@@ -34,8 +30,6 @@ Repository > Settings > secrets > Actions
   - Google Sheets APIを許可したAPIキー
 - SA_KEY_FOR_BACK
   - spreadsheet-reader@サービスアカウントのJSONキー
-- ENV_FOR_FRONT
-  - firebaseのキーとWordsAPIのキー
 
 ## アイコン
 [FLAT ICON DESIGN](http://flat-icon-design.com/)を利用
