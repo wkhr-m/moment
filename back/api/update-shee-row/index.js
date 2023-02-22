@@ -2,6 +2,7 @@ const { google } = require('googleapis');
 const { getJwt, getApiKey } = require('./../../utils');
 
 const HEADER = ['ja', 'en', 'pronunciation', 'note'];
+const MISSING_HEADER = ['pronunciation', 'note'];
 
 exports.main = async (req, res) => {
   const jwt = getJwt();
@@ -42,6 +43,32 @@ exports.main = async (req, res) => {
     for (let index = 0; index < Object.keys(headerMap).length; index++) {
       const headerItem = Object.keys(headerMap)[index];
       row[headerMap[headerItem]] = req.body.row[headerItem];
+    }
+
+    let needUpdateHeader = false;
+
+    // headerにそもそもnoteが含まれない場合
+    for (let index = 0; index < MISSING_HEADER.length; index++) {
+      const headerItem = MISSING_HEADER[index];
+      if (!Object.keys(headerMap).includes(headerItem)) {
+        needUpdateHeader = true;
+        row.push(req.body.row[headerItem]);
+        header.push(headerItem);
+      }
+    }
+
+    if (needUpdateHeader) {
+      const headerParams = {
+        spreadsheetId,
+        range: `${sheetName}!1:1`,
+        valueInputOption: 'USER_ENTERED',
+        auth: jwt,
+        key: apiKey,
+        resource: {
+          values: [header],
+        },
+      };
+      result = await sheets.spreadsheets.values.update(headerParams);
     }
 
     const params = {
