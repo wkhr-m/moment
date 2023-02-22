@@ -20,7 +20,6 @@ import { FixedQueue } from '@utils/fixed-queue';
 import { speechWord } from '@utils/speech';
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { EditorComponent } from '../../parts/editor/editor.component';
-import { MeanWordComponent } from '../../parts/mean-word/mean-word.component';
 import { ViewerSettingDialogComponent } from '../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { BookService } from '../../services/book.service';
 import { HeaderService } from '../../services/header.service';
@@ -229,17 +228,6 @@ export class SentenseViewerComponent
         this.setting?.voice
       );
     }
-  }
-
-  onClickWord(word: string) {
-    this.dialog.open(MeanWordComponent, {
-      data: {
-        word,
-        voice: this.setting?.voice,
-      },
-      panelClass: ['dialog-section'],
-      backdropClass: ['dialog-backdrop', 'cdk-overlay-dark-backdrop'],
-    });
   }
 
   onOpenEditor() {

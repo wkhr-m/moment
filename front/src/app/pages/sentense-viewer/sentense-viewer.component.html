@@ -18,7 +18,6 @@
               <app-en-sentense
                 [sentense]="sentenses[indexes[index]].en"
                 [pronunciation]="sentenses[indexes[index]].pronunciation"
-                (wordClick)="onClickWord($event)"
               ></app-en-sentense>
             </ng-template>
           </div>
@@ -30,7 +29,6 @@
                 <app-en-sentense
                   [sentense]="sentenses[indexes[index]].en"
                   [pronunciation]="sentenses[indexes[index]].pronunciation"
-                  (wordClick)="onClickWord($event)"
                 ></app-en-sentense>
               </ng-container>
               <ng-template #JAEN_JA>

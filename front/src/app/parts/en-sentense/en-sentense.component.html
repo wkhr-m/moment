@@ -1,8 +1,4 @@
-<div
-  class="word"
-  *ngFor="let item of splitedSentense; let index = index"
-  (click)="onClickWord(item)"
->
+<div class="word" *ngFor="let item of splitedSentense; let index = index">
   <div class="en">{{ item }}</div>
   <div class="pronunciation">{{ splitedPronunciation[index] }}</div>
 </div>

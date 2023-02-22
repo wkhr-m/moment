@@ -33,7 +33,6 @@ import { DownloadBookComponent } from './parts/download-book/download-book.compo
 import { EditorComponent } from './parts/editor/editor.component';
 import { EnSentenseComponent } from './parts/en-sentense/en-sentense.component';
 import { HeaderComponent } from './parts/header/header.component';
-import { MeanWordComponent } from './parts/mean-word/mean-word.component';
 import { ViewerSettingDialogComponent } from './parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { BookService } from './services/book.service';
 import { HeaderService } from './services/header.service';
@@ -48,7 +47,6 @@ import { WordService } from './services/word.service';
     BooksComponent,
     BookComponent,
     EnSentenseComponent,
-    MeanWordComponent,
     DownloadBookComponent,
     BookSettingsDialogComponent,
     ViewerSettingDialogComponent,
