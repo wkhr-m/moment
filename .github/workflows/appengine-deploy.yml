@@ -28,6 +28,16 @@ jobs:
           SECRET_FILE: ${{ secrets.SA_KEY_FOR_BACK }}
         working-directory: ./back
 
+      - name: mkdir environment
+        run: mkdir src/environments
+        working-directory: ./front
+      - name: Save the environment
+        run: 'echo "$SECRET_FILE" > src/environments/environment.prod.ts'
+        shell: bash
+        env:
+          SECRET_FILE: ${{ secrets.ENV_FOR_FRONT }}
+        working-directory: ./front
+
       - run: npm ci
         working-directory: ./front
       - run: npm run build
