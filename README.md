@@ -30,6 +30,8 @@ Repository > Settings > secrets > Actions
   - Google Sheets APIを許可したAPIキー
 - SA_KEY_FOR_BACK
   - spreadsheet-reader@サービスアカウントのJSONキー
+- ENV_FOR_FRONT
+  - フロントで使われる環境変数
 
 ## アイコン
 [FLAT ICON DESIGN](http://flat-icon-design.com/)を利用

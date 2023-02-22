@@ -25,3 +25,14 @@
 .download-button {
   color: #fff;
 }
+
+.copy-button {
+  height: fit-content;
+  margin: 0.8rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .copy-icon {
+    width: 1.4rem;
+  }
+}

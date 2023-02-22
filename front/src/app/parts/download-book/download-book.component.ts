@@ -1,8 +1,10 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { DialogRef, DIALOG_DATA } from '@angular/cdk/dialog';
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { REGEXP_SPREADSHEET_URL } from '@utils/regexp';
+import { environment } from './../../../environments/environment';
 
 export type DownloadBookComponentOutput = {
   url: string;
@@ -29,6 +31,7 @@ export class DownloadBookComponent {
   constructor(
     public dialogRef: DialogRef,
     private _snackBar: MatSnackBar,
+    private clipboard: Clipboard,
     @Inject(DIALOG_DATA) public data: DownloadBookInput
   ) {}
 
@@ -49,5 +52,12 @@ export class DownloadBookComponent {
         }
       );
     }
+  }
+
+  onCopyAddress() {
+    this.clipboard.copy(environment.service_account);
+    this._snackBar.open('コピーしました。', '', {
+      duration: 2000,
+    });
   }
 }
