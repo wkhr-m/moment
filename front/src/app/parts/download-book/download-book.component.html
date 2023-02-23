@@ -31,12 +31,12 @@
         (click)="onCopyAddress()"
       >
         <mat-icon fontIcon="content_copy" class="copy-icon"></mat-icon>
-        Google Sheetsを共有するアカウントの<br />アドレスをコピーする
+        Google スプレッドシートを共有するアカウントの<br />アドレスをコピーする
       </button>
       <section>
         <form [formGroup]="form" class="form">
           <mat-form-field appearance="fill">
-            <mat-label>Google SheetsのURL</mat-label>
+            <mat-label>Google スプレッドシートのURL</mat-label>
             <input matInput formControlName="url" />
           </mat-form-field>
           <mat-form-field appearance="fill">
@@ -51,7 +51,7 @@
           class="download-button"
           mat-raised-button
         >
-          Google Sheetsを読み込む
+          Google スプレッドシートを読み込む
         </button>
       </section>
     </ng-container>
