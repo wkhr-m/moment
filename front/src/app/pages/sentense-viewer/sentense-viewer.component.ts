@@ -166,7 +166,14 @@ export class SentenseViewerComponent
           ) {
             // 配列に変わりがない場合は何も変えない
             return;
+          } else if (
+            Math.abs(this.indexes[0] - newIndexes[0]) === 2 &&
+            Math.abs(this.indexes[1] - newIndexes[1]) === 2
+          ) {
+            // 一瞬、2つ先のスライドが映るバグを回避するため
+            return;
           }
+
           this.indexes = newIndexes;
         },
         slides: {
@@ -192,11 +199,14 @@ export class SentenseViewerComponent
 
   onSlideChange(event: any) {
     const newActiveIndex = event.track.details.abs;
+
     if (newActiveIndex === this.activeSentenseNumber) {
+      return;
+    } else if (Math.abs(newActiveIndex - this.activeSentenseNumber) !== 1) {
+      // keen sliderで2個先のスライドをだすバグを回避するため
       return;
     }
     this.isSecondSentenseHide = true;
-    releaseRecord();
 
     this.setSentenseNumberAtHeader(newActiveIndex);
     this.setActiveNumberFromUrl(newActiveIndex + 1);
