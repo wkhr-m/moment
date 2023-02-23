@@ -153,13 +153,25 @@ export class SentenseViewerComponent
           this.onSlideChange(event);
         },
         detailsChanged: (s) => {
-          this.indexes = s.track.details.slides.map((slide) => {
+          const newIndexes = s.track.details.slides.map((slide) => {
             return slide.abs;
           });
+          if (this.indexes.length === 0) {
+            this.indexes = newIndexes;
+            return;
+          }
+          if (
+            this.indexes[0] === newIndexes[0] &&
+            this.indexes[1] === newIndexes[1]
+          ) {
+            // 配列に変わりがない場合は何も変えない
+            return;
+          }
+          this.indexes = newIndexes;
         },
         slides: {
           spacing: 8,
-          number: 3,
+          number: 2,
           perView: 1,
         },
       });
