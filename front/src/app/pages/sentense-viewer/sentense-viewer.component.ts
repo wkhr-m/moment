@@ -1,24 +1,13 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Location } from '@angular/common';
 import { HttpStatusCode } from '@angular/common/http';
-import {
-  AfterViewChecked,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  HostListener,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Book, Sentense } from '@m-types/books';
 import { Setting, ViewerOrder } from '@m-types/setting';
 import { FixedQueue } from '@utils/fixed-queue';
 import { speechWord } from '@utils/speech';
-import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { EditorComponent } from '../../parts/editor/editor.component';
 import { ViewerSettingDialogComponent } from '../../parts/viewer-setting-dialog/viewer-setting-dialog.component';
 import { BookService } from '../../services/book.service';
@@ -31,23 +20,16 @@ import { releaseRecord } from './../../../utils/record';
   templateUrl: './sentense-viewer.component.html',
   styleUrls: ['./sentense-viewer.component.scss'],
 })
-export class SentenseViewerComponent
-  implements OnInit, OnDestroy, AfterViewChecked
-{
+export class SentenseViewerComponent implements OnInit, OnDestroy {
   viewerOrder = ViewerOrder;
   book?: Book;
   section?: string;
   sentenses: Sentense[] = [];
   activeSentenseNumber: number = 0;
-  isSecondSentenseHide: boolean = true;
   isLoaded = false;
   isBookExist: boolean = true;
   setting?: Setting;
   isOpeningDialog: boolean = false;
-  @ViewChild('sliderRef') sliderRef?: ElementRef<HTMLElement>;
-  indexes: number[] = [];
-
-  slider?: KeenSliderInstance;
 
   private audioFixedQueue: FixedQueue<HTMLAudioElement | null> = new FixedQueue(
     0,
@@ -61,11 +43,18 @@ export class SentenseViewerComponent
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private ngZone: NgZone,
     public dialog: Dialog,
-    private _snackBar: MatSnackBar,
-    private cdr: ChangeDetectorRef
+    private _snackBar: MatSnackBar
   ) {}
+
+  onSwipe() {
+    if (this.activeSentenseNumber + 1 !== this.sentenses.length) {
+      // スワイプのアニメーションが終わったらactiveSentenseNumberを変える
+      setTimeout(() => {
+        this.onSlideChange(this.activeSentenseNumber + 1);
+      }, 400);
+    }
+  }
 
   ngOnInit(): void {
     const sheetId = this.route.snapshot.paramMap.get('sheetId') || '';
@@ -113,101 +102,39 @@ export class SentenseViewerComponent
       }
 
       // 音声準備
-      const firstAudio = new Audio(
-        this.sentenses[this.activeSentenseNumber - 1]?.audioUrl
-      );
-      firstAudio.load();
-      const secondAudio = new Audio(
-        this.sentenses[this.activeSentenseNumber]?.audioUrl
-      );
-      secondAudio.load();
-      const thirdAudio = new Audio(
-        this.sentenses[this.activeSentenseNumber + 1]?.audioUrl
-      );
-      secondAudio.load();
-      this.audioFixedQueue = new FixedQueue(3, [
-        firstAudio,
-        secondAudio,
-        thirdAudio,
-      ]);
+      this.prepareAudio();
 
       this.setSentenseNumberAtHeader(this.activeSentenseNumber);
+
+      this.isLoaded = true;
     });
   }
 
-  ngAfterViewChecked() {
-    if (this.sliderRef && !this.slider && this.sentenses.length > 0) {
-      this.slider = new KeenSlider(this.sliderRef.nativeElement, {
-        initial: this.activeSentenseNumber,
-        loop: {
-          min: 0,
-          max: this.sentenses.length - 1,
-        },
-        range: {
-          align: true,
-          min: 0,
-          max: this.sentenses.length - 1,
-        },
-        mode: 'snap',
-        slideChanged: (event) => {
-          this.onSlideChange(event);
-        },
-        detailsChanged: (s) => {
-          const newIndexes = s.track.details.slides.map((slide) => {
-            return slide.abs;
-          });
-          if (this.indexes.length === 0) {
-            this.indexes = newIndexes;
-            return;
-          }
-          if (
-            this.indexes[0] === newIndexes[0] &&
-            this.indexes[1] === newIndexes[1]
-          ) {
-            // 配列に変わりがない場合は何も変えない
-            return;
-          } else if (
-            Math.abs(this.indexes[0] - newIndexes[0]) === 2 &&
-            Math.abs(this.indexes[1] - newIndexes[1]) === 2
-          ) {
-            // 一瞬、2つ先のスライドが映るバグを回避するため
-            return;
-          }
-
-          this.indexes = newIndexes;
-        },
-        slides: {
-          spacing: 8,
-          number: 2,
-          perView: 1,
-        },
-      });
-      this.isLoaded = true;
-      this.cdr.detectChanges();
-    }
+  private prepareAudio() {
+    const firstAudio = new Audio(
+      this.sentenses[this.activeSentenseNumber - 1]?.audioUrl
+    );
+    firstAudio.load();
+    const secondAudio = new Audio(
+      this.sentenses[this.activeSentenseNumber]?.audioUrl
+    );
+    secondAudio.load();
+    const thirdAudio = new Audio(
+      this.sentenses[this.activeSentenseNumber + 1]?.audioUrl
+    );
+    secondAudio.load();
+    this.audioFixedQueue = new FixedQueue(3, [
+      firstAudio,
+      secondAudio,
+      thirdAudio,
+    ]);
   }
 
   ngOnDestroy(): void {
-    if (this.slider) this.slider.destroy();
-
     releaseRecord();
   }
 
-  onClickHide(): void {
-    this.isSecondSentenseHide = false;
-  }
-
-  onSlideChange(event: any) {
-    const newActiveIndex = event.track.details.abs;
-
-    if (newActiveIndex === this.activeSentenseNumber) {
-      return;
-    } else if (Math.abs(newActiveIndex - this.activeSentenseNumber) !== 1) {
-      // keen sliderで2個先のスライドをだすバグを回避するため
-      return;
-    }
-    this.isSecondSentenseHide = true;
-
+  onSlideChange(newActiveIndex: any) {
     this.setSentenseNumberAtHeader(newActiveIndex);
     this.setActiveNumberFromUrl(newActiveIndex + 1);
 
@@ -372,21 +299,5 @@ export class SentenseViewerComponent
     event.preventDefault();
     event.stopPropagation();
     this.onPlay();
-  }
-
-  @HostListener('window:keydown.arrowRight', ['$event'])
-  rightKeyEvent(event: Event) {
-    if (this.isOpeningDialog) {
-      return;
-    }
-    this.slider?.next();
-  }
-
-  @HostListener('window:keydown.arrowLeft', ['$event'])
-  leftKeyEvent(event: Event) {
-    if (this.isOpeningDialog) {
-      return;
-    }
-    this.slider?.prev();
   }
 }

@@ -29,6 +29,7 @@ import { BooksComponent } from './pages/books/books.component';
 import { HomeComponent } from './pages/home/home.component';
 import { SentenseViewerComponent } from './pages/sentense-viewer/sentense-viewer.component';
 import { BookSettingsDialogComponent } from './parts/book-settings-dialog/book-settings-dialog.component';
+import { CardComponent } from './parts/card/card.component';
 import { DownloadBookComponent } from './parts/download-book/download-book.component';
 import { EditorComponent } from './parts/editor/editor.component';
 import { EnSentenseComponent } from './parts/en-sentense/en-sentense.component';
@@ -51,6 +52,7 @@ import { SettingService } from './services/setting.service';
     ViewerSettingDialogComponent,
     HomeComponent,
     EditorComponent,
+    CardComponent,
   ],
   imports: [
     CommonModule,

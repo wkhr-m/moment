@@ -1,0 +1,57 @@
+<div
+  #cardEl
+  class="card"
+  (pan)="onPan($event)"
+  (panend)="onPanEnd($event)"
+  (swiperight)="onSwipe('right')"
+  (swipeleft)="onSwipe('left')"
+  (swipeup)="onSwipe('up')"
+>
+  <div [ngClass]="['tag', swipeDirection]" [ngSwitch]="swipeDirection">
+    <span *ngSwitchCase="'left'">簡単</span>
+    <span *ngSwitchCase="'right'">普通</span>
+    <span *ngSwitchCase="'up'">難しい</span>
+  </div>
+  <ng-container *ngIf="sentense && setting">
+    <div class="card-content">
+      <ng-container [ngSwitch]="setting.order">
+        <span *ngSwitchCase="viewerOrder.JAEN">{{ sentense.ja }}</span>
+        <span *ngSwitchCase="viewerOrder.ENJA">
+          <app-en-sentense
+            [sentense]="sentense.en"
+            [pronunciation]="sentense.pronunciation"
+          >
+          </app-en-sentense>
+        </span>
+      </ng-container>
+    </div>
+    <div class="card-content hide-target">
+      <div class="hide-target-text">
+        <ng-container [ngSwitch]="setting.order">
+          <span *ngSwitchCase="viewerOrder.JAEN">
+            <app-en-sentense
+              [sentense]="sentense.en"
+              [pronunciation]="sentense.pronunciation"
+            ></app-en-sentense>
+          </span>
+          <span *ngSwitchCase="viewerOrder.ENJA">
+            {{ sentense.ja }}
+          </span>
+        </ng-container>
+      </div>
+      <div
+        class="hide"
+        *ngIf="isSecondSentenseHide && setting?.secondLangIsHide"
+        (click)="onClickHide()"
+      >
+        🫣 Check Answer!!🫣
+      </div>
+    </div>
+    <div class="card-content note" *ngIf="sentense?.note">
+      <div class="note-title">NOTE</div>
+      <div class="note-body">
+        {{ sentense.note }}
+      </div>
+    </div>
+  </ng-container>
+</div>
