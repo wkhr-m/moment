@@ -27,7 +27,7 @@ export class CardComponent implements AfterViewInit {
   @Input() active: boolean = false;
   @Input() isLast: boolean = false;
   @Output() swipeEvent: EventEmitter<null> = new EventEmitter();
-  @ViewChild('cardEl') cardEl?: ElementRef<HTMLElement>;
+  @ViewChild('cardEl') cardEl!: ElementRef<HTMLElement>;
   pointListener?: PointerListener;
   isSecondSentenseHide: boolean = true;
   swipeDirection: string = '';
@@ -51,13 +51,19 @@ export class CardComponent implements AfterViewInit {
   }
 
   onPan(event: any) {
+    console.log('pan ');
     const direction = event.detail.global.direction;
-    this.swipeDirection = direction;
     // 座標はデフォルトでは左右の動き
     let x = event.detail.global.deltaX;
     let y = event.detail.global.deltaY;
     if (x === this.beforePoint?.x && y === this.beforePoint?.y) {
       return;
+    }
+    const cardElRect = this.cardEl.nativeElement.getClientRects()[0];
+    if (direction !== Direction.Up && Math.abs(x) > cardElRect.width / 3) {
+      this.swipeDirection = direction;
+    } else if (direction === Direction.Up && -y > cardElRect.height / 3) {
+      this.swipeDirection = direction;
     }
     this.beforePoint = { x, y };
     const transformStr = `translate3d(${x}px, ${y}px, 0)`;
@@ -65,9 +71,7 @@ export class CardComponent implements AfterViewInit {
   }
 
   onPanEnd(event: any) {
-    if (!this.cardEl) {
-      return;
-    }
+    console.log('panend');
     const direction = event.detail.global.direction;
     const cardElRect = this.cardEl.nativeElement.getClientRects()[0];
     // 座標はデフォルトでは左右の動き
@@ -90,6 +94,7 @@ export class CardComponent implements AfterViewInit {
   }
 
   onSwipe(direction: string) {
+    console.log('swipe');
     let dir = Direction.Right;
     switch (direction) {
       case 'left':
@@ -128,7 +133,7 @@ export class CardComponent implements AfterViewInit {
     }
     isSwiping = true;
     this.beforePoint = undefined;
-    const el = this.cardEl?.nativeElement;
+    const el = this.cardEl.nativeElement;
     if (!el) {
       return;
     }
