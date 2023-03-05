@@ -71,6 +71,9 @@ export class CardComponent implements AfterViewInit {
   }
 
   onPanEnd(event: any) {
+    if (isSwiping) {
+      return;
+    }
     console.log('panend');
     const direction = event.detail.global.direction;
     const cardElRect = this.cardEl.nativeElement.getClientRects()[0];
