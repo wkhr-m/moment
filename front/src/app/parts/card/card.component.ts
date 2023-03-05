@@ -97,15 +97,19 @@ export class CardComponent implements AfterViewInit {
   }
 
   onSwipe(direction: string) {
+    if (isSwiping) {
+      return;
+    }
+    isSwiping = true;
     console.log('swipe');
     let dir = Direction.Right;
     switch (direction) {
       case 'left':
         dir = Direction.Left;
-        return;
+        break;
       case 'up':
         dir = Direction.Up;
-        return;
+        break;
     }
     this.swipe(dir);
   }
@@ -131,15 +135,8 @@ export class CardComponent implements AfterViewInit {
   }
 
   private swipe(direction: Direction) {
-    if (isSwiping) {
-      return;
-    }
-    isSwiping = true;
     this.beforePoint = undefined;
     const el = this.cardEl.nativeElement;
-    if (!el) {
-      return;
-    }
     el.style.transition = 'all .4s ease-in';
     this.swipeDirection = direction;
     switch (direction) {
